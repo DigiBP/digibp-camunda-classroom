@@ -6,7 +6,7 @@ camunda:
     filter:
       create: All Tasks
     authorization:
-      enabled: false
+      enabled: true
 
 spring:
   profiles:
