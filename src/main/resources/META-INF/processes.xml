@@ -1,0 +1,9 @@
+<process-application xmlns="http://www.camunda.org/schema/1.0/ProcessApplication">
+
+    <process-archive>
+        <properties>
+            <property name="additionalResourceSuffixes">html,js</property>
+        </properties>
+    </process-archive>
+
+</process-application>
