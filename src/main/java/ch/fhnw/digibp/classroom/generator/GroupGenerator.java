@@ -33,7 +33,7 @@ public class GroupGenerator {
     @PostConstruct
     public void init() {
 
-        /*if(identityService.createGroupQuery().groupId("owner").singleResult() != null){
+        if(identityService.createGroupQuery().groupId("owner").singleResult() != null){
             LOGGER.info("Not creating any demo groups.");
             return;
         }
@@ -49,7 +49,7 @@ public class GroupGenerator {
 
         groupService.addWorkflowGroup("assistant", "Assistant");
         groupService.addWorkflowGroup("chef", "Chef");
-        groupService.addWorkflowGroup("courier", "Courier");*/
+        groupService.addWorkflowGroup("courier", "Courier");
 
         groupService.createGrantGroupAuthorization(new String[]{"owner", "manager", "analyst"}, new Permission[]{Permissions.ACCESS}, Resources.APPLICATION, new String[]{"cockpit", "optimize"});
         groupService.createGrantGroupAuthorization(new String[]{"manager", "engineer"}, new Permission[]{Permissions.ALL}, Resources.APPLICATION, new String[]{"tasklist", "cockpit"});
