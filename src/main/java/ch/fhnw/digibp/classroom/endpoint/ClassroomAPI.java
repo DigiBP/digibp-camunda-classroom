@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package ch.fhnw.digibp.classroom.generator.endpoint;
+package ch.fhnw.digibp.classroom.endpoint;
 
 import ch.fhnw.digibp.classroom.generator.service.TenantService;
 import ch.fhnw.digibp.classroom.generator.service.UserService;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/generator")
-public class UserTenantAPI {
+@RequestMapping(path = "/classroom")
+public class ClassroomAPI {
 
     @Autowired
     private UserService userService;
@@ -25,12 +25,12 @@ public class UserTenantAPI {
     @Autowired
     private TenantService tenantService;
 
-    @GetMapping(path = "/user", produces = "application/json")
-    public ResponseEntity<List<String>> getNewUserAndTenant(@RequestParam(value = "suffix", required = false) String suffix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId){
+    @GetMapping(path = "/generator/user", produces = "application/json")
+    public ResponseEntity<List<String>> getNewUserAndTenant(@RequestParam(value = "prefix", required = false) String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false) String suffix){
         List<String> response = new ArrayList<>();
         String id;
         for (int number=firstId; number<=lastId; number++) {
-            String instanceId = number+suffix;
+            String instanceId = prefix + number + suffix;
             try {
                 id = tenantService.addTenant(instanceId, instanceId);
                 response.add("Tenant with ID " + id + " generated.");
@@ -57,12 +57,12 @@ public class UserTenantAPI {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/user")
-    public ResponseEntity<List<String>> deleteUserAndTenant(@RequestParam(value = "suffix", required = false) String suffix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId){
+    @DeleteMapping(path = "/generator/user")
+    public ResponseEntity<List<String>> deleteUserAndTenant(@RequestParam(value = "prefix", required = false) String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false) String suffix){
         List<String> response = new ArrayList<>();
         String id;
         for (int number=firstId; number<=lastId; number++) {
-            String instanceId = number + suffix;
+            String instanceId = prefix + number + suffix;
             id = userService.removeUser(instanceId+"giulia");
             response.add("User with ID " + id + " removed.");
             id = userService.removeUser(instanceId+"martina");

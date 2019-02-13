@@ -5,15 +5,15 @@
 
 ## Roles
 
-| Process Role 	| Group     	        | User    	| Tasklist   	| Cockpit 	| Admin 	| Optimize 	| Name            	|
-|--------------	|-----------	        |---------	|------------	|---------	|-------	|----------	|-----------------	|
-| Owner        	| owner     	        | giulia  	| -          	| ACCESS    | -     	| ACCESS    | Giulia Ricci    	|
-| Manager      	| manager   	        | martina 	| ALL        	| ALL     	| -     	| ACCESS    | Martina Russo   	|
-| Analyst      	| analyst   	        | sofia   	| -          	| ACCESS    | -     	| ALL      	| Sofia Conti     	|
-| Engineer     	| engineer  	        | chiara  	| ALL        	| ALL     	| ALL   	| ALL       | Chiara Lombardi 	|
-| Participant  	| initiator, assistant 	| beppe   	| ACCESS, START | -       	| -     	| -        	| Beppe Ferrari   	|
-| Participant  	| worker, chef          | matteo  	| ACCESS        | -       	| -     	| -        	| Matteo Alfonsi  	|
-| Participant  	| worker, courier       | silvio  	| ACCESS        | -       	| -     	| -        	| Silvio Esposito 	|
+| Process Role 	| Group     	        | User    	| Tasklist   	| Cockpit 	| Admin 	| Name            	|
+|--------------	|-----------	        |---------	|------------	|---------	|-------	|-----------------	|
+| Owner        	| owner     	        | giulia  	| -          	| ACCESS    | -     	| Giulia Ricci    	|
+| Manager      	| manager   	        | martina 	| ALL        	| ALL     	| -     	| Martina Russo   	|
+| Analyst      	| analyst   	        | sofia   	| -          	| ACCESS    | -     	| Sofia Conti     	|
+| Engineer     	| engineer  	        | chiara  	| ALL        	| ALL     	| ALL   	| Chiara Lombardi 	|
+| Participant  	| initiator, assistant 	| beppe   	| ACCESS, START | -       	| -     	| Beppe Ferrari   	|
+| Participant  	| worker, chef          | matteo  	| ACCESS        | -       	| -     	| Matteo Alfonsi  	|
+| Participant  	| worker, courier       | silvio  	| ACCESS        | -       	| -     	| Silvio Esposito 	|
 
 ## Maintainer
 - [Digitalisation of Business Processes](https://github.com/digibp)
