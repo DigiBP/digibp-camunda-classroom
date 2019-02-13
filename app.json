@@ -4,5 +4,11 @@
   "repository": "https://github.com/DigiBP/digibp-camunda-classroom/tree/master",
   "addons": ["heroku-postgresql:hobby-dev"],
   "logo": "https://avatars3.githubusercontent.com/u/25099178?s=200&v=4",
-  "keywords": ["FHNW"]
+  "keywords": ["FHNW"],
+  "env": {
+    "CAMUNDA_ADMIN_PASSWORD": {
+      "description": "Camunda admin/demo user password. If you want to change it, you will have to replace it in the Heroku and the Camunda dashboard simultaneously.",
+      "generator": "secret"
+    }
+  }
 }
