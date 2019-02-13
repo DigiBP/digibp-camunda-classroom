@@ -51,16 +51,16 @@ public class GroupService {
     public void createGrantGroupAuthorization(String[] groupIds, Permission[] permissions, Resource resource, String[] resourceIds) {
         for (String groupId : groupIds) {
             for (String resourceId : resourceIds) {
-                Authorization authorization = authorizationService.createAuthorizationQuery().groupIdIn(groupId).resourceType(resource).singleResult();
+                Authorization authorization = authorizationService.createAuthorizationQuery().groupIdIn(groupId).resourceType(resource).resourceId(resourceId).singleResult();
                 if(authorization==null) {
                     authorization = authorizationService.createNewAuthorization(Authorization.AUTH_TYPE_GRANT);
                     authorization.setGroupId(groupId);
                     authorization.setResource(resource);
+                    authorization.setResourceId(resourceId);
                 }
                 for (Permission permission : permissions) {
                     authorization.addPermission(permission);
                 }
-                authorization.setResourceId(resourceId);
                 authorizationService.saveAuthorization(authorization);
             }
         }

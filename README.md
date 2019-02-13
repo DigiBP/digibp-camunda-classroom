@@ -10,7 +10,7 @@
 | Owner        	| owner     	        | giulia  	| -          	| ACCESS    | -     	| Giulia Ricci    	|
 | Manager      	| manager   	        | martina 	| ALL        	| ALL     	| -     	| Martina Russo   	|
 | Analyst      	| analyst   	        | sofia   	| -          	| ACCESS    | -     	| Sofia Conti     	|
-| Engineer     	| engineer  	        | chiara  	| ALL        	| ALL     	| ALL   	| Chiara Lombardi 	|
+| Engineer     	| engineer  	        | chiara  	| ALL        	| ALL     	| ACCESS   	| Chiara Lombardi 	|
 | Participant  	| initiator, assistant 	| beppe   	| ACCESS, START | -       	| -     	| Beppe Ferrari   	|
 | Participant  	| worker, chef          | matteo  	| ACCESS        | -       	| -     	| Matteo Alfonsi  	|
 | Participant  	| worker, courier       | silvio  	| ACCESS        | -       	| -     	| Silvio Esposito 	|
