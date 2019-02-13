@@ -26,7 +26,7 @@ public class ClassroomAPI {
     private TenantService tenantService;
 
     @GetMapping(path = "/generator/user", produces = "application/json")
-    public ResponseEntity<List<String>> getNewUserAndTenant(@RequestParam(value = "prefix", required = false) String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false) String suffix){
+    public ResponseEntity<List<String>> getNewUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
         List<String> response = new ArrayList<>();
         String id;
         for (int number=firstId; number<=lastId; number++) {
@@ -58,7 +58,7 @@ public class ClassroomAPI {
     }
 
     @DeleteMapping(path = "/generator/user")
-    public ResponseEntity<List<String>> deleteUserAndTenant(@RequestParam(value = "prefix", required = false) String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false) String suffix){
+    public ResponseEntity<List<String>> deleteUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
         List<String> response = new ArrayList<>();
         String id;
         for (int number=firstId; number<=lastId; number++) {
