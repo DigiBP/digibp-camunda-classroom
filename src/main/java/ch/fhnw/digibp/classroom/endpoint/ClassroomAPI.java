@@ -7,6 +7,7 @@ package ch.fhnw.digibp.classroom.endpoint;
 
 import ch.fhnw.digibp.classroom.generator.service.TenantService;
 import ch.fhnw.digibp.classroom.generator.service.UserService;
+import ch.fhnw.digibp.classroom.config.ClassroomProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class ClassroomAPI {
 
     @Autowired
     private TenantService tenantService;
+
+    @Autowired
+    private ClassroomProperties classroomProperties;
 
     @GetMapping(path = "/generator/user", produces = "application/json")
     public ResponseEntity<List<String>> getNewUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
@@ -87,5 +91,11 @@ public class ClassroomAPI {
             }
         }
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping(path = "/properties")
+    public ResponseEntity<ClassroomProperties> putClassroomProperties(@RequestBody ClassroomProperties classroomProperties){
+        this.classroomProperties = classroomProperties;
+        return new ResponseEntity<>(this.classroomProperties, HttpStatus.ACCEPTED);
     }
 }

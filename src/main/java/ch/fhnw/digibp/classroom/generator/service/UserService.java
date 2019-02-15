@@ -42,14 +42,28 @@ public class UserService {
         user.setEmail(email);
         identityService.saveUser(user);
         if(groupIds!=null){
-            for (String groupId : groupIds) {
-                identityService.createMembership(userId, groupId);
-            }
+            addUserToGroup(userId, groupIds);
         }
         if(tenantId!=null){
-            identityService.createTenantUserMembership(tenantId, userId);
+            addUserToTenant(userId, tenantId);
         }
         return user.getId();
+    }
+
+    public void addUserToGroup(String userId, String[] groupIds) throws Exception {
+        if (identityService.createUserQuery().userId(userId)==null) {
+            throw new Exception("User " + userId + " does not exist, could not create group membership.");
+        }
+        for (String groupId : groupIds) {
+            identityService.createMembership(userId, groupId);
+        }
+    }
+
+    public void addUserToTenant(String userId, String tenantId) throws Exception {
+        if (identityService.createUserQuery().userId(userId)==null) {
+            throw new Exception("User " + userId + " does not exist, could not create tenant membership.");
+        }
+        identityService.createTenantUserMembership(tenantId, userId);
     }
 
     public String removeUser(String userId){
