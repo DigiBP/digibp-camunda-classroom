@@ -93,6 +93,11 @@ public class ClassroomAPI {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping(path = "/properties")
+    public ResponseEntity<ClassroomProperties> getClassroomProperties(){
+        return new ResponseEntity<>(this.classroomProperties, HttpStatus.ACCEPTED);
+    }
+
     @PutMapping(path = "/properties")
     public ResponseEntity<ClassroomProperties> putClassroomProperties(@RequestBody ClassroomProperties classroomProperties){
         this.classroomProperties = classroomProperties;

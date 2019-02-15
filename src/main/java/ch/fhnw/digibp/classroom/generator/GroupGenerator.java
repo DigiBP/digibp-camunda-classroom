@@ -52,10 +52,10 @@ public class GroupGenerator {
         groupService.addWorkflowGroup("courier", "Courier");
 
         groupService.createGrantGroupAuthorization(new String[]{"owner", "manager", "analyst"}, new Permission[]{Permissions.ACCESS}, Resources.APPLICATION, new String[]{"cockpit", "optimize"});
-        groupService.createGrantGroupAuthorization(new String[]{"manager", "engineer"}, new Permission[]{Permissions.ALL}, Resources.APPLICATION, new String[]{"tasklist", "cockpit"});
+        groupService.createGrantGroupAuthorization(new String[]{"manager", "engineer"}, new Permission[]{Permissions.ALL}, Resources.APPLICATION, new String[]{"cockpit"});
         groupService.createGrantGroupAuthorization(new String[]{"analyst", "engineer"}, new Permission[]{Permissions.ALL}, Resources.APPLICATION, new String[]{"optimize"});
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.ACCESS}, Resources.APPLICATION, new String[]{"admin"});
-        groupService.createGrantGroupAuthorization(new String[]{"initiator", "worker"}, new Permission[]{Permissions.ACCESS}, Resources.APPLICATION, new String[]{"tasklist"});
+        groupService.createGrantGroupAuthorization(new String[]{"initiator", "worker", "manager", "engineer"}, new Permission[]{Permissions.ACCESS}, Resources.APPLICATION, new String[]{"tasklist"});
 
         groupService.createGrantGroupAuthorization(new String[]{"manager", "engineer", "initiator"}, new Permission[]{Permissions.ALL}, Resources.PROCESS_DEFINITION, new String[]{"*"});
         groupService.createGrantGroupAuthorization(new String[]{"manager", "engineer", "initiator"}, new Permission[]{Permissions.ALL}, Resources.DECISION_DEFINITION, new String[]{"*"});
