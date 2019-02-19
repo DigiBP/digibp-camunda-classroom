@@ -24,11 +24,3 @@ spring:
 ## Uncomment the following lines to change to port number:
 #server:
 #  port: 8081
-
-## Confidential credentials should be kept outside of version control.
-## Copy the following lines to an additional file called application-local.yaml to use a remote database e.g. on Heroku:
-  #spring:
-  #  datasource:
-  #    url: jdbc:postgresql://<host>:<port>/<dbname>?user=<username>&password=<password>&sslmode=require
-  #    username: <username>
-  #    password: <password>

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class HttpsEnforcer implements Filter {
+public class HttpsFilter implements Filter {
 
     private static final String X_FORWARDED_PROTO = "x-forwarded-proto";
 

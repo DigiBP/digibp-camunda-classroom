@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package ch.fhnw.digibp.classroom.generator.service;
+package ch.fhnw.digibp.classroom.service;
 
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.IdentityService;

@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package ch.fhnw.digibp.classroom.generator.service;
+package ch.fhnw.digibp.classroom.service;
 
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.identity.Tenant;
@@ -40,5 +40,12 @@ public class TenantService {
             throw new Exception("Tenant " + tenantId + " has assigned user(s).");
         }
         identityService.deleteTenant(tenantId);
+    }
+
+    public boolean tenantExists(String tenantId){
+        if (identityService.createTenantQuery().tenantId(tenantId).count() > 0) {
+            return true;
+        }
+        return false;
     }
 }

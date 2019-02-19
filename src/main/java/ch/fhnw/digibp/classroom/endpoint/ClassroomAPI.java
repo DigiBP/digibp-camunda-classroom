@@ -5,8 +5,8 @@
 
 package ch.fhnw.digibp.classroom.endpoint;
 
-import ch.fhnw.digibp.classroom.generator.service.TenantService;
-import ch.fhnw.digibp.classroom.generator.service.UserService;
+import ch.fhnw.digibp.classroom.service.TenantService;
+import ch.fhnw.digibp.classroom.service.UserService;
 import ch.fhnw.digibp.classroom.config.ClassroomProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

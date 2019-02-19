@@ -34,6 +34,6 @@ public class CamundaSecurityFilter {
 
     @Bean
     public Filter httpsEnforcerFilter(){
-        return new HttpsEnforcer();
+        return new HttpsFilter();
     }
 }

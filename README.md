@@ -7,13 +7,13 @@
 
 | Process Role 	| Group     	        | User    	| Tasklist   	| Cockpit 	| Admin 	| Name            	|
 |--------------	|-----------	        |---------	|------------	|---------	|-------	|-----------------	|
-| Owner        	| owner     	        | giulia  	| -          	| ACCESS    | -     	| Giulia Ricci    	|
-| Manager      	| manager   	        | martina 	| ALL        	| ALL     	| -     	| Martina Russo   	|
-| Analyst      	| analyst   	        | sofia   	| -          	| ACCESS    | -     	| Sofia Conti     	|
-| Engineer     	| engineer  	        | chiara  	| ALL        	| ALL     	| ACCESS   	| Chiara Lombardi 	|
-| Participant  	| initiator, assistant 	| beppe   	| ACCESS, START | -       	| -     	| Beppe Ferrari   	|
-| Participant  	| worker, chef          | matteo  	| ACCESS        | -       	| -     	| Matteo Alfonsi  	|
-| Participant  	| worker, courier       | silvio  	| ACCESS        | -       	| -     	| Silvio Esposito 	|
+| Owner        	| owner     	        | giulia  	| -          	| READ      | -     	| Giulia Ricci    	|
+| Manager      	| manager, initiator    | martina 	| READ, START 	| ALL     	| -     	| Martina Russo   	|
+| Analyst      	| analyst   	        | sofia   	| -          	| READ      | -     	| Sofia Conti     	|
+| Engineer     	| engineer  	        | chiara  	| READ        	| ALL     	| READ   	| Chiara Lombardi 	|
+| Participant  	| initiator, assistant 	| beppe   	| READ, START   | -       	| -     	| Beppe Ferrari   	|
+| Participant  	| worker, chef          | matteo  	| READ          | -       	| -     	| Matteo Alfonsi  	|
+| Participant  	| worker, courier       | silvio  	| READ          | -       	| -     	| Silvio Esposito 	|
 
 ## Maintainer
 - [Digitalisation of Business Processes](https://github.com/digibp)

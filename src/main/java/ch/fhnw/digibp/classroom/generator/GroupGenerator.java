@@ -5,7 +5,7 @@
 
 package ch.fhnw.digibp.classroom.generator;
 
-import ch.fhnw.digibp.classroom.generator.service.GroupService;
+import ch.fhnw.digibp.classroom.service.GroupService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.authorization.Permission;
 import org.camunda.bpm.engine.authorization.Permissions;

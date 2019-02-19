@@ -8,23 +8,11 @@ package ch.fhnw.digibp.classroom.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
 @Component
 @ConfigurationProperties(prefix="classroom")
 public class ClassroomProperties {
-    private static ClassroomProperties instance;
-
-    @PostConstruct
-    public void registerInstance() {
-        instance = this;
-    }
-
-    public static ClassroomProperties getInstance() {
-        return instance;
-    }
-
     private static Boolean deploymentWithoutTenantId = true;
+    private static Boolean deploymentTenantIdMustExist = false;
 
     public Boolean getDeploymentWithoutTenantId() {
         return deploymentWithoutTenantId;
@@ -32,5 +20,13 @@ public class ClassroomProperties {
 
     public void setDeploymentWithoutTenantId(Boolean deploymentWithoutTenantId) {
         ClassroomProperties.deploymentWithoutTenantId = deploymentWithoutTenantId;
+    }
+
+    public Boolean getDeploymentTenantIdMustExist() {
+        return deploymentTenantIdMustExist;
+    }
+
+    public void setDeploymentTenantIdMustExist(Boolean deploymentTenantIdMustExist) {
+        ClassroomProperties.deploymentTenantIdMustExist = deploymentTenantIdMustExist;
     }
 }

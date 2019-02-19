@@ -5,8 +5,8 @@
 
 package ch.fhnw.digibp.classroom.generator;
 
-import ch.fhnw.digibp.classroom.generator.service.TenantService;
-import ch.fhnw.digibp.classroom.generator.service.UserService;
+import ch.fhnw.digibp.classroom.service.TenantService;
+import ch.fhnw.digibp.classroom.service.UserService;
 import org.camunda.bpm.engine.IdentityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
