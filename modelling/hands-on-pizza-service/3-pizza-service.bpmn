@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="Definitions_0rekkb0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.2.4">
+  <bpmn:process id="Process_3-pizza-service" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Pizza order received">
+      <bpmn:outgoing>SequenceFlow_1hej3i0</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1hej3i0" sourceRef="StartEvent_1" targetRef="Task_11z4b4c" />
+    <bpmn:sequenceFlow id="SequenceFlow_06jq2pw" sourceRef="Task_11z4b4c" targetRef="Task_0un8lj2" />
+    <bpmn:sequenceFlow id="SequenceFlow_1pzftkb" sourceRef="Task_0un8lj2" targetRef="Task_0m2s1i2" />
+    <bpmn:sequenceFlow id="SequenceFlow_0aps7p3" sourceRef="Task_0m2s1i2" targetRef="Task_0q4dnja" />
+    <bpmn:endEvent id="EndEvent_0in7peu" name="Pizza delivered">
+      <bpmn:incoming>SequenceFlow_1x66dcq</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1x66dcq" sourceRef="Task_0q4dnja" targetRef="EndEvent_0in7peu" />
+    <bpmn:userTask id="Task_11z4b4c" name="Take pizza order">
+      <bpmn:incoming>SequenceFlow_1hej3i0</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_06jq2pw</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_0un8lj2" name="Bake pizza">
+      <bpmn:incoming>SequenceFlow_06jq2pw</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1pzftkb</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_0m2s1i2" name="Deliver pizza">
+      <bpmn:incoming>SequenceFlow_1pzftkb</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0aps7p3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:manualTask id="Task_0q4dnja" name="Process payment">
+      <bpmn:incoming>SequenceFlow_0aps7p3</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1x66dcq</bpmn:outgoing>
+    </bpmn:manualTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_3-pizza-service">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="163" y="145" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1hej3i0_di" bpmnElement="SequenceFlow_1hej3i0">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="272" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_06jq2pw_di" bpmnElement="SequenceFlow_06jq2pw">
+        <di:waypoint x="372" y="120" />
+        <di:waypoint x="438" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1pzftkb_di" bpmnElement="SequenceFlow_1pzftkb">
+        <di:waypoint x="538" y="120" />
+        <di:waypoint x="598" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0aps7p3_di" bpmnElement="SequenceFlow_0aps7p3">
+        <di:waypoint x="698" y="120" />
+        <di:waypoint x="763" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0in7peu_di" bpmnElement="EndEvent_0in7peu">
+        <dc:Bounds x="918" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="899" y="145" width="75" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1x66dcq_di" bpmnElement="SequenceFlow_1x66dcq">
+        <di:waypoint x="863" y="120" />
+        <di:waypoint x="918" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0emiy1s_di" bpmnElement="Task_11z4b4c">
+        <dc:Bounds x="272" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1op4wzu_di" bpmnElement="Task_0un8lj2">
+        <dc:Bounds x="438" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_03kdmdz_di" bpmnElement="Task_0m2s1i2">
+        <dc:Bounds x="598" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ManualTask_1p19i78_di" bpmnElement="Task_0q4dnja">
+        <dc:Bounds x="763" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

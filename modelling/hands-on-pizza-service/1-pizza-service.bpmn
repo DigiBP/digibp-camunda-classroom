@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_14tmvr5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.2.4">
+  <bpmn:collaboration id="Collaboration_1279bin">
+    <bpmn:participant id="Participant_1ywa8fw" name="Food Service" processRef="Process_1-pizza-service" />
+    <bpmn:participant id="Participant_1m1uurc" name="Customer" />
+    <bpmn:messageFlow id="MessageFlow_15mxubn" name="Order" sourceRef="Participant_1m1uurc" targetRef="StartEvent_1" />
+    <bpmn:messageFlow id="MessageFlow_1izayms" name="Pizza" sourceRef="Task_1fcf3cg" targetRef="Participant_1m1uurc" />
+    <bpmn:messageFlow id="MessageFlow_1ly7cv6" name="Payment or voucher" sourceRef="Participant_1m1uurc" targetRef="Task_1oza4je" />
+    <bpmn:messageFlow id="MessageFlow_0zeux7m" name="Receipt" sourceRef="Task_1oza4je" targetRef="Participant_1m1uurc" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_1-pizza-service" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_1q9yrvk">
+      <bpmn:lane id="Lane_145y685" name="Pizza Service">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_1g2qcye</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_11eiz81</bpmn:flowNodeRef>
+        <bpmn:childLaneSet id="LaneSet_0dxb67d">
+          <bpmn:lane id="Lane_06f4on9" name="Chef">
+            <bpmn:flowNodeRef>Task_11eiz81</bpmn:flowNodeRef>
+          </bpmn:lane>
+          <bpmn:lane id="Lane_1kmni4m" name="Assistant">
+            <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+            <bpmn:flowNodeRef>Task_1g2qcye</bpmn:flowNodeRef>
+          </bpmn:lane>
+        </bpmn:childLaneSet>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_04nou6f" name="Courier">
+        <bpmn:flowNodeRef>Task_1fcf3cg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_1oza4je</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_0jbhup8</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:sequenceFlow id="SequenceFlow_0076zmh" sourceRef="StartEvent_1" targetRef="Task_1g2qcye" />
+    <bpmn:startEvent id="StartEvent_1" name="Pizza order received">
+      <bpmn:extensionElements>
+        <camunda:formData businessKey="businessKey">
+          <camunda:formField id="businessKey" label="Business Key" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_0076zmh</bpmn:outgoing>
+      <bpmn:messageEventDefinition messageRef="Message_1lvj35e" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_1g2qcye" name="Take pizza order" camunda:candidateGroups="assistant">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="pizzaType" label="Pizza" type="string" />
+          <camunda:formField id="pizzaSize" label="Size" type="string" />
+          <camunda:formField id="pizzaSauce" label="Sauce" type="string" />
+          <camunda:formField id="pizzaCrust" label="Crust" type="string" />
+          <camunda:formField id="pizzaTopping" label="Topping" type="string" />
+          <camunda:formField id="customerFirstName" label="First name" type="string" />
+          <camunda:formField id="customerLastName" label="Last name" type="string" />
+          <camunda:formField id="customerAddress" label="Customer address" type="string" />
+          <camunda:formField id="customerEmail" label="E-Mail" type="string" />
+          <camunda:formField id="pizzaPrice" label="Price" type="string" defaultValue="19.90" />
+          <camunda:formField id="paymentMethod" label="Payment Method Selected" type="enum">
+            <camunda:value id="cash" name="Cash" />
+            <camunda:value id="invoice" name="Invoice" />
+            <camunda:value id="creditcard" name="Credit Card" />
+            <camunda:value id="prepayment" name="Prepayment" />
+            <camunda:value id="twint" name="TWINT" />
+          </camunda:formField>
+          <camunda:formField id="scoring" label="Good Scoring" type="boolean" defaultValue="true" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0076zmh</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ij9a80</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1ij9a80" sourceRef="Task_1g2qcye" targetRef="Task_11eiz81" />
+    <bpmn:userTask id="Task_1fcf3cg" name="Deliver pizza" camunda:candidateGroups="courier">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="pizzaType" label="Pizza" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaSize" label="Size" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaSauce" label="Sauce" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaCrust" label="Crust" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaTopping" label="Topping" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="customerFirstName" label="First name" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="customerLastName" label="Last name" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="customerAddress" label="Customer address" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="customerEmail" label="E-Mail" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaPrice" label="Price" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pesiredPaymentMethod" label="Desired Payment Method" type="string" defaultValue="${paymentMethod}">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="paymentMethod" label="Payment Method Selected" type="enum">
+            <camunda:value id="cash" name="Cash" />
+            <camunda:value id="invoice" name="Invoice" />
+            <camunda:value id="creditcard" name="Credit Card" />
+            <camunda:value id="prepayment" name="Prepayment" />
+            <camunda:value id="twint" name="TWINT" />
+          </camunda:formField>
+          <camunda:formField id="pizzaPayment" label="Payment Received" type="string" defaultValue="19.90" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0vu4i4d</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_046dlho</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_0jbhup8" name="Pizza delivered">
+      <bpmn:incoming>SequenceFlow_0b9uqwj</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:manualTask id="Task_1oza4je" name="Process payment">
+      <bpmn:incoming>SequenceFlow_046dlho</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0b9uqwj</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:userTask id="Task_11eiz81" name="Bake pizza" camunda:candidateGroups="chef">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="pizzaType" label="Pizza" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaSize" label="Size" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaSauce" label="Sauce" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaCrust" label="Crust" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaTopping" label="Topping" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="pizzaPrice" label="Price" type="string">
+            <camunda:validation>
+              <camunda:constraint name="readonly" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1ij9a80</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0vu4i4d</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0vu4i4d" sourceRef="Task_11eiz81" targetRef="Task_1fcf3cg" />
+    <bpmn:sequenceFlow id="SequenceFlow_046dlho" sourceRef="Task_1fcf3cg" targetRef="Task_1oza4je" />
+    <bpmn:sequenceFlow id="SequenceFlow_0b9uqwj" sourceRef="Task_1oza4je" targetRef="EndEvent_0jbhup8" />
+  </bpmn:process>
+  <bpmn:message id="Message_1lvj35e" name="Message_1-pizza-service" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1279bin">
+      <bpmndi:BPMNShape id="Participant_1ywa8fw_di" bpmnElement="Participant_1ywa8fw">
+        <dc:Bounds x="129" y="169" width="824" height="382" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_145y685_di" bpmnElement="Lane_145y685">
+        <dc:Bounds x="159" y="284" width="794" height="267" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04nou6f_di" bpmnElement="Lane_04nou6f">
+        <dc:Bounds x="159" y="169" width="794" height="115" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_06f4on9_di" bpmnElement="Lane_06f4on9">
+        <dc:Bounds x="189" y="428" width="764" height="123" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1kmni4m_di" bpmnElement="Lane_1kmni4m">
+        <dc:Bounds x="189" y="284" width="764" height="144" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_0v90nw7_di" bpmnElement="Participant_1m1uurc">
+        <dc:Bounds x="129" y="26" width="826" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0076zmh_di" bpmnElement="SequenceFlow_0076zmh">
+        <di:waypoint x="287" y="342" />
+        <di:waypoint x="350" y="342" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0gjnq8b_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="251" y="325" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="241" y="368" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_14xg4um_di" bpmnElement="Task_1g2qcye">
+        <dc:Bounds x="350" y="303" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1t1rkkt_di" bpmnElement="Task_11eiz81">
+        <dc:Bounds x="514" y="451" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0vu4i4d_di" bpmnElement="SequenceFlow_0vu4i4d">
+        <di:waypoint x="564" y="451" />
+        <di:waypoint x="564" y="229" />
+        <di:waypoint x="588" y="229" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1wwtrxf_di" bpmnElement="Task_1fcf3cg">
+        <dc:Bounds x="588" y="189" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_046dlho_di" bpmnElement="SequenceFlow_046dlho">
+        <di:waypoint x="688" y="229" />
+        <di:waypoint x="729" y="229" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0jbhup8_di" bpmnElement="EndEvent_0jbhup8">
+        <dc:Bounds x="877" y="211" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="858" y="254" width="75" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0b9uqwj_di" bpmnElement="SequenceFlow_0b9uqwj">
+        <di:waypoint x="829" y="229" />
+        <di:waypoint x="877" y="229" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_15mxubn_di" bpmnElement="MessageFlow_15mxubn">
+        <di:waypoint x="269" y="86" />
+        <di:waypoint x="269" y="325" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="278" y="113" width="30" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_1izayms_di" bpmnElement="MessageFlow_1izayms">
+        <di:waypoint x="638" y="189" />
+        <di:waypoint x="638" y="86" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="647" y="112" width="27" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_1ly7cv6_di" bpmnElement="MessageFlow_1ly7cv6">
+        <di:waypoint x="740" y="86" />
+        <di:waypoint x="740" y="189" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="747" y="108" width="60" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlow_0zeux7m_di" bpmnElement="MessageFlow_0zeux7m">
+        <di:waypoint x="813" y="189" />
+        <di:waypoint x="813" y="86" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="826" y="114" width="39" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ManualTask_1evlr1v_di" bpmnElement="Task_1oza4je">
+        <dc:Bounds x="729" y="189" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ij9a80_di" bpmnElement="SequenceFlow_1ij9a80">
+        <di:waypoint x="450" y="343" />
+        <di:waypoint x="477" y="343" />
+        <di:waypoint x="477" y="491" />
+        <di:waypoint x="514" y="491" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
