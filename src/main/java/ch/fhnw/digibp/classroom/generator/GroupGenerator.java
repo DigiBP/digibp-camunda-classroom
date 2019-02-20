@@ -77,7 +77,7 @@ public class GroupGenerator {
 
         groupService.createGrantGroupAuthorization(new String[]{"owner", "manager", "analyst"}, new Permission[]{Permissions.ALL}, Resources.REPORT, new String[]{"*"});
 
-        groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.ALL}, Resources.DEPLOYMENT, new String[]{"*"});
+        groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.CREATE, Permissions.READ}, Resources.DEPLOYMENT, new String[]{"*"});
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.READ}, Resources.AUTHORIZATION, new String[]{"*"});
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.READ}, Resources.GROUP, new String[]{"*"});
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.READ}, Resources.USER, new String[]{"*"});
