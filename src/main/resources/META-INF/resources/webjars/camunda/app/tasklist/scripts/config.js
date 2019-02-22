@@ -1,0 +1,57 @@
+window.camTasklistConf = {
+    // change the app name and vendor
+    // app: {
+    //   name: 'Todos',
+    //   vendor: 'Company'
+    // },
+    //
+    // configure the date format
+    // "dateFormat": {
+    //   "normal": "LLL",
+    //   "long":   "LLLL"
+    // },
+    //
+    // "locales": {
+    //    "availableLocales": ["en", "de"],
+    //    "fallbackLocale": "en"
+    //  },
+    //
+    // // custom libraries and scripts loading and initialization,
+    // // see: http://docs.camunda.org/guides/user-guide/#tasklist-customizing-custom-scripts
+    customScripts: {
+        // names of angular modules defined in your custom script files.
+        // will be added to the 'cam.tasklist.custom' as dependencies
+        ngDeps: ['classroom.redirect.module'],
+
+        // RequireJS modules to load.
+        deps: ['custom-ng-module'],
+
+        // RequreJS path definitions
+        paths: {
+            'custom-ng-module': '../custom-ng-module/script'
+        }
+    },
+
+    'shortcuts': {
+        'claimTask': {
+            'key': 'ctrl+alt+c',
+            'description': 'claims the currently selected task'
+        },
+        'focusFilter': {
+            'key': 'ctrl+shift+f',
+            'description': 'set the focus to the first filter in the list'
+        },
+        'focusList': {
+            'key': 'ctrl+alt+l',
+            'description': 'sets the focus to the first task in the list'
+        },
+        'focusForm': {
+            'key': 'ctrl+alt+f',
+            'description': 'sets the focus to the first input field in a task form'
+        },
+        'startProcess': {
+            'key': 'ctrl+alt+p',
+            'description': 'opens the start process modal dialog'
+        }
+    }
+};
