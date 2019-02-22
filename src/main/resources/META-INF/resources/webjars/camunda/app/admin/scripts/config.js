@@ -4,7 +4,7 @@ window.camAdminConf = {
     customScripts: {
         // names of angular modules defined in your custom script files.
         // will be added to the 'cam.tasklist.custom' as dependencies
-        ngDeps: ['ch.fhnw.classroom.redirect.module'],
+        ngDeps: ['classroom.redirect.module'],
 
         // RequireJS modules to load.
         deps: ['custom-ng-module'],
