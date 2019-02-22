@@ -51,7 +51,10 @@ define('custom-ng-module', [
         var listener = $scope.$root.$on('authentication.changed', function(ev, auth) {
             if(!auth && isLoggedIn) {
                 console.log('logout');
-                $window.location.href = $window.location.protocol + '://' + $window.location.hostname + ($window.location.port ? ':' + $window.location.port : '');
+                console.log($window.location.protocol);
+                console.log($window.location.hostname);
+                $window.location.href = $window.location.protocol + '//' + $window.location.hostname + ($window.location.port ? ':' + $window.location.port : '');
+                console.log($window.location.href);
                 isLoggedIn = false;
             }
         });
