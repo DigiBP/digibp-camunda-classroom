@@ -5,10 +5,9 @@
 
 package ch.fhnw.digibp.classroom.generator;
 
-import org.camunda.bpm.engine.AuthorizationService;
+import ch.fhnw.digibp.classroom.service.TaskFilterAuthService;
 import org.camunda.bpm.engine.FilterService;
 import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.authorization.Authorization;
 import org.camunda.bpm.engine.filter.Filter;
 import org.camunda.bpm.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,6 @@ import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static org.camunda.bpm.engine.authorization.Permissions.READ;
-import static org.camunda.bpm.engine.authorization.Resources.FILTER;
-
 @Component
 public class TaskFilterGenerator {
 
@@ -28,10 +24,10 @@ public class TaskFilterGenerator {
     private FilterService filterService;
 
     @Autowired
-    private AuthorizationService authorizationService;
+    private TaskService taskService;
 
     @Autowired
-    private TaskService taskService;
+    private TaskFilterAuthService taskFilterAuthService;
 
     private final static Logger LOGGER = Logger.getLogger(TaskFilterGenerator.class.getName());
 
@@ -53,7 +49,7 @@ public class TaskFilterGenerator {
         filterProperties.put("refresh", true);
         tasksFilter.setProperties(filterProperties);
         filterService.saveFilter(tasksFilter);
-        createFilterAuthorization(tasksFilter);
+        taskFilterAuthService.createFilterAuthorization(tasksFilter);
 
         filterProperties.clear();
 
@@ -63,7 +59,7 @@ public class TaskFilterGenerator {
         query = taskService.createTaskQuery().taskAssigneeExpression("${currentUser()}");
         tasksFilter = filterService.newTaskFilter().setName("My Tasks").setProperties(filterProperties).setQuery(query);
         filterService.saveFilter(tasksFilter);
-        createFilterAuthorization(tasksFilter);
+        taskFilterAuthService.createFilterAuthorization(tasksFilter);
 
         filterProperties.clear();
 
@@ -73,17 +69,9 @@ public class TaskFilterGenerator {
         query = taskService.createTaskQuery().taskCandidateGroupInExpression("${currentUserGroups()}");
         tasksFilter = filterService.newTaskFilter().setName("Group Tasks").setProperties(filterProperties).setQuery(query);
         filterService.saveFilter(tasksFilter);
-        createFilterAuthorization(tasksFilter);
+        taskFilterAuthService.createFilterAuthorization(tasksFilter);
 
         filterProperties.clear();
-    }
-
-    private void createFilterAuthorization(Filter tasksFilter){
-        Authorization authorization = authorizationService.createNewAuthorization(Authorization.AUTH_TYPE_GLOBAL);
-        authorization.setResource(FILTER);
-        authorization.addPermission(READ);
-        authorization.setResourceId(tasksFilter.getId());
-        authorizationService.saveAuthorization(authorization);
     }
 
 }

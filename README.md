@@ -10,7 +10,7 @@
 | Owner        	| owner     	        | giulia  	| -          	| READ      | -     	| Giulia Ricci    	|
 | Manager      	| manager, initiator    | martina 	| READ, START 	| ALL     	| -     	| Martina Russo   	|
 | Analyst      	| analyst   	        | sofia   	| -          	| READ      | -     	| Sofia Conti     	|
-| Engineer     	| engineer  	        | chiara  	| READ        	| ALL     	| READ   	| Chiara Lombardi 	|
+| Engineer     	| engineer  	        | chiara  	| READ, START  	| ALL     	| READ   	| Chiara Lombardi 	|
 | Participant  	| initiator, assistant 	| beppe   	| READ, START   | -       	| -     	| Beppe Ferrari   	|
 | Participant  	| worker, chef          | matteo  	| READ          | -       	| -     	| Matteo Alfonsi  	|
 | Participant  	| worker, courier       | silvio  	| READ          | -       	| -     	| Silvio Esposito 	|

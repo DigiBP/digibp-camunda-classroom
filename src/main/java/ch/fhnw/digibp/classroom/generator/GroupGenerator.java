@@ -6,6 +6,7 @@
 package ch.fhnw.digibp.classroom.generator;
 
 import ch.fhnw.digibp.classroom.service.GroupService;
+import ch.fhnw.digibp.classroom.service.TaskFilterAuthService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.authorization.Permission;
 import org.camunda.bpm.engine.authorization.Permissions;
@@ -27,6 +28,9 @@ public class GroupGenerator {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private TaskFilterAuthService taskFilterAuthService;
 
     private final static Logger LOGGER = Logger.getLogger(GroupGenerator.class.getName());
 
@@ -84,6 +88,7 @@ public class GroupGenerator {
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.READ}, Resources.USER, new String[]{"*"});
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.READ}, Resources.TENANT, new String[]{"*"});
 
+        taskFilterAuthService.createDenyGroupAuthorization(new String[]{"initiator", "worker"}, new Permission[]{Permissions.ALL},"All Tasks");
     }
 
 }
