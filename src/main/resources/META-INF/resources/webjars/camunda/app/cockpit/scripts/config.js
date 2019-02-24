@@ -7,11 +7,11 @@ window.camCockpitConf = {
         ngDeps: ['classroom.redirect.module'],
 
         // RequireJS modules to load.
-        deps: ['custom-ng-module'],
+        deps: ['classroom-redirect-module'],
 
         // RequreJS path definitions
         paths: {
-            'custom-ng-module': '../custom-ng-module/script'
+            'classroom-redirect-module': '../custom-modules/redirect-module'
         }
     }
     // historicActivityInstanceMetrics: {
@@ -45,7 +45,7 @@ window.camCockpitConf = {
     //   },
     //   additionalModules: {
     //     // if you have a folder called 'my-custom-module' (in the 'cockpit' folder)
-    //     // with a file called 'module.js' in it defining the 'my-custom-module' AMD module
+    //     // with a file called 'redirect-module.js' in it defining the 'my-custom-module' AMD module
     //     myCustomModule: 'my-custom-module/module'
     //   }
     // }
