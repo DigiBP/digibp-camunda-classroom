@@ -5,11 +5,14 @@
 
 package ch.fhnw.digibp.classroom.config;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Component
 public class HttpsFilter implements Filter {
 
     private static final String X_FORWARDED_PROTO = "x-forwarded-proto";
