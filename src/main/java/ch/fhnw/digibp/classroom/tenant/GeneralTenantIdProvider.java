@@ -39,20 +39,9 @@ public class GeneralTenantIdProvider implements TenantIdProvider {
         if (currentAuthentication != null) {
             List<String> tenantIds = currentAuthentication.getTenantIds();
             if(tenantIds != null){
-                if (tenantIds.size() == 1) {
-                    return tenantIds.get(0);
-                } else if (tenantIds.isEmpty()) {
-                    throw new IllegalStateException("no authenticated tenant");
-
-                } else {
-                    throw new IllegalStateException("more than one authenticated tenant");
-                }
+                return tenantIds.get(0);
             }
-            else{
-                return null;
-            }
-        } else {
-            return null;
         }
+        return null;
     }
 }
