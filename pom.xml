@@ -15,7 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
         <camunda.spring.boot.starter.version>3.2.0</camunda.spring.boot.starter.version>
         <camunda.version>7.10.0</camunda.version>
@@ -82,6 +82,18 @@
         <dependency>
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-dataformat-all</artifactId>
+        </dependency>
+
+        <!-- JDK 11 with Camunda Spring Boot Starter -->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.0</version>
         </dependency>
 
         <!-- Database (MySQL, H2 or postgresql) drivers -->
