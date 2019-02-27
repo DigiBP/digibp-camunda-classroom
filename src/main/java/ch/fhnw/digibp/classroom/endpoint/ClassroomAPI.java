@@ -143,6 +143,15 @@ public class ClassroomAPI {
         return new ResponseEntity<>(deploymentIds, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping(path = "/gc")
+    public ResponseEntity gc(){
+        if(!isAdminAuthentication()){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        System.gc();
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
     private Boolean isAdminAuthentication(){
         return identityService.getCurrentAuthentication().getGroupIds().contains("camunda-admin");
     }
