@@ -143,6 +143,28 @@ public class ClassroomAPI {
         return new ResponseEntity<>(deploymentIds, HttpStatus.ACCEPTED);
     }
 
+    @DeleteMapping(path = "/deployment/old/generator")
+    public ResponseEntity<List<String>> deleteDeploymentsGeneratorOldVersion(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
+        if(!isAdminAuthentication()){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        List<String> deploymentIds = new ArrayList<>();
+        for (int number=firstId; number<=lastId; number++) {
+            String tenantId = prefix + number + suffix;
+            deploymentIds.addAll(deploymentService.deleteOldVersionTenantDeployments(tenantId));
+        }
+        return new ResponseEntity<>(deploymentIds, HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping(path = "/deployment/old")
+    public ResponseEntity<List<String>> deleteDeploymentsOldVersion(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId){
+        if(!isAdminAuthentication()){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        List<String> deploymentIds = deploymentService.deleteOldVersionTenantDeployments(tenantId);
+        return new ResponseEntity<>(deploymentIds, HttpStatus.ACCEPTED);
+    }
+
     @GetMapping(path = "/gc")
     public ResponseEntity gc(){
         if(!isAdminAuthentication()){
