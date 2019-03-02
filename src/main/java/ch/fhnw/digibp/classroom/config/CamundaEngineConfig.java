@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
+import javax.annotation.PostConstruct;
+
 @Configuration
 public class CamundaEngineConfig{
 
@@ -27,9 +29,8 @@ public class CamundaEngineConfig{
         return new TenantIdProviderPlugin();
     }
 
-    @Bean
-    public ProcessEngineConfiguration processEngineConfiguration() {
+    @PostConstruct
+    public void cacheCapacity() {
         ((SpringProcessEngineConfiguration) processEngineConfiguration).setCacheCapacity(0);
-        return processEngineConfiguration;
     }
 }
