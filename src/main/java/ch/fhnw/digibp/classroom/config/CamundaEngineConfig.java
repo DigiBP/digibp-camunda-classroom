@@ -31,6 +31,6 @@ public class CamundaEngineConfig{
 
     @PostConstruct
     public void cacheCapacity() {
-        ((SpringProcessEngineConfiguration) processEngineConfiguration).setCacheCapacity(0);
+        //((SpringProcessEngineConfiguration) processEngineConfiguration).setCacheCapacity(0);
     }
 }
