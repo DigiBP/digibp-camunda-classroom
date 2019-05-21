@@ -25,5 +25,5 @@ public class CamundaEngineConfig{
     public static ProcessEnginePlugin tenantIdConfiguration() {
         return new TenantIdProviderPlugin();
     }
-    
+
 }
