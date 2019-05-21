@@ -6,13 +6,14 @@
 package ch.fhnw.digibp.classroom.adapter;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 
 @Named("logger")
-public class LoggerDelegate {
+public class LoggerDelegate implements JavaDelegate {
 
     private Logger logger = LoggerFactory.getLogger(LoggerDelegate.class);
 
