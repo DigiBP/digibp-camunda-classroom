@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix="classroom")
 public class ClassroomProperties {
-    private static Boolean deploymentWithoutTenantId = true;
-    private static Boolean deploymentTenantIdMustExist = false;
+    private static Boolean deploymentWithoutTenantId = false;
+    private static Boolean deploymentTenantIdMustExist = true;
 
     public Boolean getDeploymentWithoutTenantId() {
         return deploymentWithoutTenantId;
