@@ -8,3 +8,7 @@ camunda:
   bpm:
     admin-user:
       password: ${CAMUNDA_ADMIN_PASSWORD:demo}
+
+cors:
+  enabled: ${CORS_ENABLED:false}
+  allowed-origin: ${CORS_ORIGIN:*}
