@@ -16,9 +16,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>12</java.version>
-        <spring.boot.version>2.1.6.RELEASE</spring.boot.version>
-        <camunda.spring.boot.starter.version>3.3.4</camunda.spring.boot.starter.version>
-        <camunda.version>7.11.0</camunda.version>
+        <spring.boot.version>2.2.1.RELEASE</spring.boot.version>
+        <camunda.spring.boot.starter.version>3.4.0</camunda.spring.boot.starter.version>
+        <camunda.version>7.12.0</camunda.version>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
     </properties>
 
@@ -138,7 +138,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>

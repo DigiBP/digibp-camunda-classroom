@@ -26,7 +26,7 @@ public class DeploymentService {
         for (Deployment deployment : deployments) {
             deploymentIds.add(deployment.getId());
         }
-        delteDeployments(deploymentIds);
+        deleteDeployments(deploymentIds);
         return deploymentIds;
     }
 
@@ -110,7 +110,7 @@ public class DeploymentService {
                 }
             }
         }
-        delteDeployments(deploymentIds);
+        deleteDeployments(deploymentIds);
         return deploymentIds;
     }
 
@@ -122,7 +122,7 @@ public class DeploymentService {
         }
     }
 
-    private void delteDeployments(List<String> deploymentIds) {
+    private void deleteDeployments(List<String> deploymentIds) {
         for (String deploymentId : deploymentIds) {
             repositoryService.deleteDeployment(deploymentId, true);
         }
