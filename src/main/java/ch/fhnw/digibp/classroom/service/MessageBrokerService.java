@@ -48,6 +48,6 @@ public class MessageBrokerService {
         runtimeService.createMessageCorrelation(messageName)
                 .processInstanceBusinessKey(businessKey)
                 .setVariables(variables)
-                .correlateWithResult();
+                .correlate();
     }
 }
