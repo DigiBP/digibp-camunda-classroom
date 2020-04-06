@@ -25,7 +25,7 @@ public class MessageBrokerService {
 
     public void send(DelegateExecution execution, String messageName){
         String businessKey = execution.getBusinessKey();
-        if(businessKey == null || businessKey.isEmpty()){
+        if(businessKey == null || businessKey.isEmpty() || businessKey.equals("default")){
             businessKey = strongUuidGenerator.getNextId();
             execution.setProcessBusinessKey(businessKey);
         }
