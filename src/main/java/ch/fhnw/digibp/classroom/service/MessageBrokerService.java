@@ -55,15 +55,21 @@ public class MessageBrokerService {
     }
 
     public void broadcast(DelegateExecution delegateExecution, String messageName){
+        String businessKey = delegateExecution.getProcessBusinessKey();
+        Map<String, Object> variables = delegateExecution.getVariables();
+        String tenantId = delegateExecution.getTenantId();
         ExecutionQuery executionQuery = runtimeService.createExecutionQuery()
                 .messageEventSubscriptionName(messageName)
-                .processInstanceBusinessKey(delegateExecution.getProcessBusinessKey())
-                .tenantIdIn(delegateExecution.getTenantId());
+                .processInstanceBusinessKey(businessKey)
+                .tenantIdIn(tenantId);
         for(Execution execution : executionQuery.list()){
             runtimeService.createMessageCorrelation(messageName)
                     .processInstanceId(execution.getProcessInstanceId())
-                    .setVariables(delegateExecution.getVariables())
+                    .setVariables(variables)
                     .correlate();
+        }
+        if(executionQuery.list().isEmpty()) {
+            sendMessage(messageName, businessKey, variables, tenantId);
         }
     }
 }
