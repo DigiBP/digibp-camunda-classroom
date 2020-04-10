@@ -8,6 +8,8 @@ package ch.fhnw.digibp.classroom.service;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.impl.cfg.IdGenerator;
+import org.camunda.bpm.engine.runtime.Execution;
+import org.camunda.bpm.engine.runtime.ExecutionQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,31 +25,48 @@ public class MessageBrokerService {
     @Autowired
     private IdGenerator strongUuidGenerator;
 
-    public void send(DelegateExecution execution, String messageName){
-        String businessKey = execution.getBusinessKey();
+    public void send(DelegateExecution delegateExecution, String messageName){
+        String businessKey = delegateExecution.getBusinessKey();
         if(businessKey == null || businessKey.isEmpty() || businessKey.equals("default")){
             businessKey = strongUuidGenerator.getNextId();
-            execution.setProcessBusinessKey(businessKey);
+            delegateExecution.setProcessBusinessKey(businessKey);
         }
-        send(execution, messageName, businessKey);
+        send(delegateExecution, messageName, businessKey);
     }
 
-    public void send(DelegateExecution execution, String messageName, String businessKey){
-        sendMessage(messageName, businessKey, execution.getVariables());
+    public void send(DelegateExecution delegateExecution, String messageName, String businessKey){
+        sendMessage(messageName, businessKey, delegateExecution.getVariables(), delegateExecution.getTenantId());
     }
 
-    public void send(DelegateExecution execution, String messageName, String businessKey, String...variableNames){
+    public void send(DelegateExecution delegateExecution, String messageName, String businessKey, String...variableNames){
         Map<String, Object> variables = new HashMap<>();
         for (String variableName : variableNames) {
-            variables.put(variableName, execution.getVariable(variableName));
+            variables.put(variableName, delegateExecution.getVariable(variableName));
         }
-        sendMessage(messageName, businessKey, variables);
+        sendMessage(messageName, businessKey, variables, delegateExecution.getTenantId());
     }
 
-    protected void sendMessage(String messageName, String businessKey, Map<String, Object> variables) {
+    protected void sendMessage(String messageName, String businessKey, Map<String, Object> variables, String tenantId) {
         runtimeService.createMessageCorrelation(messageName)
                 .processInstanceBusinessKey(businessKey)
                 .setVariables(variables)
+                .tenantId(tenantId)
                 .correlate();
+    }
+
+    public void broadcast(DelegateExecution delegateExecution, String messageName){
+        String businessKey = delegateExecution.getProcessBusinessKey();
+        String tenantId = delegateExecution.getTenantId();
+        ExecutionQuery executionQuery = runtimeService.createExecutionQuery()
+                .messageEventSubscriptionName(messageName)
+                .processInstanceBusinessKey(businessKey)
+                .tenantIdIn(tenantId);
+        for(Execution execution : executionQuery.list()){
+            runtimeService.createMessageCorrelation(messageName)
+                    .processInstanceId(execution.getProcessInstanceId())
+                    .setVariables(delegateExecution.getVariables())
+                    .tenantId(tenantId)
+                    .correlate();
+        }
     }
 }
