@@ -62,13 +62,14 @@ public class MessageBrokerService {
                 .messageEventSubscriptionName(messageName)
                 .processInstanceBusinessKey(businessKey)
                 .tenantIdIn(tenantId);
-        for(Execution execution : executionQuery.list()){
-            runtimeService.createMessageCorrelation(messageName)
-                    .processInstanceId(execution.getProcessInstanceId())
-                    .setVariables(variables)
-                    .correlate();
-        }
-        if(executionQuery.list().isEmpty()) {
+        if(!executionQuery.list().isEmpty()) {
+            for (Execution execution : executionQuery.list()) {
+                runtimeService.createMessageCorrelation(messageName)
+                        .processInstanceId(execution.getProcessInstanceId())
+                        .setVariables(variables)
+                        .correlate();
+            }
+        } else {
             sendMessage(messageName, businessKey, variables, tenantId);
         }
     }
