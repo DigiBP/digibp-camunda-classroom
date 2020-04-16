@@ -9,6 +9,10 @@
     "CAMUNDA_ADMIN_PASSWORD": {
       "description": "Camunda admin/demo user password. If you want to change it, you will have to replace it in the Heroku and the Camunda dashboard simultaneously.",
       "generator": "secret"
+    },
+    "CORS_ENABLED": {
+      "description": "CORS enabled?",
+      "value": "false"
     }
   }
 }

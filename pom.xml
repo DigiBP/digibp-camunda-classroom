@@ -10,15 +10,15 @@
     <groupId>ch.fhnw.digibp</groupId>
     <artifactId>digibp-camunda-classroom</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>${packaging.type}</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>11</java.version>
-        <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
-        <camunda.spring.boot.starter.version>3.2.0</camunda.spring.boot.starter.version>
-        <camunda.version>7.10.0</camunda.version>
+        <java.version>12</java.version>
+        <spring.boot.version>2.2.1.RELEASE</spring.boot.version>
+        <camunda.spring.boot.starter.version>3.4.0</camunda.spring.boot.starter.version>
+        <camunda.version>7.12.0</camunda.version>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
     </properties>
 
@@ -90,11 +90,6 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.2.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.0</version>
-        </dependency>
 
         <!-- Database (MySQL, H2 or postgresql) drivers -->
         <dependency>
@@ -128,6 +123,12 @@
             <version>2.9.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -146,52 +147,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>Spring-Boot-JAR</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <packaging.type>jar</packaging.type>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>${spring.boot.version}</version>
-                        <configuration>
-                            <layout>ZIP</layout>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>Spring-Boot-Devtools</id>
-            <properties>
-                <packaging.type>jar</packaging.type>
-            </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-devtools</artifactId>
-                    <optional>true</optional>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-
 </project>
