@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,26 +121,6 @@ public class ClassroomAPI {
         return new ResponseEntity<>(this.classroomProperties, HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(path = "/deployment/generator")
-    public ResponseEntity<List<String>> postDeploymentsGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestParam(value = "file1") MultipartFile file1, @RequestParam(value = "file2", required = false) MultipartFile file2) throws IOException {
-        if(!isAdminAuthentication()){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        if(deploymentName == null) {
-            deploymentName = file1.getOriginalFilename();
-        }
-        List<MultipartFile> files = new ArrayList<>();
-        files.add(file1);
-        if(file2!=null)
-            files.add(file2);
-        List<String> deploymentIds = new ArrayList<>();
-        for (int number=firstId; number<=lastId; number++) {
-            String tenantId = prefix + number + suffix;
-            deploymentIds.add(deploymentService.createTenantDeployment(tenantId, deploymentName, "ClassroomAPI by " + getCurrentUser(), files));
-        }
-        return new ResponseEntity<>(deploymentIds, HttpStatus.ACCEPTED);
-    }
-
     @DeleteMapping(path = "/deployment/generator")
     public ResponseEntity<List<String>> deleteDeploymentsGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
         if(!isAdminAuthentication()){
@@ -154,21 +132,6 @@ public class ClassroomAPI {
             deploymentIds.addAll(deploymentService.deleteTenantDeployments(tenantId));
         }
         return new ResponseEntity<>(deploymentIds, HttpStatus.ACCEPTED);
-    }
-
-    @PostMapping(path = "/deployment")
-    public ResponseEntity<String> postDeployments(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestParam(value = "file1") MultipartFile file1, @RequestParam(value = "file2", required = false) MultipartFile file2) throws IOException {
-        if(!isAdminAuthentication()){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        if(deploymentName == null) {
-            deploymentName = file1.getOriginalFilename();
-        }
-        List<MultipartFile> files = new ArrayList<>();
-        files.add(file1);
-        if(file2!=null)
-            files.add(file2);
-        return new ResponseEntity<>(deploymentService.createTenantDeployment(tenantId, deploymentName, "ClassroomAPI by " + getCurrentUser(), files), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping(path = "/deployment")
@@ -213,9 +176,5 @@ public class ClassroomAPI {
 
     private Boolean isAdminAuthentication(){
         return identityService.getCurrentAuthentication().getGroupIds().contains("camunda-admin");
-    }
-
-    private String getCurrentUser(){
-        return identityService.getCurrentAuthentication().getUserId();
     }
 }
