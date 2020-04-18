@@ -5,6 +5,7 @@
 
 package ch.fhnw.digibp.classroom.generator;
 
+import ch.fhnw.digibp.classroom.service.GroupService;
 import ch.fhnw.digibp.classroom.service.TenantService;
 import ch.fhnw.digibp.classroom.service.UserService;
 import org.camunda.bpm.engine.IdentityService;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  */
 @Component
 @DependsOn("groupGenerator")
-public class UserGenerator {
+public class UserGeneratorShowcase {
 
     @Autowired
     private IdentityService identityService;
@@ -31,7 +32,10 @@ public class UserGenerator {
     @Autowired
     private TenantService tenantService;
 
-    private final static Logger LOGGER = Logger.getLogger(UserGenerator.class.getName());
+    @Autowired
+    private GroupService groupService;
+
+    private final static Logger LOGGER = Logger.getLogger(UserGeneratorShowcase.class.getName());
 
     @PostConstruct
     public void init() {
@@ -54,8 +58,11 @@ public class UserGenerator {
             userService.addUser("martina", "password", "Martina", "Russo", "", new String[]{"manager"}, "showcase");
             userService.addUser("sofia", "password", "Sofia", "Conti", "", new String[]{"analyst"}, "showcase");
             userService.addUser("chiara", "password", "Chiara", "Lombardi", "", new String[]{"engineer"}, "showcase");
+            groupService.addWorkflowGroup("assistant", "Assistant");
             userService.addUser("beppe", "password", "Beppe", "Ferrari", "", new String[]{"initiator", "assistant"}, "showcase");
+            groupService.addWorkflowGroup("chef", "Chef");
             userService.addUser("matteo", "password", "Matteo", "Alfonsi", "", new String[]{"worker", "chef"}, "showcase");
+            groupService.addWorkflowGroup("courier", "Courier");
             userService.addUser("silvio", "password", "Silvio", "Esposito", "", new String[]{"worker", "courier"}, "showcase");
         } catch (Exception e) {
             LOGGER.info(e.getMessage());

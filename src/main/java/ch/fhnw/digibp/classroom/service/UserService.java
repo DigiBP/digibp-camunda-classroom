@@ -10,6 +10,8 @@ import org.camunda.bpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -64,6 +66,16 @@ public class UserService {
             throw new Exception("User " + userId + " does not exist, could not create tenant membership.");
         }
         identityService.createTenantUserMembership(tenantId, userId);
+    }
+
+    public List<String> removeUsers(String tenantId){
+        List<User> users = identityService.createUserQuery().memberOfTenant(tenantId).list();
+        List<String> userIds = new ArrayList<>();
+        for(User user : users){
+            userIds.add(user.getId());
+            removeUser(user.getId());
+        }
+        return userIds;
     }
 
     public String removeUser(String userId){

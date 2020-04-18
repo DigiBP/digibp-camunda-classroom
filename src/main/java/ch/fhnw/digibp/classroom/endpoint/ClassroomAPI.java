@@ -6,7 +6,10 @@
 package ch.fhnw.digibp.classroom.endpoint;
 
 import ch.fhnw.digibp.classroom.config.ClassroomProperties;
+import ch.fhnw.digibp.classroom.dto.UserDTO;
+import ch.fhnw.digibp.classroom.dto.UsersDTO;
 import ch.fhnw.digibp.classroom.service.DeploymentService;
+import ch.fhnw.digibp.classroom.service.GroupService;
 import ch.fhnw.digibp.classroom.service.TenantService;
 import ch.fhnw.digibp.classroom.service.UserService;
 import org.camunda.bpm.engine.IdentityService;
@@ -39,7 +42,10 @@ public class ClassroomAPI {
     @Autowired
     private DeploymentService deploymentService;
 
-    @GetMapping(path = "/generator/user", produces = "application/json")
+    @Autowired
+    private GroupService groupService;
+
+    @GetMapping(path = "/user/generator", produces = "application/json")
     public ResponseEntity<List<String>> getNewUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -74,8 +80,8 @@ public class ClassroomAPI {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/generator/user")
-    public ResponseEntity<List<String>> deleteUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
+    @PostMapping(path = "/user/generator", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<List<String>> postNewUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix, @RequestBody UsersDTO users){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -83,21 +89,38 @@ public class ClassroomAPI {
         String id;
         for (int number=firstId; number<=lastId; number++) {
             String tenantId = prefix + number + suffix;
-            id = userService.removeUser(tenantId+"giulia");
-            response.add("User with ID " + id + " removed.");
-            id = userService.removeUser(tenantId+"martina");
-            response.add("User with ID " + id + " removed.");
-            id = userService.removeUser(tenantId+"sofia");
-            response.add("User with ID " + id + " removed.");
-            id = userService.removeUser(tenantId+"chiara");
-            response.add("User with ID " + id + " removed.");
-            id = userService.removeUser(tenantId+"beppe");
-            response.add("User with ID " + id + " removed.");
-            id = userService.removeUser(tenantId+"matteo");
-            response.add("User with ID " + id + " removed.");
-            id = userService.removeUser(tenantId+"silvio");
-            response.add("User with ID " + id + " removed.");
+            try {
+                id = tenantService.addTenant(tenantId, tenantId);
+                response.add("Tenant with ID " + id + " generated.");
 
+                for(UserDTO user : users.getUsers()){
+                    ArrayList<String> groupIds = new ArrayList<>();
+                    for (UserDTO.GroupId groupId : user.getGroupIds()){
+                        groupIds.add(groupId.getGroupId());
+                    }
+                    id = userService.addUser(tenantId+user.getFirstName().replaceAll("\\s", "").toLowerCase(), user.getPassword(), tenantId+" "+user.getFirstName(), user.getLastName(), "", groupIds.toArray(String[]::new), tenantId);
+                    response.add("UsersDTO with ID " + id + " generated.");
+                }
+            } catch (Exception e) {
+                response.add("Error: " + e.getMessage());
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/user/generator")
+    public ResponseEntity<List<String>> deleteUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
+        if(!isAdminAuthentication()){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        List<String> response = new ArrayList<>();
+        for (int number=firstId; number<=lastId; number++) {
+            String tenantId = prefix + number + suffix;
+            List<String> ids = userService.removeUsers(tenantId);
+            for(String id : ids){
+                response.add("User with ID " + id + " removed.");
+            }
             try {
                 tenantService.removeTenant(tenantId);
                 response.add("Tenant with ID " + tenantId + " removed.");
@@ -107,6 +130,16 @@ public class ClassroomAPI {
             }
         }
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(path = "/group", produces = "application/json")
+    public ResponseEntity<String> getNewGroup(@RequestParam(value = "groupId") String groupId, @RequestParam(value = "groupName") String groupName){
+        if(!isAdminAuthentication()){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        String response = groupService.addWorkflowGroup(groupId, groupName);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+
     }
 
     @GetMapping(path = "/properties")
