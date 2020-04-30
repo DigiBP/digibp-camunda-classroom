@@ -15,10 +15,95 @@
 | Participant  	| worker, chef          | matteo  	| READ          | -       	| -     	| Matteo Alfonsi  	|
 | Participant  	| worker, courier       | silvio  	| READ          | -       	| -     	| Silvio Esposito 	|
 
+```json
+{
+  "users": [
+    {
+      "firstName": "Giulia",
+      "groupIds": [
+        {
+          "groupId": "owner"
+        }
+      ],
+      "lastName": "Ricci",
+      "password": "password"
+    },
+    {
+      "firstName": "Martina",
+      "groupIds": [
+        {
+          "groupId": "manager"
+        }
+      ],
+      "lastName": "Russo",
+      "password": "password"
+    },
+    {
+      "firstName": "Sofia",
+      "groupIds": [
+        {
+          "groupId": "analyst"
+        }
+      ],
+      "lastName": "Conti",
+      "password": "password"
+    },
+    {
+      "firstName": "Chiara",
+      "groupIds": [
+        {
+          "groupId": "engineer"
+        }
+      ],
+      "lastName": "Lombardi",
+      "password": "password"
+    },
+    {
+      "firstName": "Beppe",
+      "groupIds": [
+        {
+          "groupId": "initiator"
+        },
+        {
+          "groupId": "assistant"
+        }
+      ],
+      "lastName": "Ferrari",
+      "password": "password"
+    },
+    {
+      "firstName": "Matteo",
+      "groupIds": [
+        {
+          "groupId": "worker"
+        },
+        {
+          "groupId": "chef"
+        }
+      ],
+      "lastName": "Alfonsi",
+      "password": "password"
+    },
+    {
+      "firstName": "Silvio",
+      "groupIds": [
+        {
+          "groupId": "worker"
+        },
+        {
+          "groupId": "courier"
+        }
+      ],
+      "lastName": "Esposito",
+      "password": "password"
+    }
+  ]
+}
+```
+
 ## Maintainer
 - [Digitalisation of Business Processes](https://github.com/digibp)
 
 ## License
-- [Apache License, Version 2.0](https://github.com/DigiBP/digibp-archetype-camunda-boot/blob/master/LICENSE)
 
-## DigiBP19
+- [Apache License, Version 2.0](https://github.com/DigiBP/digibp-archetype-camunda-boot/blob/master/LICENSE)

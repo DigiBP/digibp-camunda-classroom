@@ -8,16 +8,41 @@ package ch.fhnw.digibp.classroom.service;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @Service
 public class DeploymentService {
 
     @Inject
     private RepositoryService repositoryService;
+
+    public String createTenantDeployment(String tenantId, String deploymentName, String creator, List<MultipartFile> files) throws IOException {
+        DeploymentBuilder deploymentBuilder = repositoryService.createDeployment().tenantId(tenantId).source(creator).name(deploymentName);
+        for(MultipartFile file : files){
+            if(Objects.equals(file.getContentType(), "application/x-zip-compressed")){
+                ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream());
+                ZipEntry zipEntry = zipInputStream.getNextEntry();
+                while (zipEntry != null) {
+                    deploymentBuilder.addInputStream(zipEntry.getName(), zipInputStream);
+                    zipEntry = zipInputStream.getNextEntry();
+                }
+                zipInputStream.closeEntry();
+                zipInputStream.close();
+            } else {
+                deploymentBuilder.addInputStream(file.getOriginalFilename(), file.getInputStream());
+            }
+        }
+        Deployment deploy = deploymentBuilder.deploy();
+        return deploy.getId();
+    }
 
     public List<String> deleteTenantDeployments(String tenantId) {
         List<Deployment> deployments = getDeployments(tenantId);

@@ -38,11 +38,11 @@ public class GroupGenerator {
     public void init() {
 
         if(identityService.createGroupQuery().groupId("owner").singleResult() != null){
-            LOGGER.info("Not creating any demo groups.");
+            LOGGER.info("Not creating any groups.");
             return;
         }
 
-        LOGGER.info("Generating demo groups.");
+        LOGGER.info("Generating groups.");
 
         groupService.addWorkflowGroup("owner", "Owner");
         groupService.addWorkflowGroup("manager", "Manager");
@@ -50,10 +50,6 @@ public class GroupGenerator {
         groupService.addWorkflowGroup("engineer", "Engineer");
         groupService.addWorkflowGroup("initiator", "Initiator");
         groupService.addWorkflowGroup("worker", "Worker");
-
-        groupService.addWorkflowGroup("assistant", "Assistant");
-        groupService.addWorkflowGroup("chef", "Chef");
-        groupService.addWorkflowGroup("courier", "Courier");
 
         groupService.createGrantGroupAuthorization(new String[]{"owner", "manager", "analyst"}, new Permission[]{Permissions.ACCESS}, Resources.APPLICATION, new String[]{"cockpit", "optimize"});
         groupService.createGrantGroupAuthorization(new String[]{"manager", "engineer"}, new Permission[]{Permissions.ALL}, Resources.APPLICATION, new String[]{"cockpit"});
@@ -82,7 +78,7 @@ public class GroupGenerator {
 
         groupService.createGrantGroupAuthorization(new String[]{"owner", "manager", "analyst"}, new Permission[]{Permissions.ALL}, Resources.REPORT, new String[]{"*"});
 
-        groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.CREATE, Permissions.READ}, Resources.DEPLOYMENT, new String[]{"*"});
+        groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.ALL}, Resources.DEPLOYMENT, new String[]{"*"});
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.READ}, Resources.AUTHORIZATION, new String[]{"*"});
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.READ}, Resources.GROUP, new String[]{"*"});
         groupService.createGrantGroupAuthorization(new String[]{"engineer"}, new Permission[]{Permissions.READ}, Resources.USER, new String[]{"*"});
