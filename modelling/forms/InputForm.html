@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright (c) 2018. University of Applied Sciences and Arts Northwestern Switzerland FHNW.
+  ~ All rights reserved.
+  -->
+
+  <form>
+
+    <div class="form-group">
+        <label for="stringField">String Field:</label>
+        <input type="text" id="stringField" cam-variable-name="stringField" cam-variable-type="String" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="booleanField">Boolean Field:</label>
+        <input type="checkbox" id="booleanField" cam-variable-name="booleanField" cam-variable-type="Boolean" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="integerField">Integer Field:</label>
+        <input type="number" id="integerField" cam-variable-name="integerField" cam-variable-type="Integer" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="doubleField">Double Field:</label>
+        <input type="number" id="doubleField" cam-variable-name="doubleField" cam-variable-type="Double" class="form-control" />
+    </div>
+
+    <script cam-script type="text/form-script">
+        $scope.open = function($event) { $event.preventDefault(); $event.stopPropagation(); $scope.dateFieldOpened = true; };
+    </script>
+
+    <div class="form-group">
+        <label for="dateField">Date Field:</label>
+        <input type="text" id="dateField" cam-variable-name="dateField" cam-variable-type="Date" class="form-control" uib-datepicker-popup="yyyy-MM-dd'T'HH:mm:ss" is-open="dateFieldOpened" />
+
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="open($event)">
+            <i class="glyphicon glyphicon-calendar"></i>
+          </button>
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label for="imageFile">Image:</label>
+        <input type="file" id="imageFile" cam-variable-name="imageFile" cam-variable-type="File" cam-max-filesize="10000000" class="btn" />
+    </div>
+
+</form>

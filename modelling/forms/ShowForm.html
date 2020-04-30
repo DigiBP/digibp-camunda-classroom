@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2018. University of Applied Sciences and Arts Northwestern Switzerland FHNW.
+  ~ All rights reserved.
+  -->
+
+<form>
+
+    <div class="form-group">
+        <label for="stringField">String Field:</label>
+        <input type="text" id="stringField" cam-variable-name="stringField" cam-variable-type="String" class="form-control" readonly/>
+    </div>
+
+    <div class="form-group">
+        <label for="booleanField">Boolean Field:</label>
+        <input type="checkbox" id="booleanField" cam-variable-name="booleanField" cam-variable-type="Boolean" class="form-control" readonly/>
+    </div>
+
+    <div class="form-group">
+        <label for="integerField">Integer Field:</label>
+        <input type="number" id="integerField" cam-variable-name="integerField" cam-variable-type="Integer" class="form-control" readonly/>
+    </div>
+
+    <div class="form-group">
+        <label for="doubleField">Double Field:</label>
+        <input type="number" id="doubleField" cam-variable-name="doubleField" cam-variable-type="Double" class="form-control" readonly/>
+    </div>
+
+    <div class="form-group">
+        <label for="dateField">Date Field:</label>
+        <input type="text" id="dateField" cam-variable-name="dateField" cam-variable-type="Date" class="form-control" readonly/>
+    </div>
+
+    <div class="form-group">
+      <label for="imageFile">Image:</label>
+      <!-- make sure the file is fetched. Alternative: use javascript -->
+      <input type="hidden" id="imageFile" cam-variable-name="imageFile" />
+      <!-- set contentUrl as src of the image-->
+      <img src="{{ camForm.variableManager.variable('imageFile').contentUrl }}" class="img-responsive">
+    </div>
+
+    <div class="form-group">
+      <button cam-error-code="bpmn-error-543" cam-error-message="anErrorMessage">Error</button>
+    </div>
+
+</form>
