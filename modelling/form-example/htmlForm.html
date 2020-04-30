@@ -1,0 +1,31 @@
+<form role="form" name="htmlForm">
+
+    <div class="form-group">
+        <label for="RequirementDescription">Req. Description</label>
+        <div class="controls">
+            <input class="form-control" type="text" id="RequirementDescription" cam-variable-name="RequirementDescription"
+                   cam-variable-type="String"
+                   readonly="false"/>
+        </div>
+    </div>
+
+     <div class="form-group">
+        <label for="Risk">Risk</label>
+        <div class="controls">
+            <select class="form-control" id="Risk" cam-variable-name="Risk" cam-variable-type="String" required="true">
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="RegulationCompliance">Regulation & Compliance</label>
+        <div class="controls">
+            <input class="form-control" id="RegulationCompliance" type="checkbox"
+                   cam-variable-name="RegulationCompliance"
+                   cam-variable-type="Boolean"/>
+        </div>
+    </div>
+</form>
