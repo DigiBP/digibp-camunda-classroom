@@ -1,11 +1,14 @@
-<form role="form" name="htmlForm">
+<!--
+  ~ Copyright (c) 2020. University of Applied Sciences and Arts Northwestern Switzerland FHNW.
+  ~ All rights reserved.
+  -->
+  
+<form>
 
-    <div class="form-group">
+     <div class="form-group">
         <label for="RequirementDescription">Req. Description</label>
         <div class="controls">
-            <input class="form-control" type="text" id="RequirementDescription" cam-variable-name="RequirementDescription"
-                   cam-variable-type="String"
-                   readonly="false"/>
+            <input class="form-control" type="text" id="RequirementDescription" cam-variable-name="RequirementDescription" cam-variable-type="String" />
         </div>
     </div>
 
@@ -28,4 +31,16 @@
                    cam-variable-type="Boolean"/>
         </div>
     </div>
+	
+	  <div class="form-group">
+        <label for="dateField">Enter Date</label>
+        <input type="text" id="dateField" cam-variable-name="dateField" cam-variable-type="Date" class="form-control" uib-datepicker-popup="yyyy-MM-dd'T'HH:mm:ss" is-open="dateFieldOpened" />
+
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="open($event)">
+            <i class="glyphicon glyphicon-calendar"></i>
+          </button>
+        </span>
+    </div>
+	
 </form>
