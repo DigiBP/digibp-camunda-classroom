@@ -1,0 +1,284 @@
+<!--
+  ~ Copyright (c) 2020. University of Applied Sciences and Arts Northwestern Switzerland FHNW.
+  ~ All rights reserved.
+  -->
+
+<form role="form">
+    <script cam-script type="text/form-script">
+    camForm.on('form-loaded', function() {
+      camForm.variableManager.fetchVariable('neuantrag');
+      camForm.variableManager.fetchVariable('risks');
+    });
+
+    camForm.on('variables-fetched', function() {
+      // after the variables are fetched, bind the value of vacationRequest to a angular
+      // scope value such that the form can work on it
+      $scope.neuantrag = camForm.variableManager.variable('neuantrag').value;
+      $scope.risks = camForm.variableManager.variable('risks').value;
+    });
+
+
+    </script>
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <h3>Antragsdaten</h3>
+
+            <div class="control-group">
+                <label class="control-label">Name: </label>
+                <div class="controls">
+                    <input cam-variable-name="antragstellerName"
+                           cam-variable-type="String"
+                           class="form-control"
+                           readonly="true"
+                           type="text"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Alter: </label>
+                <div class="controls">
+                    <input cam-variable-name="antragsstellerAlter"
+                           cam-variable-type="Integer"
+                           class="form-control"
+                           readonly="true"
+                           type="text"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Fahrzeug Hersteller: </label>
+                <div class="controls">
+                    <input cam-variable-name="fahrzeugHersteller"
+                           cam-variable-type="String"
+                           class="form-control"
+                           readonly="true"
+                           type="text"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Fahrzeug Typ: </label>
+                <div class="controls">
+                    <input cam-variable-name="fahrzeugTyp"
+                           cam-variable-type="String"
+                           class="form-control"
+                           readonly="true"
+                           type="text"/>
+                </div>
+            </div>
+
+
+            <h3>Risiken</h3>
+            <table class="table table-striped table-hover">
+                <tr ng-repeat="risk in risks">
+                    <td>{{risk}}</td>
+                </tr>
+            </table>
+
+            <h3>Preis</h3>
+            <div class="control-group">
+                <label class="control-label">Preis Indikation: </label>
+                <div class="controls">
+                    <input cam-variable-name="preisIndikation"
+                           cam-variable-type="Integer"
+                           class="form-control" required
+                           type="text"/>
+                </div>
+            </div>
+
+            <h3>Beurteilung(en)</h3>
+            <textarea cam-variable-name="beurteilung"
+                      cam-variable-type="String"
+                      class="form-control"/>
+
+
+            <h3>Entscheidung
+                <input cam-variable-name="approved"
+                       cam-variable-type="Boolean"
+                       data-off-color="danger" data-off-text="Ablehnen" data-on-color="success" data-on-text="Annehmen"
+                       name="ApprovalCheckbox"
+                       type="checkbox"/>
+            </h3>
+
+            <script cam-script type="text/form-script">
+            	$("[name='ApprovalCheckbox']").bootstrapSwitch();
+
+
+            </script>
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <div class="modal-content">
+                <div class="modal-header ng-scope">
+                    <h3 class="modal-title ng-binding">
+                        Fallsteuerung
+                    </h3>
+                </div>
+
+                <div class="modal-body ng-scope">
+                    <div class="alert alert-info" role="alert">
+                        <p>
+                            Sie sehen hier den aktuellen Stand des Falls (gesteuert durch ein CMMN-Modell).
+                            Greifen Sie jederzeit ein, indem Sie startbare Aktivitäten manuell starten (<i
+                                class="glyphicon glyphicon-play"></i>).
+                        </p>
+                    </div>
+
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <td colspan="3" style="background-color: #e5e5e5; font-weight: bold;">Aktiv</td>
+                        </tr>
+
+                        <tr ng-repeat="execution in activeCaseExecutions">
+                            <td style="vertical-align: middle;">
+                                <i class="cmmn-icon-human-blocking-task" ng-if="execution.activityType=='humanTask'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-process-task" ng-if="execution.activityType=='processTask'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-decision-task" ng-if="execution.activityType=='decisionTask'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-milestone" ng-if="execution.activityType=='milestone'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-stage-collapsed" ng-if="execution.activityType=='stage'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-case-plan-model" ng-if="execution.activityType=='casePlanModel'"
+                                   style="font-size: x-large;"></i>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                {{execution.activityName}}
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" style="background-color: #e5e5e5; font-weight: bold;">Startbar</td>
+                        </tr>
+
+                        <tr ng-repeat="execution in enabledCaseExecutions">
+                            <td style="vertical-align: middle;">
+                                <i class="cmmn-icon-human-blocking-task" ng-if="execution.activityType=='humanTask'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-process-task" ng-if="execution.activityType=='processTask'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-decision-task" ng-if="execution.activityType=='decisionTask'"
+                                   style="font-size: x-large;"></i>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                {{execution.activityName}}
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <a ng-click="manualStartCaseExecution(execution)" title="manuell starten"><i
+                                        class="glyphicon glyphicon-play"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" style="background-color: #e5e5e5; font-weight: bold;">Beendet</td>
+                        </tr>
+
+                        <tr ng-repeat="execution in finishedCaseExecutions">
+                            <!--ng-if="execution.caseActivityType!='startEvent'"-->
+                            <td style="vertical-align: middle;">
+                                <i class="cmmn-icon-human-blocking-task" ng-if="execution.caseActivityType=='humanTask'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-process-task" ng-if="execution.caseActivityType=='processTask'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-decision-task" ng-if="execution.caseActivityType=='decisionTask'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-milestone" ng-if="execution.caseActivityType=='milestone'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-stage-collapsed" ng-if="execution.caseActivityType=='stage'"
+                                   style="font-size: x-large;"></i>
+                                <i class="cmmn-icon-case-plan-model" ng-if="execution.caseActivityType=='casePlanModel'"
+                                   style="font-size: x-large;"></i>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                {{execution.caseActivityName}}
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script cam-script type="text/form-script">
+
+  // get the angular-data-depend service 'taskData'
+  var getTaskData = function(scope) {
+    if (scope.taskData) {
+      return scope.taskData;
+    }  
+    return scope.$parent && getTaskData(scope.$parent);
+  };
+  $scope.taskData = getTaskData($scope);
+
+ 
+	 function loadCaseStatus() {
+
+	  	   $.get( '../../../rest/task/' + camForm.taskId, function( task ) {
+
+	  	       // load "enabled" activities via REST API from Camunda
+			   $.get( '../../../rest/case-execution?caseInstanceId=' + task.caseInstanceId + '&enabled=true', function( result1 ) {
+		         $scope.$apply(function () {
+		            // remeber as Angular Scope Variable
+		            $scope.enabledCaseExecutions = result1;
+		         });
+			   });
+
+	  	       // load "active" activities via REST API from Camunda
+		  	   $.get( '../../../rest/case-execution?caseInstanceId=' + task.caseInstanceId + '&active=true', function( result2 ) {
+		         $scope.$apply(function () {
+		            $scope.activeCaseExecutions = result2;
+		         });
+			   });	 
+
+	  	       // load "ended" activities via REST API from Camunda
+		  	   $.get( '../../../rest/history/case-activity-instance?caseInstanceId=' + task.caseInstanceId + '&finished=true', function( result3 ) {
+		         $scope.$apply(function () {
+		            $scope.finishedCaseExecutions = result3;
+		         });
+			   });	 		   
+		   }); 	
+	 };
+	 
+	 // load case status when the form is rendered
+	 loadCaseStatus();  	     
+	 
+	 // define function to manually start an activity which is "enabled"
+	 $scope.manualStartCaseExecution = function(caseExecution) {
+	       var data = {
+	            "variables": {
+	       			"hints": {
+	       				"value":  $('#textareaHints').val(),
+	       				"type": "String"
+	       			}
+	       	    },
+	       	    "deletions" : []
+	       };
+	       $('#textareaHints').val("");
+
+	       // Call according REST API
+		   $.ajax('../../../rest/case-execution/' + caseExecution.id + '/manual-start', {
+		         data: JSON.stringify(data),
+		         contentType : 'application/json',
+		         type : 'POST',
+		         success: function (result) {
+		            // when successful reload case status to reflect possible changes
+		            loadCaseStatus();
+		            
+		            // and reload task in tasklist (e.g. due date might have changed)
+					$scope.taskData.changed('task');
+					// hardocore reload :-)
+		            //window.location.reload();		            
+		         }
+		    });
+	 };
+
+    </script>
+
+</form>

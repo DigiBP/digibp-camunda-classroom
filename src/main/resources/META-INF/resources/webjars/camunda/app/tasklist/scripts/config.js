@@ -24,11 +24,13 @@ window.camTasklistConf = {
         ngDeps: ['classroom.redirect.module'],
 
         // RequireJS modules to load.
-        deps: ['classroom-redirect-module'],
+        deps: ['classroom-redirect-module','loadJS','bootstrap-switch'],
 
-        // RequreJS path definitions
+        // RequireJS path definitions
         paths: {
-            'classroom-redirect-module': '../custom-modules/redirect-module'
+            'classroom-redirect-module': '../custom-modules/redirect-module',
+            'loadJS': 'scripts/loadJS',
+            'bootstrap-switch': 'scripts/bootstrap-switch.min'
         }
     },
 

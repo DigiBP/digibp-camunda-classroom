@@ -1,0 +1,79 @@
+<form role="form">
+    <script cam-script type="text/form-script">
+    camForm.on('form-loaded', function() {
+      camForm.variableManager.fetchVariable('neuantrag');
+      camForm.variableManager.fetchVariable('risks');
+    });
+
+    camForm.on('variables-fetched', function() {
+      // after the variables are fetched, bind the value of vacationRequest to a angular
+      // scope value such that the form can work on it
+      $scope.neuantrag = camForm.variableManager.variable('neuantrag').value;
+      $scope.risks = camForm.variableManager.variable('risks').value;
+    });
+
+    </script>
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <h3>Antragsdaten</h3>
+
+            <div class="control-group">
+                <label class="control-label">Name: </label>
+                <div class="controls">
+                    <input type="text"
+                           cam-variable-name="antragstellerName"
+                           cam-variable-type="String"
+                           class="form-control"
+                           readonly="true"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Alter: </label>
+                <div class="controls">
+                    <input type="text"
+                           cam-variable-name="antragsstellerAlter"
+                           cam-variable-type="Integer"
+                           class="form-control"
+                           readonly="true"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Fahrzeug Hersteller: </label>
+                <div class="controls">
+                    <input type="text"
+                           cam-variable-name="fahrzeugHersteller"
+                           cam-variable-type="String"
+                           class="form-control"
+                           readonly="true"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Fahrzeug Typ: </label>
+                <div class="controls">
+                    <input type="text"
+                           cam-variable-name="fahrzeugTyp"
+                           cam-variable-type="String"
+                           class="form-control"
+                           readonly="true"/>
+                </div>
+            </div>
+
+
+            <h3>Risiken</h3>
+            <table class="table table-striped table-hover">
+                <tr ng-repeat="risk in risks">
+                    <td>{{risk}}</td>
+                </tr>
+            </table>
+
+            <h3>Beurteilung(en)</h3>
+            <textarea class="form-control"
+                      cam-variable-name="beurteilung"
+                      cam-variable-type="String"/>
+        </div>
+    </div>
+</form>

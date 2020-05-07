@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright (c) 2018. University of Applied Sciences and Arts Northwestern Switzerland FHNW.
+  ~ All rights reserved.
+  -->
+
+<form class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label">Name: </label>
+    <div class="controls">
+      <input type="text"
+             cam-variable-name="antragstellerName"
+             cam-variable-type="String" required
+             class="form-control" />
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Alter: </label>
+    <div class="controls">
+      <input type="text"
+             cam-variable-name="antragsstellerAlter"
+             cam-variable-type="Integer" required
+             class="form-control" />
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Fahrzeug Hersteller: </label>
+    <div class="controls">
+      <select cam-variable-name="fahrzeugHersteller"
+              cam-variable-type="String">
+        <option>VW</option>
+        <option>BMW</option>
+        <option>Porsche</option>
+        <option>Audi</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">Fahrzeug Typ: </label>
+    <div class="controls">
+      <select cam-variable-name="fahrzeugTyp"
+              cam-variable-type="String">
+        <option>Golf IV</option>
+        <option>318i</option>
+        <option>911</option>
+        <option>A4 Avant</option>
+      </select>
+    </div>
+  </div>
+</form>

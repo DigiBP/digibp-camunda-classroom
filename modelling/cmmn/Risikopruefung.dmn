@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" id="definitions" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="risikopruefung" name="Risikoprüfung">
+    <decisionTable id="decisionTable" hitPolicy="COLLECT">
+      <input id="input1" label="Alter">
+        <inputExpression id="inputExpression1" typeRef="integer">
+          <text>antragsstellerAlter</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0ohc5m6" label="Fahrzeughersteller">
+        <inputExpression id="LiteralExpression_0o7difo" typeRef="string">
+          <text>fahrzeugHersteller</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0pg433y" label="Fahrzeugtyp">
+        <inputExpression id="LiteralExpression_1si98id" typeRef="string">
+          <text>fahrzeugTyp</text>
+        </inputExpression>
+      </input>
+      <output id="output1" label="Risiko" name="risiko" typeRef="string" />
+      <output id="OutputClause_0hh62nv" label="Risikobewertung" name="risikobewertung" typeRef="string" />
+      <rule id="row-314105272-1">
+        <inputEntry id="UnaryTests_1nn7033">
+          <text>&lt;= 21</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qkkerf">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c2g397">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1mx9cij">
+          <text>"Anfänger"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zb455z">
+          <text>"gelb"</text>
+        </outputEntry>
+      </rule>
+      <rule id="row-314105272-2">
+        <description></description>
+        <inputEntry id="UnaryTests_0lcjg79">
+          <text>&lt;= 25</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xz8f1w">
+          <text>"Porsche"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_117a7p9">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0dji0lf">
+          <text>"Jung und zu schnell"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1j2qlq2">
+          <text>"rot"</text>
+        </outputEntry>
+      </rule>
+      <rule id="row-314105272-3">
+        <inputEntry id="UnaryTests_1jfqwhc">
+          <text>&lt;= 30</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08erdz1">
+          <text>"BMW"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_185ud6j">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1610chu">
+          <text>"Jung und schnell"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0neqx51">
+          <text>"gelb"</text>
+        </outputEntry>
+      </rule>
+      <rule id="row-314105272-4">
+        <inputEntry id="UnaryTests_194oa9u">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09y683y">
+          <text>"Porsche"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fsma9e">
+          <text>"911"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wves9k">
+          <text>"Sinnlose Raserei"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0cayvqc">
+          <text>"gelb"</text>
+        </outputEntry>
+      </rule>
+      <rule id="row-314105272-5">
+        <inputEntry id="UnaryTests_0av35iy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0683p4l">
+          <text>"BMW"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rmi011">
+          <text>"X3"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1h3sboh">
+          <text>"Hochwertfahrzeug"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0asc7l5">
+          <text>"gelb"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
