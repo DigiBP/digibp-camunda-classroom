@@ -156,18 +156,14 @@ public class ClassroomAPI {
         return new ResponseEntity<>(this.classroomProperties, HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(path = "/deployment/generator")
-    public ResponseEntity<List<String>> postDeploymentsGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestParam(value = "file1") MultipartFile file1, @RequestParam(value = "file2", required = false) MultipartFile file2) throws IOException {
+    @PostMapping(path = "/deployment/generator", consumes = "multipart/form-data")
+    public ResponseEntity<List<String>> postDeploymentsGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestPart(value="files") List<MultipartFile> files) throws IOException {
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         if(deploymentName == null) {
-            deploymentName = file1.getOriginalFilename();
+            deploymentName = files.get(0).getOriginalFilename();
         }
-        List<MultipartFile> files = new ArrayList<>();
-        files.add(file1);
-        if(file2!=null)
-            files.add(file2);
         List<String> deploymentIds = new ArrayList<>();
         for (int number=firstId; number<=lastId; number++) {
             String tenantId = prefix + number + suffix;
@@ -189,18 +185,14 @@ public class ClassroomAPI {
         return new ResponseEntity<>(deploymentIds, HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(path = "/deployment")
-    public ResponseEntity<String> postDeployments(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestParam(value = "file1") MultipartFile file1, @RequestParam(value = "file2", required = false) MultipartFile file2) throws IOException {
+    @PostMapping(path = "/deployment", consumes = "multipart/form-data")
+    public ResponseEntity<String> postDeployments(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestPart(value="files") List<MultipartFile> files) throws IOException {
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         if(deploymentName == null) {
-            deploymentName = file1.getOriginalFilename();
+            deploymentName = files.get(0).getOriginalFilename();
         }
-        List<MultipartFile> files = new ArrayList<>();
-        files.add(file1);
-        if(file2!=null)
-            files.add(file2);
         return new ResponseEntity<>(deploymentService.createTenantDeployment(tenantId, deploymentName, "ClassroomAPI by " + getCurrentUser(), files), HttpStatus.ACCEPTED);
     }
 
