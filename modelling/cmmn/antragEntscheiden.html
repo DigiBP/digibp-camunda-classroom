@@ -90,7 +90,7 @@
             <h3>Beurteilung(en)</h3>
             <textarea cam-variable-name="beurteilung"
                       cam-variable-type="String"
-                      class="form-control"/>
+                      class="form-control"></textarea>
 
 
             <h3>Entscheidung
@@ -225,7 +225,7 @@
 	  	       // load "enabled" activities via REST API from Camunda
 			   $.get( '../../../rest/case-execution?caseInstanceId=' + task.caseInstanceId + '&enabled=true', function( result1 ) {
 		         $scope.$apply(function () {
-		            // remeber as Angular Scope Variable
+		            // remember as Angular Scope Variable
 		            $scope.enabledCaseExecutions = result1;
 		         });
 			   });
@@ -273,8 +273,6 @@
 		            
 		            // and reload task in tasklist (e.g. due date might have changed)
 					$scope.taskData.changed('task');
-					// hardocore reload :-)
-		            //window.location.reload();		            
 		         }
 		    });
 	 };
