@@ -3,7 +3,7 @@
 
 ### Deploy resources/files:
 ```bash
-curl --location --request POST 'https://{{camunda-instance}}/rest/deployment/create' \
+curl --location --request POST 'https://{{camunda-instance}}/engine-rest/deployment/create' \
 --header 'Accept: application/json' \
 --form 'deployment-name=Example' \
 --form 'enable-duplicate-filtering=false' \
@@ -16,7 +16,7 @@ curl --location --request POST 'https://{{camunda-instance}}/rest/deployment/cre
 
 Example with tenant id:
 ```bash
-curl --location --request POST 'https://{{camunda-instance}}/rest/deployment/create' \
+curl --location --request POST 'https://{{camunda-instance}}/engine-rest/deployment/create' \
 --header 'Accept: application/json' \
 --form 'deployment-name=Example' \
 --form 'enable-duplicate-filtering=false' \
