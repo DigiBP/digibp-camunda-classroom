@@ -25,9 +25,8 @@ public class HTTPPingDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         URL url = new URL(URL.getValue(execution).toString());
-        HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-        huc.setRequestMethod("HEAD");
-        int responseCode = huc.getResponseCode();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        int responseCode = connection.getResponseCode();
 
         logger.info("\n\n  ... HTTPPingDelegate invoked by "
                 + "processDefinitionId=" + execution.getProcessDefinitionId()
