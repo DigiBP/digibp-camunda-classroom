@@ -53,6 +53,8 @@ public class HTTPNotifyDelegate implements JavaDelegate {
                     byte[] input = jsonInputString.getBytes();
                     os.write(input, 0, input.length);
                 }
+            } else {
+                connection.setRequestMethod("HEAD");
             }
             int responseCode = connection.getResponseCode();
 
