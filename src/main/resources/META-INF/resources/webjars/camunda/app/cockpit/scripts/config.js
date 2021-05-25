@@ -1,6 +1,6 @@
 export default {
     customScripts: [
-        '../cockpit/custom/redirect',
+        '../custom-modules/redirect-module.js',
         'scripts/definition-historic-activities.js',
         'scripts/instance-historic-activities.js',
         'scripts/instance-route-history.js',

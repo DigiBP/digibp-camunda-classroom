@@ -93,19 +93,15 @@
                       class="form-control"></textarea>
 
 
-            <h3>Entscheidung
+            <h3>Entscheidung</h3>
+            <label class="switch">
                 <input cam-variable-name="approved"
                        cam-variable-type="Boolean"
                        data-off-color="danger" data-off-text="Ablehnen" data-on-color="success" data-on-text="Annehmen"
                        name="ApprovalCheckbox"
                        type="checkbox"/>
-            </h3>
-
-            <script cam-script type="text/form-script">
-            	$("[name='ApprovalCheckbox']").bootstrapSwitch();
-
-
-            </script>
+                <span class="slider"></span>
+            </label>
 
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -220,10 +216,10 @@
  
 	 function loadCaseStatus() {
 
-	  	   $.get( '../../../rest/task/' + camForm.taskId, function( task ) {
+	  	   $.get( '../../../../engine-rest/task/' + camForm.taskId, function( task ) {
 
 	  	       // load "enabled" activities via REST API from Camunda
-			   $.get( '../../../rest/case-execution?caseInstanceId=' + task.caseInstanceId + '&enabled=true', function( result1 ) {
+			   $.get( '../../../../engine-rest/case-execution?caseInstanceId=' + task.caseInstanceId + '&enabled=true', function( result1 ) {
 		         $scope.$apply(function () {
 		            // remember as Angular Scope Variable
 		            $scope.enabledCaseExecutions = result1;
@@ -231,14 +227,14 @@
 			   });
 
 	  	       // load "active" activities via REST API from Camunda
-		  	   $.get( '../../../rest/case-execution?caseInstanceId=' + task.caseInstanceId + '&active=true', function( result2 ) {
+		  	   $.get( '../../../../engine-rest/case-execution?caseInstanceId=' + task.caseInstanceId + '&active=true', function( result2 ) {
 		         $scope.$apply(function () {
 		            $scope.activeCaseExecutions = result2;
 		         });
 			   });	 
 
 	  	       // load "ended" activities via REST API from Camunda
-		  	   $.get( '../../../rest/history/case-activity-instance?caseInstanceId=' + task.caseInstanceId + '&finished=true', function( result3 ) {
+		  	   $.get( '../../../../engine-rest/history/case-activity-instance?caseInstanceId=' + task.caseInstanceId + '&finished=true', function( result3 ) {
 		         $scope.$apply(function () {
 		            $scope.finishedCaseExecutions = result3;
 		         });
@@ -247,8 +243,13 @@
 	 };
 	 
 	 // load case status when the form is rendered
-	 loadCaseStatus();  	     
-	 
+	 loadCaseStatus();
+
+	 // reload case status on interval to reflect possible changes
+	 setInterval(function() {
+	     loadCaseStatus();
+	 }, 1000);
+
 	 // define function to manually start an activity which is "enabled"
 	 $scope.manualStartCaseExecution = function(caseExecution) {
 	       var data = {
@@ -263,7 +264,7 @@
 	       $('#textareaHints').val("");
 
 	       // Call according REST API
-		   $.ajax('../../../rest/case-execution/' + caseExecution.id + '/manual-start', {
+		   $.ajax('../../../../engine-rest/case-execution/' + caseExecution.id + '/manual-start', {
 		         data: JSON.stringify(data),
 		         contentType : 'application/json',
 		         type : 'POST',
