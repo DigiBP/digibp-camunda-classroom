@@ -116,6 +116,18 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- jPMML -->
+        <dependency>
+            <groupId>org.jpmml</groupId>
+            <artifactId>pmml-evaluator-metro</artifactId>
+            <version>1.5.15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jpmml</groupId>
+            <artifactId>pmml-evaluator-moxy</artifactId>
+            <version>1.5.15</version>
+        </dependency>
+
     </dependencies>
 
     <build>
