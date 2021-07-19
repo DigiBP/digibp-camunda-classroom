@@ -27,7 +27,6 @@ public class PMMLDelegate implements JavaDelegate {
     private final Expression pmmlModelName = new FixedValue("");
     private final Expression pmmlInputInVariables = new FixedValue(false);
     private final Expression pmmlOutputAsVariables = new FixedValue(false);
-    private final Expression pmmlResponseAsVariable = new FixedValue(false);
 
     @Inject
     private PMMLService pmmlService;
@@ -35,21 +34,17 @@ public class PMMLDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         EnsureUtil.ensureNotEmpty("A \"pmmlFile\" field must be injected with PMML filename.", pmmlFile.getExpressionText());
-        Map<String, ?> request;
+        Map<String, ?> pmmlInput;
         if(Boolean.parseBoolean(pmmlInputInVariables.getExpressionText())) {
-            request = execution.getVariables();
+            pmmlInput = execution.getVariables();
         } else {
-            request = pmmlService.mapFromObject(execution.getVariableLocal("request"), "A \"request\" input parameter of type Map is required!", "request");
+            pmmlInput = pmmlService.mapFromObject(execution.getVariableLocal("pmmlInput"), "A \"pmmlInput\" parameter of type Map is required!", "pmmlInput");
         }
-        Map<String, ?> results = pmmlService.evaluate(pmmlFile.getExpressionText(), pmmlModelName.getExpressionText(), request, execution.getTenantId(), execution.getProcessDefinitionId());
+        Map<String, ?> results = pmmlService.evaluate(pmmlFile.getExpressionText(), pmmlModelName.getExpressionText(), pmmlInput, execution.getTenantId(), execution.getProcessDefinitionId());
         if(Boolean.parseBoolean(pmmlOutputAsVariables.getExpressionText())) {
             execution.setVariablesLocal(results);
         } else {
-            if(Boolean.parseBoolean(pmmlResponseAsVariable.getExpressionText())) {
-                execution.setVariable("response", results);
-            } else {
-                execution.setVariableLocal("response", results);
-            }
+            execution.setVariableLocal("pmmlOutput", results);
         }
 
         logger.info("\n\n  ... PMMLDelegate invoked by "
