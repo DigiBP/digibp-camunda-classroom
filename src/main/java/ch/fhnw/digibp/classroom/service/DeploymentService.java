@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -146,16 +145,6 @@ public class DeploymentService {
         } else {
             return repositoryService.createDeploymentQuery().tenantIdIn(tenantId).list();
         }
-    }
-
-    public InputStream getDeploymentResource(String tenantId, String processDefinitionId, String resourceName) {
-        String deploymentId;
-        if (tenantId.isEmpty()) {
-            deploymentId = repositoryService.createProcessDefinitionQuery().withoutTenantId().processDefinitionId(processDefinitionId).singleResult().getDeploymentId();
-        } else {
-            deploymentId = repositoryService.createProcessDefinitionQuery().tenantIdIn(tenantId).processDefinitionId(processDefinitionId).singleResult().getDeploymentId();
-        }
-        return repositoryService.getResourceAsStream(deploymentId, resourceName);
     }
 
     private void deleteDeployments(List<String> deploymentIds) {

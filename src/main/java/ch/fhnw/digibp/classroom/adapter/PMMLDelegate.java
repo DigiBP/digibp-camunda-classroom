@@ -5,19 +5,17 @@
 
 package ch.fhnw.digibp.classroom.adapter;
 
-import ch.fhnw.digibp.classroom.service.DeploymentService;
+import ch.fhnw.digibp.classroom.service.PMMLService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.dmg.pmml.FieldName;
-import org.jpmml.evaluator.*;
+import org.camunda.bpm.engine.impl.el.FixedValue;
+import org.camunda.bpm.engine.impl.util.EnsureUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 @Named("pmml")
@@ -25,50 +23,34 @@ public class PMMLDelegate implements JavaDelegate {
 
     private final Logger logger = LoggerFactory.getLogger(PMMLDelegate.class);
 
-    private Expression pmmlModel;
+    private final Expression pmmlFile = new FixedValue("");
+    private final Expression pmmlModelName = new FixedValue("");
+    private final Expression pmmlInputInVariables = new FixedValue(false);
+    private final Expression pmmlOutputAsVariables = new FixedValue(false);
+    private final Expression pmmlResponseAsVariable = new FixedValue(false);
 
     @Inject
-    private DeploymentService deploymentService;
+    private PMMLService pmmlService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        Evaluator evaluator = new LoadingModelEvaluatorBuilder()
-                .load(deploymentService.getDeploymentResource(execution.getTenantId(),
-                        execution.getProcessDefinitionId(),
-                        pmmlModel.getExpressionText()))
-                .build();
-
-        evaluator.verify();
-
-        logger.info("Evaluation request by activity with ID {}", execution.getCurrentActivityId());
-
-        Map<String, ?> requestArguments = execution.getProcessInstance().getVariables();
-
-        Map<FieldName, FieldValue> arguments = new LinkedHashMap<>();
-
-        List<InputField> inputFields = evaluator.getInputFields();
-        for (InputField inputField : inputFields) {
-            FieldName inputName = inputField.getName();
-
-            String key = inputName.getValue();
-
-            Object value = requestArguments.get(key);
-            if (value == null && !requestArguments.containsKey(key)) {
-                logger.warn("Evaluation request by activity with ID {} does not specify an input field {}", execution.getCurrentActivityId(), key);
-            }
-
-            FieldValue inputValue = inputField.prepare(value);
-
-            arguments.put(inputName, inputValue);
+        EnsureUtil.ensureNotEmpty("A \"pmmlFile\" field must be injected with PMML filename.", pmmlFile.getExpressionText());
+        Map<String, ?> request;
+        if(Boolean.parseBoolean(pmmlInputInVariables.getExpressionText())) {
+            request = execution.getVariables();
+        } else {
+            request = pmmlService.mapFromObject(execution.getVariableLocal("request"), "A \"request\" input parameter of type Map is required!", "request");
         }
-
-        logger.debug("Evaluation request by activity with ID {} has prepared arguments: {}", execution.getCurrentActivityId(), arguments);
-
-        Map<FieldName, ?> results = evaluator.evaluate(arguments);
-
-        logger.debug("Evaluation request by activity with ID {} produced result: {}", execution.getCurrentActivityId(), results);
-
-        execution.getProcessInstance().setVariables(EvaluatorUtil.decodeAll(results));
+        Map<String, ?> results = pmmlService.evaluate(pmmlFile.getExpressionText(), pmmlModelName.getExpressionText(), request, execution.getTenantId(), execution.getProcessDefinitionId());
+        if(Boolean.parseBoolean(pmmlOutputAsVariables.getExpressionText())) {
+            execution.setVariablesLocal(results);
+        } else {
+            if(Boolean.parseBoolean(pmmlResponseAsVariable.getExpressionText())) {
+                execution.setVariable("response", results);
+            } else {
+                execution.setVariableLocal("response", results);
+            }
+        }
 
         logger.info("\n\n  ... PMMLDelegate invoked by "
                 + "processDefinitionId=" + execution.getProcessDefinitionId()
