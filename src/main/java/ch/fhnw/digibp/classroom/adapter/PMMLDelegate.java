@@ -22,39 +22,55 @@ import java.util.Map;
 public class PMMLDelegate implements JavaDelegate {
 
     private final Logger logger = LoggerFactory.getLogger(PMMLDelegate.class);
-
-    private final Expression pmmlFile = new FixedValue("");
-    private final Expression pmmlModelName = new FixedValue("");
-    private final Expression pmmlInputInVariables = new FixedValue(false);
-    private final Expression pmmlOutputAsVariables = new FixedValue(false);
+    private final PMMLService pmmlService;
+    private Expression pmmlFile;
+    private Expression pmmlModelName;
+    private Expression pmmlInputInVariables;
+    private Expression pmmlOutputAsVariables;
 
     @Inject
-    private PMMLService pmmlService;
+    public PMMLDelegate(PMMLService pmmlService){
+        this.pmmlService = pmmlService;
+        init();
+    }
+
+    private void init(){
+        this.pmmlFile = new FixedValue("");
+        this.pmmlModelName = new FixedValue("");
+        this.pmmlInputInVariables = new FixedValue(false);
+        this.pmmlOutputAsVariables = new FixedValue(false);
+    }
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        EnsureUtil.ensureNotEmpty("A \"pmmlFile\" field must be injected with PMML filename.", pmmlFile.getExpressionText());
-        Map<String, ?> pmmlInput;
-        if(Boolean.parseBoolean(pmmlInputInVariables.getExpressionText())) {
-            pmmlInput = execution.getVariables();
-        } else {
-            pmmlInput = pmmlService.mapFromObject(execution.getVariableLocal("pmmlInput"), "A \"pmmlInput\" parameter of type Map is required!", "pmmlInput");
-        }
-        Map<String, ?> results = pmmlService.evaluate(pmmlFile.getExpressionText(), pmmlModelName.getExpressionText(), pmmlInput, execution.getTenantId(), execution.getProcessDefinitionId());
-        if(Boolean.parseBoolean(pmmlOutputAsVariables.getExpressionText())) {
-            execution.setVariablesLocal(results);
-        } else {
-            execution.setVariableLocal("pmmlOutput", results);
-        }
+        try {
+            EnsureUtil.ensureNotEmpty("A \"pmmlFile\" field must be injected with PMML filename.", pmmlFile.getExpressionText());
+            Map<String, ?> pmmlInput;
+            if (Boolean.parseBoolean(pmmlInputInVariables.getExpressionText())) {
+                pmmlInput = execution.getVariables();
+            } else {
+                pmmlInput = pmmlService.mapFromObject(execution.getVariableLocal("pmmlInput"), "A \"pmmlInput\" parameter of type Map is required!", "pmmlInput");
+            }
+            Map<String, ?> results = pmmlService.evaluate(pmmlFile.getExpressionText(), pmmlModelName.getExpressionText(), pmmlInput, execution.getTenantId(), execution.getProcessDefinitionId());
+            if (Boolean.parseBoolean(pmmlOutputAsVariables.getExpressionText())) {
+                execution.setVariablesLocal(results);
+            } else {
+                execution.setVariableLocal("pmmlOutput", results);
+            }
 
-        logger.info("\n\n  ... PMMLDelegate invoked by "
-                + "processDefinitionId=" + execution.getProcessDefinitionId()
-                + ", tenantId=" + execution.getTenantId()
-                + ", activityId=" + execution.getCurrentActivityId()
-                + ", activityName='" + execution.getCurrentActivityName() + "'"
-                + ", processInstanceId=" + execution.getProcessInstanceId()
-                + ", businessKey=" + execution.getProcessBusinessKey()
-                + ", executionId=" + execution.getId()
-                + " \n\n");
+            logger.info("\n\n  ... PMMLDelegate invoked by "
+                    + "processDefinitionId=" + execution.getProcessDefinitionId()
+                    + ", tenantId=" + execution.getTenantId()
+                    + ", activityId=" + execution.getCurrentActivityId()
+                    + ", activityName='" + execution.getCurrentActivityName() + "'"
+                    + ", processInstanceId=" + execution.getProcessInstanceId()
+                    + ", businessKey=" + execution.getProcessBusinessKey()
+                    + ", executionId=" + execution.getId()
+                    + " \n\n");
+        } catch (Exception e) {
+            init();
+            throw e;
+        }
+        init();
     }
 }
