@@ -1,4 +1,4 @@
-# DigiBP Camunda Template
+# DigiBP Camunda Classroom
 
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Deploy to Heroku](https://img.shields.io/badge/deploy%20to-Heroku-6762a6.svg?longCache=true)](https://heroku.com/deploy)
@@ -15,6 +15,7 @@
 | Participant  	| worker, chef          | matteo  	| READ          | -       	| -     	| Matteo Alfonsi  	|
 | Participant  	| worker, courier       | silvio  	| READ          | -       	| -     	| Silvio Esposito 	|
 
+### Exemplary JSON
 ```json
 {
   "users": [
@@ -101,7 +102,16 @@
 }
 ```
 
+### Exemplary CSV
+```csv
+newtenant,Fraenzi,Meier,password,engineer
+newtenant,Hans,Mueller,password,initiator,worker
+othertenant,Susi,Schmid,password,engineer
+othertenant,Luki,Bolliger,password,initiator
+```
+
 ## Maintainer
+- [Andreas Martin](https://mrtn.onl)
 - [Digitalisation of Business Processes](https://github.com/digibp)
 
 ## License

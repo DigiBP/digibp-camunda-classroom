@@ -19,9 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStreamReader;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "/classroom")
@@ -45,8 +46,8 @@ public class ClassroomAPI {
     @Autowired
     private GroupService groupService;
 
-    @GetMapping(path = "/user/generator", produces = "application/json")
-    public ResponseEntity<List<String>> getNewUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
+    @GetMapping(path = "/user/showcase/generator", produces = "application/json")
+    public ResponseEntity<List<String>> getUserShowcaseGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -80,17 +81,47 @@ public class ClassroomAPI {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "/user/generator", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<List<String>> postNewUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix, @RequestBody UsersDTO users){
+    private List<String> createUser(String tenantId, UsersDTO users) throws Exception {
+        List<String> response = new ArrayList<>();
+        String id = tenantService.addTenant(tenantId, tenantId);
+        response.add("Tenant with ID " + id + " generated.");
+
+        for(UserDTO user : users.getUsers()){
+            ArrayList<String> groupIds = new ArrayList<>();
+            for (UserDTO.GroupId groupId : user.getGroupIds()){
+                groupIds.add(groupId.getGroupId());
+            }
+            id = userService.addUser(user.getFirstName().replaceAll("\\s", "").toLowerCase()+user.getLastName().replaceAll("\\s", "").toLowerCase(), user.getPassword(), user.getFirstName(), user.getLastName(), "", groupIds.toArray(String[]::new), tenantId);
+            response.add("User with ID " + id + " generated.");
+        }
+        return response;
+    }
+
+    @PostMapping(path = "/user", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<List<String>> postUser(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId, @RequestBody UsersDTO users){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         List<String> response = new ArrayList<>();
-        String id;
+        try {
+            response.addAll(createUser(tenantId, users));
+        } catch (Exception e) {
+            response.add("Error: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/user/generator", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<List<String>> postUserGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix, @RequestBody UsersDTO users){
+        if(!isAdminAuthentication()){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        List<String> response = new ArrayList<>();
         for (int number=firstId; number<=lastId; number++) {
             String tenantId = prefix + number + suffix;
             try {
-                id = tenantService.addTenant(tenantId, tenantId);
+                String id = tenantService.addTenant(tenantId, tenantId);
                 response.add("Tenant with ID " + id + " generated.");
 
                 for(UserDTO user : users.getUsers()){
@@ -99,7 +130,7 @@ public class ClassroomAPI {
                         groupIds.add(groupId.getGroupId());
                     }
                     id = userService.addUser(tenantId+user.getFirstName().replaceAll("\\s", "").toLowerCase(), user.getPassword(), tenantId+" "+user.getFirstName(), user.getLastName(), "", groupIds.toArray(String[]::new), tenantId);
-                    response.add("UsersDTO with ID " + id + " generated.");
+                    response.add("User with ID " + id + " generated.");
                 }
             } catch (Exception e) {
                 response.add("Error: " + e.getMessage());
@@ -110,7 +141,7 @@ public class ClassroomAPI {
     }
 
     @DeleteMapping(path = "/user/generator")
-    public ResponseEntity<List<String>> deleteUserAndTenant(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
+    public ResponseEntity<List<String>> deleteUserGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -132,8 +163,53 @@ public class ClassroomAPI {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    private Map<String, UsersDTO> parseCSV(BufferedReader csvReader) throws IOException {
+        String row;
+        Map<String, UsersDTO> userDTOMap = new HashMap<>();
+        while ((row = csvReader.readLine()) != null) {
+            List<String> data = Arrays.asList(row.split(","));
+            UserDTO userDTO = new UserDTO();
+            userDTO.setFirstName(data.get(1));
+            userDTO.setLastName(data.get(2));
+            userDTO.setPassword(data.get(3));
+            List<UserDTO.GroupId> groupIds = new ArrayList<>();
+            for (int i = 4; i < data.size(); i++) {
+                UserDTO.GroupId groupId = new UserDTO.GroupId(data.get(i));
+                groupIds.add(groupId);
+            }
+            userDTO.setGroupIds(groupIds);
+            if(userDTOMap.containsKey(data.get(0))){
+                userDTOMap.get(data.get(0)).getUsers().add(userDTO);
+            } else{
+                UsersDTO usersDTO = new UsersDTO();
+                usersDTO.getUsers().add(userDTO);
+                userDTOMap.put(data.get(0), usersDTO);
+            }
+        }
+        csvReader.close();
+        return userDTOMap;
+    }
+
+    @PostMapping(path = "/user/csv", consumes = "multipart/form-data", produces = "application/json")
+    public ResponseEntity<List<String>> postUserCSV(@RequestPart(value="file") MultipartFile file) throws IOException{
+        if(!isAdminAuthentication()){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Map<String, UsersDTO> usersDTOMap = parseCSV(new BufferedReader(new InputStreamReader(file.getInputStream())));
+        List<String> response = new ArrayList<>();
+        for (Map.Entry<String, UsersDTO> dtoEntry : usersDTOMap.entrySet()) {
+            try {
+                response.addAll(createUser(dtoEntry.getKey(), dtoEntry.getValue()));
+            } catch (Exception e) {
+                response.add("Error: " + e.getMessage());
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
     @GetMapping(path = "/group", produces = "application/json")
-    public ResponseEntity<String> getNewGroup(@RequestParam(value = "groupId") String groupId, @RequestParam(value = "groupName") String groupName){
+    public ResponseEntity<String> getGroup(@RequestParam(value = "groupId") String groupId, @RequestParam(value = "groupName") String groupName){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -143,12 +219,12 @@ public class ClassroomAPI {
     }
 
     @GetMapping(path = "/properties")
-    public ResponseEntity<ClassroomProperties> getClassroomProperties(){
+    public ResponseEntity<ClassroomProperties> getProperties(){
         return new ResponseEntity<>(this.classroomProperties, HttpStatus.ACCEPTED);
     }
 
     @PutMapping(path = "/properties")
-    public ResponseEntity<ClassroomProperties> putClassroomProperties(@RequestBody ClassroomProperties classroomProperties){
+    public ResponseEntity<ClassroomProperties> putProperties(@RequestBody ClassroomProperties classroomProperties){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -157,7 +233,7 @@ public class ClassroomAPI {
     }
 
     @PostMapping(path = "/deployment/generator", consumes = "multipart/form-data")
-    public ResponseEntity<List<String>> postDeploymentsGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestPart(value="files") List<MultipartFile> files) throws IOException {
+    public ResponseEntity<List<String>> postDeploymentGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestPart(value="files") List<MultipartFile> files) throws IOException {
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -173,7 +249,7 @@ public class ClassroomAPI {
     }
 
     @DeleteMapping(path = "/deployment/generator")
-    public ResponseEntity<List<String>> deleteDeploymentsGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
+    public ResponseEntity<List<String>> deleteDeploymentGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -186,7 +262,7 @@ public class ClassroomAPI {
     }
 
     @PostMapping(path = "/deployment", consumes = "multipart/form-data")
-    public ResponseEntity<String> postDeployments(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestPart(value="files") List<MultipartFile> files) throws IOException {
+    public ResponseEntity<String> postDeployment(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId, @RequestParam(value = "deployment name", required = false) String deploymentName, @RequestPart(value="files") List<MultipartFile> files) throws IOException {
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -197,7 +273,7 @@ public class ClassroomAPI {
     }
 
     @DeleteMapping(path = "/deployment")
-    public ResponseEntity<List<String>> deleteDeployments(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId){
+    public ResponseEntity<List<String>> deleteDeployment(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -206,7 +282,7 @@ public class ClassroomAPI {
     }
 
     @DeleteMapping(path = "/deployment/old/generator")
-    public ResponseEntity<List<String>> deleteDeploymentsGeneratorOldVersion(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
+    public ResponseEntity<List<String>> deleteDeploymentsOldGenerator(@RequestParam(value = "prefix", required = false, defaultValue = "") String prefix, @RequestParam(value = "firstId") Integer firstId, @RequestParam(value = "lastId") Integer lastId, @RequestParam(value = "suffix", required = false, defaultValue = "") String suffix){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -219,7 +295,7 @@ public class ClassroomAPI {
     }
 
     @DeleteMapping(path = "/deployment/old")
-    public ResponseEntity<List<String>> deleteDeploymentsOldVersion(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId){
+    public ResponseEntity<List<String>> deleteDeploymentsOld(@RequestParam(value = "tenant", required = false, defaultValue = "") String tenantId){
         if(!isAdminAuthentication()){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
