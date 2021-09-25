@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_06oudq0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.14.0">
+  <bpmn:process id="Process_0n1f298" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0mqlm8n</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0mqlm8n" sourceRef="StartEvent_1" targetRef="Activity_0if4vcl" />
+    <bpmn:endEvent id="Event_0eyqsj1">
+      <bpmn:incoming>Flow_18u0wfd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_18u0wfd" sourceRef="Activity_0iyyebc" targetRef="Event_0eyqsj1" />
+    <bpmn:userTask id="Activity_0iyyebc" name="Check">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="businessDecision" label="Business Decision:" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1kpoe8q</bpmn:incoming>
+      <bpmn:outgoing>Flow_18u0wfd</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1kpoe8q" sourceRef="Activity_0if4vcl" targetRef="Activity_0iyyebc" />
+    <bpmn:businessRuleTask id="Activity_0if4vcl" name="PMML" camunda:delegateExpression="${pmml}">
+      <bpmn:extensionElements>
+        <camunda:field name="fileName">
+          <camunda:string>RegressionOutputTest.pmml</camunda:string>
+        </camunda:field>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="input">
+            <camunda:map>
+              <camunda:entry key="input">20</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:outputParameter name="output">${output}</camunda:outputParameter>
+          <camunda:outputParameter name="businessDecision">${output.BusinessDecision}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0mqlm8n</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kpoe8q</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0n1f298">
+      <bpmndi:BPMNEdge id="Flow_1kpoe8q_di" bpmnElement="Flow_1kpoe8q">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="480" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18u0wfd_di" bpmnElement="Flow_18u0wfd">
+        <di:waypoint x="580" y="117" />
+        <di:waypoint x="642" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mqlm8n_di" bpmnElement="Flow_0mqlm8n">
+        <di:waypoint x="188" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0eyqsj1_di" bpmnElement="Event_0eyqsj1">
+        <dc:Bounds x="642" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1sg44gc_di" bpmnElement="Activity_0iyyebc">
+        <dc:Bounds x="480" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ovbj2v_di" bpmnElement="Activity_0if4vcl">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
