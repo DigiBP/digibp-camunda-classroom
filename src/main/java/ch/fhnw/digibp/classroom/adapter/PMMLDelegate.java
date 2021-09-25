@@ -6,6 +6,7 @@
 package ch.fhnw.digibp.classroom.adapter;
 
 import ch.fhnw.digibp.classroom.service.PMMLService;
+import onl.mrtn.pmml.camunda.PmmlEvaluator;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -22,41 +23,39 @@ import java.util.Map;
 public class PMMLDelegate implements JavaDelegate {
 
     private final Logger logger = LoggerFactory.getLogger(PMMLDelegate.class);
-    private final PMMLService pmmlService;
-    private Expression pmmlFile;
-    private Expression pmmlModelName;
-    private Expression pmmlInputInVariables;
-    private Expression pmmlOutputAsVariables;
+    private final PmmlEvaluator pmmlEvaluator;
+    private Expression fileName;
+    private Expression modelName;
 
     @Inject
     public PMMLDelegate(PMMLService pmmlService){
-        this.pmmlService = pmmlService;
+        this.pmmlEvaluator = pmmlService;
         init();
     }
 
     private void init(){
-        this.pmmlFile = new FixedValue("");
-        this.pmmlModelName = new FixedValue("");
-        this.pmmlInputInVariables = new FixedValue(false);
-        this.pmmlOutputAsVariables = new FixedValue(false);
+        this.fileName = new FixedValue("");
+        this.modelName = new FixedValue("");
     }
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         try {
-            EnsureUtil.ensureNotEmpty("A \"pmmlFile\" field must be injected with PMML filename.", pmmlFile.getExpressionText());
-            Map<String, ?> pmmlInput;
-            if (Boolean.parseBoolean(pmmlInputInVariables.getExpressionText())) {
-                pmmlInput = execution.getVariables();
+            String fileNameText = fileName.getExpressionText();
+            String modelNameText = modelName.getExpressionText();
+
+            EnsureUtil.ensureNotEmpty("A \"fileName\" field must be injected with PMML filename.", fileNameText);
+
+            Map<String, ?> input;
+            Object inputVariable = execution.getVariableLocal("input");
+            if (inputVariable==null) {
+                input = execution.getVariables();
             } else {
-                pmmlInput = pmmlService.mapFromObject(execution.getVariableLocal("pmmlInput"), "A \"pmmlInput\" parameter of type Map is required!", "pmmlInput");
+                input = pmmlEvaluator.mapFromObject(inputVariable, "A \"input\" parameter field of type Map is required!", "input");
             }
-            Map<String, ?> results = pmmlService.evaluate(pmmlFile.getExpressionText(), pmmlModelName.getExpressionText(), pmmlInput, execution.getTenantId(), execution.getProcessDefinitionId());
-            if (Boolean.parseBoolean(pmmlOutputAsVariables.getExpressionText())) {
-                execution.setVariablesLocal(results);
-            } else {
-                execution.setVariableLocal("pmmlOutput", results);
-            }
+            Map<String, ?> results = pmmlEvaluator.evaluate(fileNameText, modelNameText, input, execution.getTenantId(), execution.getProcessDefinitionId());
+
+            execution.setVariableLocal("output", results);
 
             logger.info("\n\n  ... PMMLDelegate invoked by "
                     + "processDefinitionId=" + execution.getProcessDefinitionId()
