@@ -19,7 +19,6 @@
               </camunda:map>
             </camunda:inputParameter>
             <camunda:inputParameter name="fileName">RegressionOutputTest.pmml</camunda:inputParameter>
-            <camunda:inputParameter name="execution">${execution}</camunda:inputParameter>
             <camunda:outputParameter name="businessDecision">${output.BusinessDecision}</camunda:outputParameter>
           </camunda:inputOutput>
           <camunda:connectorId>pmml-connector</camunda:connectorId>

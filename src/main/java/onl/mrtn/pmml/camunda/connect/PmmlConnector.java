@@ -6,7 +6,6 @@
 package onl.mrtn.pmml.camunda.connect;
 
 import onl.mrtn.pmml.camunda.PmmlEvaluator;
-import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.util.EnsureUtil;
 import org.camunda.connect.impl.AbstractConnector;
 import org.camunda.connect.spi.Connector;
@@ -40,7 +39,9 @@ public class PmmlConnector extends AbstractConnector<PmmlRequest, PmmlResponse> 
 
         String fileNameText = pmmlRequest.getRequestParameter(PmmlRequest.PARAM_NAME_FILE_NAME);
         String modelNameText = pmmlRequest.getRequestParameter(PmmlRequest.PARAM_NAME_MODEL_NAME);
-        ExecutionEntity execution = pmmlRequest.getRequestParameter(PmmlRequest.PARAM_NAME_EXECUTION);
+        if(pmmlRequest.getExecution()==null){
+            pmmlRequest.setExecution(pmmlRequest.getRequestParameter(PmmlRequest.PARAM_NAME_EXECUTION));
+        }
 
         Map<String, ?> results = null;
         try {
@@ -49,11 +50,11 @@ public class PmmlConnector extends AbstractConnector<PmmlRequest, PmmlResponse> 
             Map<String, ?> input;
             Object inputVariable =  pmmlRequest.getRequestParameter(PmmlRequest.PARAM_NAME_INPUT);
             if (inputVariable==null) {
-                input = execution.getVariables();
+                input = pmmlRequest.getExecution().getVariables();
             } else {
                 input = pmmlEvaluator.mapFromObject(inputVariable, "A \""+PmmlRequest.PARAM_NAME_INPUT+"\" parameter field of type Map is required!", PmmlRequest.PARAM_NAME_INPUT);
             }
-            results = pmmlEvaluator.evaluate(fileNameText, modelNameText, input, execution.getTenantId(), execution.getProcessDefinitionId());
+            results = pmmlEvaluator.evaluate(fileNameText, modelNameText, input, pmmlRequest.getExecution().getTenantId(), pmmlRequest.getExecution().getProcessDefinitionId());
         } catch (Exception e) {
             e.printStackTrace();
         }
