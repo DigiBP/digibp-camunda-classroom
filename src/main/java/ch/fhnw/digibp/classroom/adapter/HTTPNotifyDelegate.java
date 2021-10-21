@@ -35,7 +35,7 @@ public class HTTPNotifyDelegate implements JavaDelegate {
 
     private void init(){
         this.URL = new FixedValue("");
-        this.silent = new FixedValue("false");
+        this.silent = new FixedValue("");
     }
 
     @Override
