@@ -35,19 +35,19 @@ public class HTTPNotifyDelegate implements JavaDelegate {
 
     private void init(){
         this.URL = new FixedValue("");
-        this.silent = new FixedValue("");
+        this.silent = new FixedValue("false");
     }
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        String urlText = URL.getValue(execution).toString();
+        String urlText = URL.getExpressionText();
 
         EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", urlText);
 
         URL url = new URL(urlText);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        if(!Boolean.getBoolean(silent.getValue(execution).toString())) {
+        if(!Boolean.getBoolean(silent.getExpressionText())) {
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
