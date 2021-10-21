@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -48,9 +48,9 @@ public class HTTPNotifyDelegate implements JavaDelegate {
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         if(!Boolean.getBoolean(silent.getExpressionText())) {
+            connection.setDoOutput(true);
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
 
             String jsonInputString = "{" +
                     "\"processDefinitionId\": \""+execution.getProcessDefinitionId()+"\"," +
@@ -59,13 +59,13 @@ public class HTTPNotifyDelegate implements JavaDelegate {
                     "\"activityName\": \""+execution.getCurrentActivityName()+"\"," +
                     "\"processInstanceId\": \""+execution.getProcessInstanceId()+"\"," +
                     "\"businessKey\": \""+execution.getProcessBusinessKey()+"\"," +
-                    "\"executionId\": \""+execution.getId()+"\"," +
+                    "\"executionId\": \""+execution.getId()+"\"" +
                     "}";
 
-            try (OutputStream os = connection.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes();
-                os.write(input, 0, input.length);
-            }
+            OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
+            osw.write(jsonInputString);
+            osw.flush();
+            osw.close();
         } else {
             connection.setRequestMethod("HEAD");
         }
