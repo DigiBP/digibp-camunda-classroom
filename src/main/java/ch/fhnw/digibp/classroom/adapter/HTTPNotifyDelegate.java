@@ -16,9 +16,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 @Named("notify")
 public class HTTPNotifyDelegate implements JavaDelegate {
@@ -61,11 +62,12 @@ public class HTTPNotifyDelegate implements JavaDelegate {
                     "\"businessKey\": \""+execution.getProcessBusinessKey()+"\"," +
                     "\"executionId\": \""+execution.getId()+"\"" +
                     "}";
-
-            OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
-            osw.write(jsonInputString);
-            osw.flush();
-            osw.close();
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes();
+                os.write(input, 0, input.length);
+            } catch (UnknownHostException e){
+                logger.info("A valid \"URL\" field must be injected an URL.");
+            }
         } else {
             connection.setRequestMethod("HEAD");
         }
