@@ -10,6 +10,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.impl.el.FixedValue;
+import org.camunda.bpm.engine.impl.util.EnsureUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,57 +40,46 @@ public class HTTPNotifyDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        if(URL.getValue(execution)!=null){
-            URL url = new URL(URL.getValue(execution).toString());
-            boolean isSilent = false;
-            if(silent.getValue(execution)!=null){
-                isSilent = Boolean.getBoolean(silent.getValue(execution).toString());
+        String urlText = URL.getValue(execution).toString();
+
+        EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", urlText);
+
+        URL url = new URL(urlText);
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        if(!Boolean.getBoolean(silent.getValue(execution).toString())) {
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            String jsonInputString = "{" +
+                    "\"processDefinitionId\": \""+execution.getProcessDefinitionId()+"\"," +
+                    "\"tenantId\": \""+execution.getTenantId()+"\"," +
+                    "\"activityId\": \""+execution.getCurrentActivityId()+"\"," +
+                    "\"activityName\": \""+execution.getCurrentActivityName()+"\"," +
+                    "\"processInstanceId\": \""+execution.getProcessInstanceId()+"\"," +
+                    "\"businessKey\": \""+execution.getProcessBusinessKey()+"\"," +
+                    "\"executionId\": \""+execution.getId()+"\"," +
+                    "}";
+
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes();
+                os.write(input, 0, input.length);
             }
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            if(!isSilent) {
-                connection.setRequestMethod("PUT");
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setDoOutput(true);
-
-                String jsonInputString = "{" +
-                        "\"processDefinitionId\": \""+execution.getProcessDefinitionId()+"\"," +
-                        "\"tenantId\": \""+execution.getTenantId()+"\"," +
-                        "\"activityId\": \""+execution.getCurrentActivityId()+"\"," +
-                        "\"activityName\": \""+execution.getCurrentActivityName()+"\"," +
-                        "\"processInstanceId\": \""+execution.getProcessInstanceId()+"\"," +
-                        "\"businessKey\": \""+execution.getProcessBusinessKey()+"\"," +
-                        "\"executionId\": \""+execution.getId()+"\"," +
-                        "}";
-
-                try (OutputStream os = connection.getOutputStream()) {
-                    byte[] input = jsonInputString.getBytes();
-                    os.write(input, 0, input.length);
-                }
-            } else {
-                connection.setRequestMethod("HEAD");
-            }
-            int responseCode = connection.getResponseCode();
-
-            logger.info("\n\n  ... HTTPNotifyDelegate invoked by "
-                    + "processDefinitionId=" + execution.getProcessDefinitionId()
-                    + ", tenantId=" + execution.getTenantId()
-                    + ", activityId=" + execution.getCurrentActivityId()
-                    + ", activityName='" + execution.getCurrentActivityName() + "'"
-                    + ", processInstanceId=" + execution.getProcessInstanceId()
-                    + ", businessKey=" + execution.getProcessBusinessKey()
-                    + ", executionId=" + execution.getId()
-                    + ", with response code=" + responseCode
-                    + " \n\n");
         } else {
-            logger.warn("\n\n  ... HTTPNotifyDelegate with missing URL invoked by "
-                    + "processDefinitionId=" + execution.getProcessDefinitionId()
-                    + ", tenantId=" + execution.getTenantId()
-                    + ", activityId=" + execution.getCurrentActivityId()
-                    + ", activityName='" + execution.getCurrentActivityName() + "'"
-                    + ", processInstanceId=" + execution.getProcessInstanceId()
-                    + ", businessKey=" + execution.getProcessBusinessKey()
-                    + ", executionId=" + execution.getId()
-                    + " \n\n");
+            connection.setRequestMethod("HEAD");
         }
+        int responseCode = connection.getResponseCode();
+
+        logger.info("\n\n  ... HTTPNotifyDelegate invoked by "
+                + "processDefinitionId=" + execution.getProcessDefinitionId()
+                + ", tenantId=" + execution.getTenantId()
+                + ", activityId=" + execution.getCurrentActivityId()
+                + ", activityName='" + execution.getCurrentActivityName() + "'"
+                + ", processInstanceId=" + execution.getProcessInstanceId()
+                + ", businessKey=" + execution.getProcessBusinessKey()
+                + ", executionId=" + execution.getId()
+                + ", with response code=" + responseCode
+                + " \n\n");
     }
 }
