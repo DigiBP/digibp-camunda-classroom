@@ -5,12 +5,15 @@
 
 package ch.fhnw.digibp.classroom.adapter;
 
+import ch.fhnw.digibp.classroom.service.PMMLService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.impl.el.FixedValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -22,8 +25,17 @@ public class HTTPNotifyDelegate implements JavaDelegate {
     private final Logger logger = LoggerFactory.getLogger(HTTPNotifyDelegate.class);
 
     private Expression URL;
-
     private Expression silent;
+
+    @Inject
+    public HTTPNotifyDelegate(PMMLService pmmlService){
+        init();
+    }
+
+    private void init(){
+        this.URL = new FixedValue("");
+        this.silent = new FixedValue("");
+    }
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
