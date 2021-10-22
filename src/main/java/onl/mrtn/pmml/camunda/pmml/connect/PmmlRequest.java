@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package onl.mrtn.pmml.camunda.connect;
+package onl.mrtn.pmml.camunda.pmml.connect;
 
 import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.connect.impl.AbstractConnectorRequest;

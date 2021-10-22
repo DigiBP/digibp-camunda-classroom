@@ -5,7 +5,7 @@
 
 package ch.fhnw.digibp.classroom.service;
 
-import onl.mrtn.pmml.camunda.PmmlEvaluator;
+import onl.mrtn.pmml.camunda.pmml.PmmlEvaluator;
 import org.camunda.bpm.engine.RepositoryService;
 import org.springframework.stereotype.Service;
 

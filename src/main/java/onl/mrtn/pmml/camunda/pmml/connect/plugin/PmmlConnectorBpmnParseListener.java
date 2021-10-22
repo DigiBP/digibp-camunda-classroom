@@ -3,9 +3,9 @@
  * All rights reserved.
  */
 
-package onl.mrtn.pmml.camunda.connect.plugin;
+package onl.mrtn.pmml.camunda.pmml.connect.plugin;
 
-import onl.mrtn.pmml.camunda.connect.PmmlConnector;
+import onl.mrtn.pmml.camunda.pmml.connect.PmmlConnector;
 import org.camunda.bpm.engine.impl.bpmn.parser.AbstractBpmnParseListener;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParseListener;
 import org.camunda.bpm.engine.impl.core.variable.mapping.IoMapping;

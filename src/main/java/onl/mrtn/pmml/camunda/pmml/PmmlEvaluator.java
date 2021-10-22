@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package onl.mrtn.pmml.camunda;
+package onl.mrtn.pmml.camunda.pmml;
 
 import org.camunda.bpm.BpmPlatform;
 import org.camunda.bpm.engine.RepositoryService;

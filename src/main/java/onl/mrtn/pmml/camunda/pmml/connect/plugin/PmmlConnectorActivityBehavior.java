@@ -3,10 +3,10 @@
  * All rights reserved.
  */
 
-package onl.mrtn.pmml.camunda.connect.plugin;
+package onl.mrtn.pmml.camunda.pmml.connect.plugin;
 
-import onl.mrtn.pmml.camunda.connect.PmmlConnectorProvider;
-import onl.mrtn.pmml.camunda.connect.PmmlRequest;
+import onl.mrtn.pmml.camunda.pmml.connect.PmmlConnectorProvider;
+import onl.mrtn.pmml.camunda.pmml.connect.PmmlRequest;
 import org.camunda.bpm.engine.impl.core.variable.mapping.IoMapping;
 import org.camunda.bpm.engine.impl.pvm.delegate.ActivityExecution;
 import org.camunda.connect.plugin.impl.ServiceTaskConnectorActivityBehavior;

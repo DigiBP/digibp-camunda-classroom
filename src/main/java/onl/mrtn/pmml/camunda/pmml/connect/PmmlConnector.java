@@ -3,9 +3,9 @@
  * All rights reserved.
  */
 
-package onl.mrtn.pmml.camunda.connect;
+package onl.mrtn.pmml.camunda.pmml.connect;
 
-import onl.mrtn.pmml.camunda.PmmlEvaluator;
+import onl.mrtn.pmml.camunda.pmml.PmmlEvaluator;
 import org.camunda.bpm.engine.impl.util.EnsureUtil;
 import org.camunda.connect.impl.AbstractConnector;
 import org.camunda.connect.spi.Connector;
