@@ -15,16 +15,14 @@
           <camunda:inputOutput>
             <camunda:inputParameter name="query">prefix sqs: &lt;tag:stardog:api:sqs:&gt;
 
-
-SELECT ?day ?totalCases ?dailyIncrease ?percentageIncrease  {
+SELECT * {
     SERVICE &lt;query://DailyIncrease&gt; {
         []  sqs:vars ?day, ?totalCases, ?dailyIncrease, ?percentageIncrease;
-            sqs:var:totalCases ?exactNumber
     }
 }</camunda:inputParameter>
             <camunda:inputParameter name="queryParameter">
               <camunda:map>
-                <camunda:entry key="exactNumber">${exactNumber}</camunda:entry>
+                <camunda:entry key="totalCases">${exactNumber}</camunda:entry>
               </camunda:map>
             </camunda:inputParameter>
             <camunda:inputParameter name="reasoning">true</camunda:inputParameter>
@@ -63,6 +61,10 @@ SELECT ?day ?totalCases ?dailyIncrease ?percentageIncrease  {
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0udfnr4">
+      <bpmndi:BPMNEdge id="Flow_0e6k7e2_di" bpmnElement="Flow_0e6k7e2">
+        <di:waypoint x="360" y="117" />
+        <di:waypoint x="410" y="117" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0wiz8ii_di" bpmnElement="Flow_0wiz8ii">
         <di:waypoint x="680" y="117" />
         <di:waypoint x="742" y="117" />
@@ -75,21 +77,17 @@ SELECT ?day ?totalCases ?dailyIncrease ?percentageIncrease  {
         <di:waypoint x="215" y="117" />
         <di:waypoint x="260" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0e6k7e2_di" bpmnElement="Flow_0e6k7e2">
-        <di:waypoint x="360" y="117" />
-        <di:waypoint x="410" y="117" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1o3utd2_di" bpmnElement="Event_1o3utd2">
         <dc:Bounds x="742" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1ypidop_di" bpmnElement="Activity_1ypidop">
-        <dc:Bounds x="580" y="77" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ngvf00_di" bpmnElement="Activity_14py4t4">
         <dc:Bounds x="410" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ypidop_di" bpmnElement="Activity_1ypidop">
+        <dc:Bounds x="580" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1k1eqsl_di" bpmnElement="Activity_1k1eqsl">
         <dc:Bounds x="260" y="77" width="100" height="80" />
