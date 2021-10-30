@@ -8,14 +8,14 @@ package onl.mrtn.camunda.pmml.connect;
 import org.camunda.connect.spi.Connector;
 import org.camunda.connect.spi.ConnectorProvider;
 
-public class PmmlConnectorProvider implements ConnectorProvider {
+public class PMMLConnectorProvider implements ConnectorProvider {
     @Override
     public String getConnectorId() {
-        return PmmlConnector.ID;
+        return PMMLConnector.ID;
     }
 
     @Override
     public Connector<?> createConnectorInstance() {
-        return new PmmlConnector(PmmlConnector.ID);
+        return new PMMLConnector(PMMLConnector.ID);
     }
 }

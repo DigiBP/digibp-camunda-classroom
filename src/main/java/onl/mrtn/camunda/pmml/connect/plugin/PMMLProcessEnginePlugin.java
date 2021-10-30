@@ -10,12 +10,12 @@ import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 
 import java.util.ArrayList;
 
-public class PmmlProcessEnginePlugin extends AbstractProcessEnginePlugin {
+public class PMMLProcessEnginePlugin extends AbstractProcessEnginePlugin {
     @Override
     public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
         if (processEngineConfiguration.getCustomPostBPMNParseListeners() == null) {
             processEngineConfiguration.setCustomPostBPMNParseListeners(new ArrayList<>());
         }
-        processEngineConfiguration.getCustomPostBPMNParseListeners().add(new PmmlConnectorBpmnParseListener());
+        processEngineConfiguration.getCustomPostBPMNParseListeners().add(new PMMLConnectorBpmnParseListener());
     }
 }

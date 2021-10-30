@@ -10,14 +10,14 @@ import org.camunda.connect.impl.AbstractConnectorRequest;
 import org.camunda.connect.spi.Connector;
 import org.camunda.connect.spi.ConnectorRequest;
 
-public class PmmlRequest extends AbstractConnectorRequest<PmmlResponse> implements ConnectorRequest<PmmlResponse> {
+public class PMMLRequest extends AbstractConnectorRequest<PMMLResponse> implements ConnectorRequest<PMMLResponse> {
     public static String PARAM_NAME_FILE_NAME = "fileName";
     public static String PARAM_NAME_MODEL_NAME = "modelName";
     public static String PARAM_NAME_INPUT = "input";
     public static String PARAM_NAME_EXECUTION = "execution";
     public ActivityExecution execution;
 
-    public PmmlRequest(Connector connector) {
+    public PMMLRequest(Connector connector) {
         super(connector);
     }
 

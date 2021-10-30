@@ -9,13 +9,13 @@ import org.camunda.connect.impl.AbstractConnectorResponse;
 
 import java.util.Map;
 
-public class PmmlResponse extends AbstractConnectorResponse  {
+public class PMMLResponse extends AbstractConnectorResponse  {
 
     public static String PARAM_NAME_OUTPUT = "output";
 
     private Map<String, ?> results;
 
-    public PmmlResponse(Map<String, ?> results){
+    public PMMLResponse(Map<String, ?> results){
         this.results=results;
     }
 

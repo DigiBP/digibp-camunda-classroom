@@ -19,22 +19,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PmmlEvaluator {
-    private final Logger logger = LoggerFactory.getLogger(PmmlEvaluator.class);
+public class PMMLEvaluator {
+    private final Logger logger = LoggerFactory.getLogger(PMMLEvaluator.class);
 
-    private static PmmlEvaluator instance;
+    private static PMMLEvaluator instance;
     private final RepositoryService repositoryService;
 
-    public static PmmlEvaluator getInstance () {
-        if (PmmlEvaluator.instance == null) {
-            PmmlEvaluator.instance = new PmmlEvaluator (BpmPlatform.getDefaultProcessEngine().getRepositoryService());
+    public static PMMLEvaluator getInstance () {
+        if (PMMLEvaluator.instance == null) {
+            PMMLEvaluator.instance = new PMMLEvaluator(BpmPlatform.getDefaultProcessEngine().getRepositoryService());
         }
-        return PmmlEvaluator.instance;
+        return PMMLEvaluator.instance;
     }
 
-    public PmmlEvaluator(RepositoryService repositoryService){
+    public PMMLEvaluator(RepositoryService repositoryService){
         this.repositoryService = repositoryService;
-        PmmlEvaluator.instance = this;
+        PMMLEvaluator.instance = this;
     }
 
     public Map<String, ?> evaluate(String fileName, String modelName, Map<String, ?> request, String tenantId, String definitionId) throws Exception {

@@ -6,7 +6,7 @@
 package ch.fhnw.digibp.classroom.adapter;
 
 import ch.fhnw.digibp.classroom.service.PMMLService;
-import onl.mrtn.camunda.pmml.PmmlEvaluator;
+import onl.mrtn.camunda.pmml.PMMLEvaluator;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class PMMLDelegate implements JavaDelegate {
 
     private final Logger logger = LoggerFactory.getLogger(PMMLDelegate.class);
-    private final PmmlEvaluator pmmlEvaluator;
+    private final PMMLEvaluator pmmlEvaluator;
     private Expression fileName;
     private Expression modelName;
 

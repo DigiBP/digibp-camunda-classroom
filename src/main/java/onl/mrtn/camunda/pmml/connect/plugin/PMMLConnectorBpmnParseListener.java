@@ -5,7 +5,7 @@
 
 package onl.mrtn.camunda.pmml.connect.plugin;
 
-import onl.mrtn.camunda.pmml.connect.PmmlConnector;
+import onl.mrtn.camunda.pmml.connect.PMMLConnector;
 import org.camunda.bpm.engine.impl.bpmn.parser.AbstractBpmnParseListener;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParseListener;
 import org.camunda.bpm.engine.impl.core.variable.mapping.IoMapping;
@@ -16,7 +16,7 @@ import org.camunda.bpm.engine.impl.util.xml.Element;
 import static org.camunda.bpm.engine.impl.bpmn.parser.BpmnParseUtil.findCamundaExtensionElement;
 import static org.camunda.bpm.engine.impl.bpmn.parser.BpmnParseUtil.parseInputOutput;
 
-public class PmmlConnectorBpmnParseListener extends AbstractBpmnParseListener implements BpmnParseListener {
+public class PMMLConnectorBpmnParseListener extends AbstractBpmnParseListener implements BpmnParseListener {
     @Override
     public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseServiceTask(serviceTaskElement, scope, activity);
@@ -25,9 +25,9 @@ public class PmmlConnectorBpmnParseListener extends AbstractBpmnParseListener im
             Element connectorIdElement = connectorDefinition.element("connectorId");
             if (connectorIdElement != null)  {
                 String connectorId = connectorIdElement.getText().trim();
-                if(connectorId.equals(PmmlConnector.ID)){
+                if(connectorId.equals(PMMLConnector.ID)){
                     IoMapping ioMapping = parseInputOutput(connectorDefinition);
-                    activity.setActivityBehavior(new PmmlConnectorActivityBehavior(connectorId, ioMapping));
+                    activity.setActivityBehavior(new PMMLConnectorActivityBehavior(connectorId, ioMapping));
                 }
             }
         }
