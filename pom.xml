@@ -140,7 +140,21 @@
             <version>1.5.16</version>
         </dependency>
 
+        <!-- stardog -->
+        <dependency>
+            <groupId>com.complexible.stardog</groupId>
+            <artifactId>client-http</artifactId>
+            <version>7.7.2</version>
+        </dependency>
+
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>stardog-public</id>
+            <url>https://maven.stardog.com</url>
+        </repository>
+    </repositories>
 
     <build>
         <finalName>${project.artifactId}</finalName>

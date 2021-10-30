@@ -6,7 +6,7 @@
 package ch.fhnw.digibp.classroom.adapter;
 
 import ch.fhnw.digibp.classroom.service.PMMLService;
-import onl.mrtn.pmml.camunda.notify.HTTPNotifyService;
+import onl.mrtn.camunda.notify.HTTPNotifyService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;

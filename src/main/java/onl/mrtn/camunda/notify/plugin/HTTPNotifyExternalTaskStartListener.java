@@ -3,9 +3,9 @@
  * All rights reserved.
  */
 
-package onl.mrtn.pmml.camunda.notify.plugin;
+package onl.mrtn.camunda.notify.plugin;
 
-import onl.mrtn.pmml.camunda.notify.HTTPNotifyService;
+import onl.mrtn.camunda.notify.HTTPNotifyService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 

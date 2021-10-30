@@ -3,19 +3,19 @@
  * All rights reserved.
  */
 
-package onl.mrtn.camunda.pmml.connect;
+package onl.mrtn.camunda.sparql.connect;
 
 import org.camunda.connect.impl.AbstractConnectorResponse;
 
 import java.util.Map;
 
-public class PmmlResponse extends AbstractConnectorResponse  {
+public class SPARQLResponse extends AbstractConnectorResponse  {
 
     public static String PARAM_NAME_OUTPUT = "output";
 
     private Map<String, ?> results;
 
-    public PmmlResponse(Map<String, ?> results){
+    public SPARQLResponse(Map<String, ?> results){
         this.results=results;
     }
 

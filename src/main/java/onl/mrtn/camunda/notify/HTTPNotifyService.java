@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package onl.mrtn.pmml.camunda.notify;
+package onl.mrtn.camunda.notify;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.slf4j.Logger;

@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package onl.mrtn.pmml.camunda.notify.plugin;
+package onl.mrtn.camunda.notify.plugin;
 
 import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;

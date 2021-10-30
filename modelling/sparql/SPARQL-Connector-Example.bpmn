@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1hhszhr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="Process_0udfnr4" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1cqukm9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1cqukm9" sourceRef="StartEvent_1" targetRef="Activity_1k1eqsl" />
+    <bpmn:endEvent id="Event_1o3utd2">
+      <bpmn:incoming>Flow_0wiz8ii</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1dw2mrz" sourceRef="Activity_14py4t4" targetRef="Activity_1ypidop" />
+    <bpmn:serviceTask id="Activity_14py4t4" name="SPARQL">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="query">prefix sqs: &lt;tag:stardog:api:sqs:&gt;
+
+
+SELECT ?day ?totalCases ?dailyIncrease ?percentageIncrease  {
+    SERVICE &lt;query://DailyIncrease&gt; {
+        []  sqs:vars ?day, ?totalCases, ?dailyIncrease, ?percentageIncrease;
+            sqs:var:totalCases ?exactNumber
+    }
+}</camunda:inputParameter>
+            <camunda:inputParameter name="queryParameter">
+              <camunda:map>
+                <camunda:entry key="exactNumber">${exactNumber}</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="reasoning">true</camunda:inputParameter>
+            <camunda:inputParameter name="dbName">covid19nyt</camunda:inputParameter>
+            <camunda:inputParameter name="serverURL">https://express.stardog.cloud:5820</camunda:inputParameter>
+            <camunda:inputParameter name="username">anonymous</camunda:inputParameter>
+            <camunda:inputParameter name="password">anonymous</camunda:inputParameter>
+            <camunda:outputParameter name="businessDecision">${output.percentageIncrease[0]}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>sparql-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0e6k7e2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dw2mrz</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_1ypidop" name="Check">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="businessDecision" label="Business Decision:" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1dw2mrz</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wiz8ii</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0wiz8ii" sourceRef="Activity_1ypidop" targetRef="Event_1o3utd2" />
+    <bpmn:userTask id="Activity_1k1eqsl" name="Data">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="exactNumber" label="exactNumber" type="long" defaultValue="28092672" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1cqukm9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0e6k7e2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0e6k7e2" sourceRef="Activity_1k1eqsl" targetRef="Activity_14py4t4" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0udfnr4">
+      <bpmndi:BPMNEdge id="Flow_0wiz8ii_di" bpmnElement="Flow_0wiz8ii">
+        <di:waypoint x="680" y="117" />
+        <di:waypoint x="742" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dw2mrz_di" bpmnElement="Flow_1dw2mrz">
+        <di:waypoint x="510" y="117" />
+        <di:waypoint x="580" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1cqukm9_di" bpmnElement="Flow_1cqukm9">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="260" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e6k7e2_di" bpmnElement="Flow_0e6k7e2">
+        <di:waypoint x="360" y="117" />
+        <di:waypoint x="410" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1o3utd2_di" bpmnElement="Event_1o3utd2">
+        <dc:Bounds x="742" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ypidop_di" bpmnElement="Activity_1ypidop">
+        <dc:Bounds x="580" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ngvf00_di" bpmnElement="Activity_14py4t4">
+        <dc:Bounds x="410" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1k1eqsl_di" bpmnElement="Activity_1k1eqsl">
+        <dc:Bounds x="260" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

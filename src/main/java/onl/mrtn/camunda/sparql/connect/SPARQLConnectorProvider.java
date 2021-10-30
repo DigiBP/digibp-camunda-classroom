@@ -3,19 +3,19 @@
  * All rights reserved.
  */
 
-package onl.mrtn.camunda.pmml.connect;
+package onl.mrtn.camunda.sparql.connect;
 
 import org.camunda.connect.spi.Connector;
 import org.camunda.connect.spi.ConnectorProvider;
 
-public class PmmlConnectorProvider implements ConnectorProvider {
+public class SPARQLConnectorProvider implements ConnectorProvider {
     @Override
     public String getConnectorId() {
-        return PmmlConnector.ID;
+        return SPARQLConnector.ID;
     }
 
     @Override
     public Connector<?> createConnectorInstance() {
-        return new PmmlConnector(PmmlConnector.ID);
+        return new SPARQLConnector(SPARQLConnector.ID);
     }
 }

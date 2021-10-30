@@ -6,7 +6,7 @@
 package ch.fhnw.digibp.classroom.adapter;
 
 import ch.fhnw.digibp.classroom.service.PMMLService;
-import onl.mrtn.pmml.camunda.pmml.PmmlEvaluator;
+import onl.mrtn.camunda.pmml.PmmlEvaluator;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
