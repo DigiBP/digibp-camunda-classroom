@@ -53,6 +53,11 @@
             <groupId>org.camunda.bpm.springboot</groupId>
             <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-engine-rest-openapi</artifactId>
+            <version>${camunda.version}</version>
+        </dependency>
 
         <!-- Camunda Web Apps (e.g. Cockpit, Tasklist, Admin, etc.) -->
         <dependency>
@@ -116,12 +121,14 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Swagger UI -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
             <version>3.0.0</version>
         </dependency>
 
+        <!-- Spring Boot configuration processor -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -151,7 +158,13 @@
 
     <repositories>
         <repository>
+            <id>camunda-bpm-nexus</id>
+            <name>Camunda Maven Repository</name>
+            <url>https://app.camunda.com/nexus/content/groups/public</url>
+        </repository>
+        <repository>
             <id>stardog-public</id>
+            <name>Stardog Maven Repository</name>
             <url>https://maven.stardog.com</url>
         </repository>
     </repositories>
