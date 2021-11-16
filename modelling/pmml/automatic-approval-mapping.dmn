@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<semantic:definitions xmlns:semantic="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:triso="http://www.trisotech.com/2015/triso/modeling" xmlns:trisodmn="http://www.trisotech.com/2016/triso/dmn" xmlns:feel="https://www.omg.org/spec/DMN/20191111/FEEL/" xmlns:tc="http://www.omg.org/spec/DMN/20160719/testcase" xmlns:drools="http://www.drools.org/kie/dmn/1.1" xmlns:rss="http://purl.org/rss/2.0/" xmlns:openapi="https://openapis.org/omg/extension/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:boxedext="https://www.trisotech.com/spec/DMN/20191111/EXT/" xmlns:i18n="http://www.omg.org/spec/BPMN/non-normative/extensions/i18n/1.0" xmlns="http://www.trisotech.com/definitions/_d064472b-bdfa-43ff-a26c-cf499200ecf2" id="_d064472b-bdfa-43ff-a26c-cf499200ecf2" name="Drawing 1" namespace="http://www.trisotech.com/definitions/_d064472b-bdfa-43ff-a26c-cf499200ecf2" exporter="Camunda Modeler" exporterVersion="4.11.1" xml:lang="en" triso:logoChoice="Default">
+  <semantic:extensionElements />
+  <semantic:decisionService id="_d064472b-bdfa-43ff-a26c-cf499200ecf2_DS" name="Whole Model Decision Service" triso:dynamicDecisionService="true" triso:wholeModelService="true">
+    <semantic:variable id="_d064472b-bdfa-43ff-a26c-cf499200ecf2_DS_VAR" name="Whole Model Decision Service" typeRef="Any" />
+    <semantic:outputDecision href="#_bd64e511-646b-4960-bcf6-3f618907acd2" />
+    <semantic:encapsulatedDecision href="#_68fd507b-726c-43c4-85e4-2295e1811934" />
+    <semantic:encapsulatedDecision href="#_de34ee25-14ff-47d6-9c9d-7786d95b5002" />
+    <semantic:inputData href="#inputData__9c68e8c3-b92c-4f44-8cc0-305354913c23" />
+    <semantic:inputData href="#inputData__d50bc91b-30d6-4ecf-afcd-eb3904942a17" />
+    <semantic:inputData href="#inputData__1a734ef2-fbb4-4034-89fc-36d0124b60e0" />
+  </semantic:decisionService>
+  <semantic:decisionService id="_9db2c495-82c9-4c2c-929c-5dfa4afb7945_DS" name="Diagram automaticapprovalmapping" triso:dynamicDecisionService="true">
+    <semantic:variable id="_9db2c495-82c9-4c2c-929c-5dfa4afb7945_DS_VAR" name="Diagram automaticapprovalmapping" typeRef="Any" />
+    <semantic:outputDecision href="#_bd64e511-646b-4960-bcf6-3f618907acd2" />
+    <semantic:inputDecision href="#_68fd507b-726c-43c4-85e4-2295e1811934" />
+    <semantic:inputDecision href="#_de34ee25-14ff-47d6-9c9d-7786d95b5002" />
+    <semantic:inputData href="#inputData__1a734ef2-fbb4-4034-89fc-36d0124b60e0" />
+  </semantic:decisionService>
+  <semantic:decision id="_68fd507b-726c-43c4-85e4-2295e1811934" name="Category">
+    <semantic:variable id="_d591d5cf-acf1-48b0-b958-e556e58cdc61" name="category" typeRef="number" />
+    <semantic:informationRequirement id="inputData__9c68e8c3-b92c-4f44-8cc0-305354913c23__68fd507b-726c-43c4-85e4-2295e1811934">
+      <semantic:requiredInput href="#inputData__9c68e8c3-b92c-4f44-8cc0-305354913c23" />
+    </semantic:informationRequirement>
+    <semantic:decisionTable id="_b9cb5e7d-ea0c-46fc-82ad-b4c2069345c1" typeRef="number" outputLabel="category" triso:descriptionVisible="false" triso:expressionId="_ed4e01de-17ee-4a83-8a4c-c3c87201a2ba">
+      <semantic:input id="_9c68e8c3-b92c-4f44-8cc0-305354913c23" label="Category Text" triso:allowNull="true">
+        <semantic:inputExpression typeRef="string">
+          <semantic:text>categoryText</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_e3892c63-0a02-4bed-be18-52faea9fbfe2" label="Category" name="category" typeRef="integer" triso:allowNull="true" />
+      <semantic:annotation name="Description" />
+      <semantic:rule id="_abf6e215-ff06-47e6-91f6-1ed76729d7f0">
+        <semantic:inputEntry id="_71b620cc-781b-4d0a-9d96-93455e46157e">
+          <semantic:text>"optional"</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_64580fdc-59cc-4ee8-a91d-1284332f7b34">
+          <semantic:text>0</semantic:text>
+        </semantic:outputEntry>
+        <semantic:annotationEntry>
+          <semantic:text></semantic:text>
+        </semantic:annotationEntry>
+      </semantic:rule>
+      <semantic:rule id="_b789d9aa-44a1-40af-bd02-8398d116ff22">
+        <semantic:inputEntry id="_cdf6f778-8a3f-4527-978c-b839e9285623">
+          <semantic:text>"basic"</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_2f59f109-b96b-446d-9348-22c862c09ed7">
+          <semantic:text>1</semantic:text>
+        </semantic:outputEntry>
+        <semantic:annotationEntry>
+          <semantic:text></semantic:text>
+        </semantic:annotationEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+  <semantic:decision id="_de34ee25-14ff-47d6-9c9d-7786d95b5002" name="Urgency">
+    <semantic:variable id="_cf8e416a-63b5-4037-b879-02e307cdc8e1" name="urgency" typeRef="number" />
+    <semantic:informationRequirement id="inputData__d50bc91b-30d6-4ecf-afcd-eb3904942a17__de34ee25-14ff-47d6-9c9d-7786d95b5002">
+      <semantic:requiredInput href="#inputData__d50bc91b-30d6-4ecf-afcd-eb3904942a17" />
+    </semantic:informationRequirement>
+    <semantic:decisionTable id="_15bc6bce-3b73-453e-bb28-51c7264a22f6" typeRef="number" outputLabel="urgency" triso:descriptionVisible="false" triso:expressionId="_c2f05d7e-7a29-4a34-a0a5-dc1e5328d153">
+      <semantic:input id="_d50bc91b-30d6-4ecf-afcd-eb3904942a17" label="Urgency Text" triso:allowNull="true">
+        <semantic:inputExpression typeRef="string">
+          <semantic:text>urgencyText</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_4537a49d-693b-4002-8cbd-75b2ed0d90ed" label="Urgency" name="urgency" typeRef="integer" triso:allowNull="true" />
+      <semantic:annotation name="Description" />
+      <semantic:rule id="_90f76817-4123-4c37-bf7a-056321154079">
+        <semantic:inputEntry id="_6c63ebd8-6743-4675-a788-46467e37cf65">
+          <semantic:text>"low"</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_0916269f-27d5-4799-bcdd-54886009aedc">
+          <semantic:text>0</semantic:text>
+        </semantic:outputEntry>
+        <semantic:annotationEntry>
+          <semantic:text></semantic:text>
+        </semantic:annotationEntry>
+      </semantic:rule>
+      <semantic:rule id="_5bbd3d01-f614-4c8e-a9c9-47c8f6b1be9c">
+        <semantic:inputEntry id="_6591f384-d652-4a66-9456-78e54a392def">
+          <semantic:text>"medium"</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_4bca1132-4c2c-4e09-8fae-93a856963020">
+          <semantic:text>1</semantic:text>
+        </semantic:outputEntry>
+        <semantic:annotationEntry>
+          <semantic:text></semantic:text>
+        </semantic:annotationEntry>
+      </semantic:rule>
+      <semantic:rule id="_f186c716-222e-49b7-a8d0-d1d9663f09c0">
+        <semantic:inputEntry id="_e6b5e591-9750-457b-a05f-ea6afd8c4e6c">
+          <semantic:text>"high"</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_d072c4c5-2169-490a-9437-4c8e6e7e1134">
+          <semantic:text>2</semantic:text>
+        </semantic:outputEntry>
+        <semantic:annotationEntry>
+          <semantic:text></semantic:text>
+        </semantic:annotationEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+  <semantic:decision id="_bd64e511-646b-4960-bcf6-3f618907acd2" name="Automatic Approval">
+    <semantic:variable id="_05cf78b7-ab81-427e-afb9-a9dccb9913dc" name="automatic-approval" typeRef="boolean" />
+    <semantic:informationRequirement id="inputData__1a734ef2-fbb4-4034-89fc-36d0124b60e0__bd64e511-646b-4960-bcf6-3f618907acd2">
+      <semantic:requiredInput href="#inputData__1a734ef2-fbb4-4034-89fc-36d0124b60e0" />
+    </semantic:informationRequirement>
+    <semantic:informationRequirement id="InformationRequirement_1jeioe6">
+      <semantic:requiredDecision href="#_68fd507b-726c-43c4-85e4-2295e1811934" />
+    </semantic:informationRequirement>
+    <semantic:informationRequirement id="InformationRequirement_0wdzyvv">
+      <semantic:requiredDecision href="#_de34ee25-14ff-47d6-9c9d-7786d95b5002" />
+    </semantic:informationRequirement>
+    <semantic:decisionTable id="_7ad4fd8c-c18e-4c5b-a010-e6eaba74aabf" typeRef="boolean" outputLabel="automatic-approval" triso:descriptionVisible="false" triso:expressionId="_44bb3c00-63b8-45d6-858f-b9673eddfb2c">
+      <semantic:input id="_1a734ef2-fbb4-4034-89fc-36d0124b60e0" label="Price" triso:allowNull="true">
+        <semantic:inputExpression typeRef="integer">
+          <semantic:text>price</semantic:text>
+        </semantic:inputExpression>
+      </semantic:input>
+      <semantic:output id="_330d4a49-b007-4c28-a817-386a64d6b9e7" label="Automatic Approval" name="automaticApproval" typeRef="boolean" triso:allowNull="true" />
+      <semantic:output id="OutputClause_1d4271n" label="Category" name="category" typeRef="integer" />
+      <semantic:output id="OutputClause_11o8aba" label="Urgency" name="urgency" typeRef="integer" />
+      <semantic:annotation name="Description" />
+      <semantic:rule id="_230a292c-9635-4045-b252-69d8defc920e">
+        <semantic:inputEntry id="_ba1974b9-689f-4acf-8715-3022846c1e31">
+          <semantic:text>&lt;= 5000</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_045cdf10-a554-402f-8b71-13ac628ffa30">
+          <semantic:text>true</semantic:text>
+        </semantic:outputEntry>
+        <semantic:outputEntry id="LiteralExpression_0cvw5ix" expressionLanguage="juel">
+          <semantic:text>${category}</semantic:text>
+        </semantic:outputEntry>
+        <semantic:outputEntry id="LiteralExpression_18vt995" expressionLanguage="juel">
+          <semantic:text>${urgency}</semantic:text>
+        </semantic:outputEntry>
+        <semantic:annotationEntry>
+          <semantic:text></semantic:text>
+        </semantic:annotationEntry>
+      </semantic:rule>
+      <semantic:rule id="_57cad5e8-c2bc-4097-8afa-ad07a6db9c04">
+        <semantic:inputEntry id="_6ed9ec9c-2cef-4ea4-9ba8-232d64213a28">
+          <semantic:text>&gt; 5000</semantic:text>
+        </semantic:inputEntry>
+        <semantic:outputEntry id="_073ec585-5244-4483-93a3-d01c21d0050e">
+          <semantic:text>false</semantic:text>
+        </semantic:outputEntry>
+        <semantic:outputEntry id="LiteralExpression_1x991pa" expressionLanguage="juel">
+          <semantic:text>${category}</semantic:text>
+        </semantic:outputEntry>
+        <semantic:outputEntry id="LiteralExpression_0yo1bn5" expressionLanguage="juel">
+          <semantic:text>${urgency}</semantic:text>
+        </semantic:outputEntry>
+        <semantic:annotationEntry>
+          <semantic:text></semantic:text>
+        </semantic:annotationEntry>
+      </semantic:rule>
+    </semantic:decisionTable>
+  </semantic:decision>
+  <semantic:inputData id="inputData__9c68e8c3-b92c-4f44-8cc0-305354913c23" name="category-text">
+    <semantic:variable id="_60ca1b9a-388b-42b3-bdae-afb5df99e976" name="category-text" typeRef="string" />
+  </semantic:inputData>
+  <semantic:inputData id="inputData__d50bc91b-30d6-4ecf-afcd-eb3904942a17" name="urgency-text">
+    <semantic:variable id="_0a8b9012-d3bd-4aa8-b67d-1f5f474b831b" name="urgency-text" typeRef="string" />
+  </semantic:inputData>
+  <semantic:inputData id="inputData__1a734ef2-fbb4-4034-89fc-36d0124b60e0" name="price">
+    <semantic:variable id="_472c45ee-e675-4825-ad86-d817eb3f02ec" name="price" typeRef="number" />
+  </semantic:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_9db2c495-82c9-4c2c-929c-5dfa4afb7945" name="automatic-approval-mapping" triso:modelElementRef="_2ded420f-9fca-430f-958c-be8471e6eceb">
+      <di:extension />
+      <dmndi:Size width="1485" height="1050" />
+      <dmndi:DMNShape id="_d6eaee81-d363-4c96-90ac-5601d385c4dc" dmnElementRef="_68fd507b-726c-43c4-85e4-2295e1811934">
+        <dc:Bounds height="60" width="153" x="373" y="294" />
+        <dmndi:DMNLabel trisodmn:defaultBounds="true" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_64656805-e00a-4c4b-b637-04d1be1193b6" dmnElementRef="_de34ee25-14ff-47d6-9c9d-7786d95b5002">
+        <dc:Bounds height="60" width="153" x="583" y="294" />
+        <dmndi:DMNLabel trisodmn:defaultBounds="true" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_39917c28-6b65-4411-9850-2db07c003432" dmnElementRef="_bd64e511-646b-4960-bcf6-3f618907acd2">
+        <dc:Bounds height="60" width="153" x="483" y="170" />
+        <dmndi:DMNLabel trisodmn:defaultBounds="true" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0x49ks2" dmnElementRef="InformationRequirement_1jeioe6">
+        <di:waypoint x="450" y="294" />
+        <di:waypoint x="534" y="250" />
+        <di:waypoint x="534" y="230" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0gur3u8" dmnElementRef="InformationRequirement_0wdzyvv">
+        <di:waypoint x="660" y="294" />
+        <di:waypoint x="585" y="250" />
+        <di:waypoint x="585" y="230" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+    <dmndi:DMNStyle id="LS_d064472b-bdfa-43ff-a26c-cf499200ecf2_0" fontSize="11" fontFamily="arial,helvetica,sans-serif" fontItalic="false" fontBold="false" fontUnderline="false" fontStrikeThrough="false" />
+  </dmndi:DMNDI>
+</semantic:definitions>
