@@ -7,6 +7,9 @@ camunda:
       create: All Tasks
     authorization:
       enabled: true
+    webapp:
+      header-security:
+        content-security-policy-value: font-src 'self' data:;
 #    webapp:
 #      application-path: /
 spring:
