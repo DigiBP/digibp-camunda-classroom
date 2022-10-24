@@ -9,6 +9,7 @@ import ch.fhnw.digibp.classroom.config.ClassroomProperties;
 import ch.fhnw.digibp.classroom.service.TenantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.impl.calendar.DateTimeUtil;
 import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.repository.DeploymentQuery;
@@ -37,6 +38,7 @@ import java.util.Set;
 public class DeploymentRestServiceImpl extends AbstractRestProcessEngineAware implements DeploymentRestService {
 
     public final static String DEPLOYMENT_NAME = "deployment-name";
+    public final static String DEPLOYMENT_ACTIVATION_TIME = "deployment-activation-time";
     public final static String ENABLE_DUPLICATE_FILTERING = "enable-duplicate-filtering";
     public final static String DEPLOY_CHANGED_ONLY = "deploy-changed-only";
     public final static String DEPLOYMENT_SOURCE = "deployment-source";
@@ -46,6 +48,7 @@ public class DeploymentRestServiceImpl extends AbstractRestProcessEngineAware im
 
     static {
         RESERVED_KEYWORDS.add(DEPLOYMENT_NAME);
+        RESERVED_KEYWORDS.add(DEPLOYMENT_ACTIVATION_TIME);
         RESERVED_KEYWORDS.add(ENABLE_DUPLICATE_FILTERING);
         RESERVED_KEYWORDS.add(DEPLOY_CHANGED_ONLY);
         RESERVED_KEYWORDS.add(DEPLOYMENT_SOURCE);
@@ -129,6 +132,11 @@ public class DeploymentRestServiceImpl extends AbstractRestProcessEngineAware im
             deploymentBuilder.name(deploymentName.getTextContent());
         }
 
+        FormPart deploymentActivationTime = payload.getNamedPart(DEPLOYMENT_ACTIVATION_TIME);
+        if (deploymentActivationTime != null && !deploymentActivationTime.getTextContent().isEmpty()) {
+            deploymentBuilder.activateProcessDefinitionsOn(DateTimeUtil.parseDate(deploymentActivationTime.getTextContent()));
+        }
+
         FormPart deploymentSource = payload.getNamedPart(DEPLOYMENT_SOURCE);
         if (deploymentSource != null) {
             deploymentBuilder.source(deploymentSource.getTextContent());
@@ -199,4 +207,8 @@ public class DeploymentRestServiceImpl extends AbstractRestProcessEngineAware im
         return result;
     }
 
+    @Override
+    public Set<String> getRegisteredDeployments(final UriInfo uriInfo) {
+        return getProcessEngine().getManagementService().getRegisteredDeployments();
+    }
 }

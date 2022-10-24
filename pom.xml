@@ -16,8 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>15</java.version>
-        <spring.boot.version>2.5.4</spring.boot.version>
-        <camunda.version>7.16.0</camunda.version>
+        <spring.boot.version>2.7.3</spring.boot.version>
+        <camunda.version>7.18.0</camunda.version>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
     </properties>
 
@@ -92,12 +92,12 @@
         <dependency>
             <groupId>org.graalvm.js</groupId>
             <artifactId>js</artifactId>
-            <version>21.2.0</version>
+            <version>22.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.graalvm.js</groupId>
             <artifactId>js-scriptengine</artifactId>
-            <version>21.2.0</version>
+            <version>22.2.0</version>
         </dependency>
 
         <!-- Database (MySQL, H2 or postgresql) drivers -->
@@ -123,9 +123,9 @@
 
         <!-- Swagger UI -->
         <dependency>
-            <groupId>io.springfox</groupId>
+            <groupId>org.thingsboard</groupId>
             <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.4</version>
         </dependency>
 
         <!-- Spring Boot configuration processor -->
@@ -139,19 +139,24 @@
         <dependency>
             <groupId>org.jpmml</groupId>
             <artifactId>pmml-evaluator-metro</artifactId>
-            <version>1.5.16</version>
+            <version>1.6.4</version>
         </dependency>
         <dependency>
             <groupId>org.jpmml</groupId>
             <artifactId>pmml-evaluator-moxy</artifactId>
-            <version>1.5.16</version>
+            <version>1.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.0</version>
         </dependency>
 
         <!-- stardog -->
         <dependency>
             <groupId>com.complexible.stardog</groupId>
             <artifactId>client-http</artifactId>
-            <version>7.7.2</version>
+            <version>8.1.1</version>
         </dependency>
 
     </dependencies>

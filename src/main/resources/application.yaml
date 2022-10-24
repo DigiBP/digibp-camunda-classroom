@@ -12,6 +12,9 @@ camunda:
 spring:
   profiles:
     active: local
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 #  jersey:
 #    application-path: /rest
 #  datasource:

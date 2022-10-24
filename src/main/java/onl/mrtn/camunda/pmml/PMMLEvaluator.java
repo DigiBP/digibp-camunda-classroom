@@ -8,7 +8,6 @@ package onl.mrtn.camunda.pmml;
 import org.camunda.bpm.BpmPlatform;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.impl.util.EnsureUtil;
-import org.dmg.pmml.FieldName;
 import org.jpmml.evaluator.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +82,7 @@ public class PMMLEvaluator {
 
         evaluator.verify();
 
-        Map<FieldName, ?> arguments = new LinkedHashMap<>();
+        Map<String, ?> arguments = new LinkedHashMap<>();
 
         List<InputField> inputFields = evaluator.getInputFields();
         for (InputField inputField : inputFields) {
@@ -102,17 +101,15 @@ public class PMMLEvaluator {
 
         evaluator.verify();
 
-        Map<FieldName, FieldValue> arguments = new LinkedHashMap<>();
+        Map<String, FieldValue> arguments = new LinkedHashMap<>();
 
         List<InputField> inputFields = evaluator.getInputFields();
         for (InputField inputField : inputFields) {
-            FieldName inputName = inputField.getName();
+            String inputName = inputField.getName();
 
-            String key = inputName.getValue();
-
-            Object value = request.get(key);
-            if (value == null && !request.containsKey(key)) {
-                throw new Exception("Evaluation request does not specify an input field "+ key);
+            Object value = request.get(inputName);
+            if (value == null && !request.containsKey(inputName)) {
+                throw new Exception("Evaluation request does not specify an input field "+ inputName);
             }
 
             FieldValue inputValue = inputField.prepare(value);
@@ -122,7 +119,7 @@ public class PMMLEvaluator {
 
         logger.debug("Evaluation request has prepared arguments: {}", arguments);
 
-        Map<FieldName, ?> result = evaluator.evaluate(arguments);
+        Map<String, ?> result = evaluator.evaluate(arguments);
 
         logger.debug("Evaluation request produced result: {}", result);
 
