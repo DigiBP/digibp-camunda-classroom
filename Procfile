@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/*.jar --spring.profiles.active=prod,heroku
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/*.jar --spring.profiles.active=prod,heroku -Dpolyglot.engine.WarnInterpreterOnly=false

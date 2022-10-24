@@ -81,11 +81,29 @@
             <artifactId>camunda-spin-dataformat-all</artifactId>
         </dependency>
 
-        <!-- JDK 11 with Camunda Spring Boot Starter -->
+        <!-- JDK 11 onwards for Camunda and PMML-->
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.3.5</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>failureaccess</artifactId>
+            <version>1.0.1</version>
         </dependency>
 
         <!-- JDK 15 adding GraalVM JavaScript support -->
@@ -145,11 +163,6 @@
             <groupId>org.jpmml</groupId>
             <artifactId>pmml-evaluator-moxy</artifactId>
             <version>1.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.xml.bind</groupId>
-            <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>4.0.0</version>
         </dependency>
 
         <!-- stardog -->
