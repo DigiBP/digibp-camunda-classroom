@@ -85,25 +85,18 @@
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>4.0.0</version>
+            <version>3.0.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>3.0.2</version>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
-            <version>2.1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-            <version>4.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>failureaccess</artifactId>
-            <version>1.0.1</version>
+            <version>2.0.1</version>
         </dependency>
 
         <!-- JDK 15 adding GraalVM JavaScript support -->
@@ -156,12 +149,7 @@
         <!-- jPMML -->
         <dependency>
             <groupId>org.jpmml</groupId>
-            <artifactId>pmml-evaluator-metro</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jpmml</groupId>
-            <artifactId>pmml-evaluator-moxy</artifactId>
+            <artifactId>pmml-evaluator</artifactId>
             <version>1.6.4</version>
         </dependency>
 
