@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named("notify")
-public class HTTPNotifyDelegate implements JavaDelegate {
+@Named("notify_data")
+public class HTTPNotifyDataDelegate implements JavaDelegate {
 
     private final Logger logger = LoggerFactory.getLogger(HTTPNotifyDelegate.class);
 
@@ -27,7 +27,7 @@ public class HTTPNotifyDelegate implements JavaDelegate {
     private final HTTPNotifyService notifyService;
 
     @Inject
-    public HTTPNotifyDelegate(HTTPNotifyService notifyService) {
+    public HTTPNotifyDataDelegate(HTTPNotifyService notifyService) {
         this.notifyService = notifyService;
         init();
     }
@@ -42,6 +42,6 @@ public class HTTPNotifyDelegate implements JavaDelegate {
 
         EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", notifyURL);
 
-        notifyService.notify(execution, notifyURL);
+        notifyService.notifyData(execution, notifyURL);
     }
 }

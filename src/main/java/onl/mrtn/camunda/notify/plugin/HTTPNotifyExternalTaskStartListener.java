@@ -5,13 +5,13 @@
 
 package onl.mrtn.camunda.notify.plugin;
 
-import onl.mrtn.camunda.notify.HTTPNotifyService;
+import onl.mrtn.camunda.notify.HTTPNotify;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 
 public class HTTPNotifyExternalTaskStartListener implements ExecutionListener {
 
-    private String notifyURL;
+    private final String notifyURL;
 
     public HTTPNotifyExternalTaskStartListener(String notifyURL) {
         this.notifyURL = notifyURL;
@@ -19,6 +19,6 @@ public class HTTPNotifyExternalTaskStartListener implements ExecutionListener {
 
     @Override
     public void notify(DelegateExecution execution) throws Exception {
-        new HTTPNotifyService().notify(execution, notifyURL);
+        new HTTPNotify().notify(execution, notifyURL);
     }
 }
