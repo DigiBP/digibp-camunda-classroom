@@ -3,12 +3,13 @@
  * All rights reserved.
  */
 
-package onl.mrtn.camunda.notify;
+package onl.mrtn.camunda.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.variable.value.ObjectValue;
 import org.camunda.spin.Spin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,34 +21,50 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class HTTPNotify {
+public class HTTPConnect {
 
-    private final Logger logger = LoggerFactory.getLogger(HTTPNotify.class);
+    private final Logger logger = LoggerFactory.getLogger(HTTPConnect.class);
 
     public void notify(DelegateExecution execution, String urlText) throws IOException {
-        URL url = new URL(urlText);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
+        HttpURLConnection connection = (HttpURLConnection) new URL(urlText).openConnection();
         connection.setRequestMethod("PUT");
-        sendNotification(execution, false, connection);
+        send(execution, connection, null);
     }
 
     public void notifyData(DelegateExecution execution, String urlText) throws IOException {
-        URL url = new URL(urlText);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
+        HttpURLConnection connection = (HttpURLConnection) new URL(urlText).openConnection();
         connection.setRequestMethod("PUT");
-        sendNotification(execution, true, connection);
+        send(execution, connection, execution.getVariables());
     }
 
-    public void notifyDataInject(DelegateExecution execution, String urlText) throws IOException {
-        URL url = new URL(urlText);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
+    public void callAPI(DelegateExecution execution, String urlText, String result_variable_name) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(urlText).openConnection();
         connection.setRequestMethod("POST");
+        connection.setRequestProperty("Accept", "application/json");
 
-        sendNotification(execution, true, connection);
+        Map<String, Object> data = new HashMap<>();
+
+        try {
+            ObjectValue objectValue = execution.getVariableTyped("api_variables");
+            if (objectValue!=null){
+                for (Object variable : objectValue.getValue(ArrayList.class)) {
+                    if(execution.hasVariable((String) variable)) {
+                        data.put((String) variable, execution.getVariable((String) variable));
+                    }
+                }
+            }
+        } catch (Exception e){
+            logger.info("api_input must be a List!");
+        }
+        if (data.isEmpty()) {
+            data = execution.getVariables();
+        }
+
+        send(execution, connection, data);
 
         switch (connection.getResponseCode()) {
             case 200, 201 -> {
@@ -60,9 +77,13 @@ public class HTTPNotify {
                 br.close();
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
-                    execution.setVariables(objectMapper.readValue(out.toString(), new TypeReference<>() {
-                    }));
-
+                    if(result_variable_name.isEmpty()) {
+                        execution.setVariables(objectMapper.readValue(out.toString(), new TypeReference<>() {
+                        }));
+                    } else {
+                        execution.setVariableLocal(result_variable_name, objectMapper.readValue(out.toString(), new TypeReference<>() {
+                        }));
+                    }
                 } catch (JsonProcessingException e) {
                     logger.info("No valid JSON object!");
                 }
@@ -71,7 +92,8 @@ public class HTTPNotify {
 
     }
 
-    private void sendNotification(DelegateExecution execution, Boolean data, HttpURLConnection connection) throws IOException {
+    private void send(DelegateExecution execution, HttpURLConnection connection, Map<String, Object> data) throws IOException {
+        connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", "application/json");
         String jsonInputString = "{" +
                 "\"processDefinitionId\": \"" + execution.getProcessDefinitionId() + "\"," +
@@ -81,9 +103,9 @@ public class HTTPNotify {
                 "\"processInstanceId\": \"" + execution.getProcessInstanceId() + "\"," +
                 "\"businessKey\": \"" + execution.getProcessBusinessKey() + "\"," +
                 "\"executionId\": \"" + execution.getId() + "\"";
-        if (data) {
+        if (data!=null) {
             jsonInputString += ", " +
-                 "\"data\": " + Spin.JSON(execution.getVariables()) +
+                 "\"data\": " + Spin.JSON(data) +
                  "}";
         } else {
             jsonInputString += "}";
@@ -96,7 +118,7 @@ public class HTTPNotify {
             logger.info("A valid \"URL\" field must be injected an URL.");
         }
 
-        logger.info("\n\n  ... HTTPNotify invoked by "
+        logger.info("\n\n  ... HTTPConnect invoked by "
                 + "processDefinitionId=" + execution.getProcessDefinitionId()
                 + ", tenantId=" + execution.getTenantId()
                 + ", activityId=" + execution.getCurrentActivityId()

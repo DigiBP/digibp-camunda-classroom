@@ -5,9 +5,9 @@
 
 package ch.fhnw.digibp.classroom.service;
 
-import onl.mrtn.camunda.notify.HTTPNotify;
+import onl.mrtn.camunda.http.HTTPConnect;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HTTPNotifyService extends HTTPNotify {
+public class HTTPConnectService extends HTTPConnect {
 }

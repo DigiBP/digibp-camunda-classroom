@@ -5,7 +5,7 @@
 
 package ch.fhnw.digibp.classroom.config;
 
-import onl.mrtn.camunda.notify.plugin.HTTPNotifyProcessEnginePlugin;
+import onl.mrtn.camunda.http.plugin.NotifyProcessEnginePlugin;
 import ch.fhnw.digibp.classroom.tenant.TenantIdProviderPlugin;
 import onl.mrtn.camunda.pmml.connect.plugin.PMMLProcessEnginePlugin;
 import onl.mrtn.camunda.sparql.connect.plugin.SPARQLProcessEnginePlugin;
@@ -35,8 +35,8 @@ public class CamundaEngineConfig{
     }
 
     @Bean
-    public static HTTPNotifyProcessEnginePlugin httpNotifyProcessEnginePluginConfiguration() {
-        return new HTTPNotifyProcessEnginePlugin();
+    public static NotifyProcessEnginePlugin httpNotifyProcessEnginePluginConfiguration() {
+        return new NotifyProcessEnginePlugin();
     }
 
 }

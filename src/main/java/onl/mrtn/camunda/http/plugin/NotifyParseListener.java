@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package onl.mrtn.camunda.notify.plugin;
+package onl.mrtn.camunda.http.plugin;
 
 import org.camunda.bpm.engine.impl.bpmn.parser.AbstractBpmnParseListener;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParseListener;
@@ -15,7 +15,7 @@ import org.camunda.bpm.engine.impl.util.xml.Namespace;
 
 import java.util.List;
 
-public class HTTPNotifyParseListener extends AbstractBpmnParseListener implements BpmnParseListener {
+public class NotifyParseListener extends AbstractBpmnParseListener implements BpmnParseListener {
 
     @Override
     public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
@@ -36,7 +36,7 @@ public class HTTPNotifyParseListener extends AbstractBpmnParseListener implement
                         String type = serviceTaskElement.attributeNS(new Namespace(BpmnParser.CAMUNDA_BPMN_EXTENSIONS_NS, BpmnParser.ACTIVITI_BPMN_EXTENSIONS_NS), "type");
 
                         if (type.equalsIgnoreCase("external")) {
-                            activity.addListener("start", new HTTPNotifyExternalTaskStartListener(property.attribute("value")));
+                            activity.addListener("start", new NotifyExternalTaskStartListener(property.attribute("value")));
                         }
                     }
                 }

@@ -5,7 +5,7 @@
 
 package ch.fhnw.digibp.classroom.adapter;
 
-import ch.fhnw.digibp.classroom.service.HTTPNotifyService;
+import ch.fhnw.digibp.classroom.service.HTTPConnectService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -18,30 +18,37 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named("notify")
-public class HTTPNotifyDelegate implements JavaDelegate {
+public class NotifyDelegate implements JavaDelegate {
 
-    private final Logger logger = LoggerFactory.getLogger(HTTPNotifyDelegate.class);
+    private final Logger logger = LoggerFactory.getLogger(NotifyDelegate.class);
 
     private Expression URL;
 
-    private final HTTPNotifyService notifyService;
+    private Expression DATA;
+
+    private final HTTPConnectService httpService;
 
     @Inject
-    public HTTPNotifyDelegate(HTTPNotifyService notifyService) {
-        this.notifyService = notifyService;
+    public NotifyDelegate(HTTPConnectService httpService) {
+        this.httpService = httpService;
         init();
     }
 
     private void init() {
         this.URL = new FixedValue("");
+        this.DATA = new FixedValue("false");
     }
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        String notifyURL = URL.getExpressionText();
+        String urlText = URL.getExpressionText();
+        EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", urlText);
 
-        EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", notifyURL);
+        if(Boolean.parseBoolean(DATA.getExpressionText())){
+            httpService.notifyData(execution, urlText);
 
-        notifyService.notify(execution, notifyURL);
+        } else {
+            httpService.notify(execution, urlText);
+        }
     }
 }
