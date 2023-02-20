@@ -107,6 +107,7 @@
     {
       "label": "Result Variable",
       "description": "A global variable can be defined here to extract data from the JSON object later.",
+      "value": "api_response",
       "binding": {
         "type": "camunda:outputParameter",
         "source": "${ api_response }"
