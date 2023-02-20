@@ -42,7 +42,7 @@ public class HTTPConnect {
         send(execution, connection, execution.getVariables());
     }
 
-    public void callAPI(DelegateExecution execution, String urlText, String authorizationText, String result_variable_name) throws IOException {
+    public void callAPI(DelegateExecution execution, String urlText, String authorizationText, String result_variable_name, Boolean automaticVariables) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(urlText).openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Accept", "application/json");
@@ -98,11 +98,13 @@ public class HTTPConnect {
                 br.close();
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
-                    if(result_variable_name.isEmpty() && resultVariables.isEmpty()) {
+                    execution.setVariableLocal("api_response", objectMapper.readValue(out.toString(), new TypeReference<>() {
+                    }));
+                    if(automaticVariables && result_variable_name.equals("api_response") && resultVariables.isEmpty()) {
                         execution.setVariables(objectMapper.readValue(out.toString(), new TypeReference<>() {
                         }));
                     }
-                    if(!result_variable_name.isEmpty()){
+                    if(!result_variable_name.equals("api_response")){
                         execution.setVariableLocal(result_variable_name, objectMapper.readValue(out.toString(), new TypeReference<>() {
                         }));
                     }

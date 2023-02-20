@@ -27,12 +27,8 @@
       "label": "Authentication"
     },
     {
-      "id": "input",
-      "label": "Payload"
-    },
-    {
-      "id": "output",
-      "label": "Response Mapping"
+      "id": "mapping",
+      "label": "Mapping"
     }
   ],
   "properties": [
@@ -76,9 +72,23 @@
       "optional": true
     },
     {
+      "label": "Automatic Incoming Variables",
+      "description": "Shall workflow variables are automatically be created based on the response JSON object?",
+      "group": "mapping",
+      "type": "Dropdown",
+      "value": "true",
+      "binding": {
+        "type": "camunda:field",
+        "name": "automatic_variables"
+      },
+      "choices": [
+        { "name": "Yes", "value": "true" },
+        { "name": "No", "value": "false" }
+      ]
+    },
+    {
       "label": "Outgoing Variables",
       "description": "By default, all workflow variables are transferred to the endpoint. If only selected workflow variables are to be transferred, they must be listed using “Assignment type” as “List” with the variable name.",
-      "group": "output",
       "binding": {
         "type": "camunda:inputParameter",
         "name": "api_variables"
@@ -88,10 +98,18 @@
     {
       "label": "Incoming Variables",
       "description": "By default, workflow variables are automatically created based on the response JSON object. If only selected workflow variables should be created, they must be listed using “Assignment type” as “List” with the variable name.",
-      "group": "output",
       "binding": {
         "type": "camunda:inputParameter",
         "name": "result_variables"
+      },
+      "optional": true
+    },
+    {
+      "label": "Result Variable",
+      "description": "A global variable can be defined here to extract data from the JSON object later.",
+      "binding": {
+        "type": "camunda:outputParameter",
+        "source": "${ api_response }"
       },
       "optional": true
     }
