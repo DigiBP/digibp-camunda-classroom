@@ -70,7 +70,6 @@ public class HTTPConnect {
         }
 
         data.remove("api_variables");
-        data.remove("api_response");
         data.remove("result_variables");
 
         send(execution, connection, data);
@@ -101,11 +100,11 @@ public class HTTPConnect {
                     ObjectMapper objectMapper = new ObjectMapper();
                     execution.setVariableLocal("api_response", objectMapper.readValue(out.toString(), new TypeReference<>() {
                     }));
-                    if(automaticVariables && result_variable_name.equals("api_response") && resultVariables.isEmpty()) {
+                    if(automaticVariables && resultVariables.isEmpty()) {
                         execution.setVariables(objectMapper.readValue(out.toString(), new TypeReference<>() {
                         }));
                     }
-                    if(!result_variable_name.equals("api_response")){
+                    if(!result_variable_name.equals("None")){
                         execution.setVariableLocal(result_variable_name, objectMapper.readValue(out.toString(), new TypeReference<>() {
                         }));
                     }

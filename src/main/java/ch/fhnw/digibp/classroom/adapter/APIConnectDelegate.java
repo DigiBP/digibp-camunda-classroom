@@ -41,7 +41,7 @@ public class APIConnectDelegate implements JavaDelegate {
     private void init() {
         this.URL = new FixedValue("");
         this.authorization = new FixedValue("None");
-        this.result_variable = new FixedValue("api_response");
+        this.result_variable = new FixedValue("None");
         this.automatic_variables = new FixedValue("false");
     }
 

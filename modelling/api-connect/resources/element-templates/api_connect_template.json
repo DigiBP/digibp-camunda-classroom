@@ -87,6 +87,21 @@
       ]
     },
     {
+      "label": "Result Variable",
+      "description": "A global variable can be defined here to extract data from the JSON object later. Otherwise indicate “None”.",
+      "group": "mapping",
+      "type": "String",
+      "value": "None",
+      "binding": {
+        "type": "camunda:field",
+        "name": "result_variable"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "optional": true
+    },
+    {
       "label": "Outgoing Variables",
       "description": "By default, all workflow variables are transferred to the endpoint. If only selected workflow variables are to be transferred, they must be listed using “Assignment type” as “List” with the variable name.",
       "binding": {
@@ -101,16 +116,6 @@
       "binding": {
         "type": "camunda:inputParameter",
         "name": "result_variables"
-      },
-      "optional": true
-    },
-    {
-      "label": "Result Variable",
-      "description": "A global variable can be defined here to extract data from the JSON object later.",
-      "value": "api_response",
-      "binding": {
-        "type": "camunda:outputParameter",
-        "source": "${ api_response }"
       },
       "optional": true
     }
