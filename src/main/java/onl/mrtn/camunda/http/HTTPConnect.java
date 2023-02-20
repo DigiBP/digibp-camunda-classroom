@@ -42,7 +42,7 @@ public class HTTPConnect {
         send(execution, connection, execution.getVariables());
     }
 
-    public void callAPI(DelegateExecution execution, String urlText, String authorizationText, String result_variable_name, Boolean automaticVariables) throws IOException {
+    public void callAPI(DelegateExecution execution, String urlText, String authorizationText, String result_variable_name, Boolean automaticAPIVariables, Boolean automaticResultVariables) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(urlText).openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Accept", "application/json");
@@ -65,7 +65,7 @@ public class HTTPConnect {
         } catch (Exception e){
             logger.info("If you want to make use of it, api_variables must be a List!");
         }
-        if (data.isEmpty()) {
+        if (data.isEmpty() && automaticAPIVariables) {
             data = execution.getVariables();
         }
 
@@ -100,7 +100,7 @@ public class HTTPConnect {
                     ObjectMapper objectMapper = new ObjectMapper();
                     execution.setVariableLocal("api_response", objectMapper.readValue(out.toString(), new TypeReference<>() {
                     }));
-                    if(automaticVariables && resultVariables.isEmpty()) {
+                    if(automaticResultVariables && resultVariables.isEmpty()) {
                         execution.setVariables(objectMapper.readValue(out.toString(), new TypeReference<>() {
                         }));
                     }

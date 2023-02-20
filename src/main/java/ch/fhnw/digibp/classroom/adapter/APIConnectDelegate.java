@@ -28,7 +28,8 @@ public class APIConnectDelegate implements JavaDelegate {
 
     private Expression result_variable;
 
-    private Expression automatic_variables;
+    private Expression automatic_api_variables;
+    private Expression automatic_result_variables;
 
     private final HTTPConnectService httpService;
 
@@ -42,7 +43,8 @@ public class APIConnectDelegate implements JavaDelegate {
         this.URL = new FixedValue("");
         this.authorization = new FixedValue("None");
         this.result_variable = new FixedValue("None");
-        this.automatic_variables = new FixedValue("false");
+        this.automatic_api_variables = new FixedValue("true");
+        this.automatic_result_variables = new FixedValue("true");
     }
 
     @Override
@@ -50,12 +52,13 @@ public class APIConnectDelegate implements JavaDelegate {
         String urlText = URL.getExpressionText();
         String authorizationText = authorization.getExpressionText();
         String resultVariable = result_variable.getExpressionText();
-        Boolean automaticVariables = Boolean.parseBoolean(automatic_variables.getExpressionText());
+        Boolean automaticAPIVariables = Boolean.parseBoolean(automatic_api_variables.getExpressionText());
+        Boolean automaticResultVariables = Boolean.parseBoolean(automatic_result_variables.getExpressionText());
 
         init();
 
         EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", urlText);
 
-        httpService.callAPI(execution, urlText, authorizationText, resultVariable, automaticVariables);
+        httpService.callAPI(execution, urlText, authorizationText, resultVariable, automaticAPIVariables, automaticResultVariables);
     }
 }
