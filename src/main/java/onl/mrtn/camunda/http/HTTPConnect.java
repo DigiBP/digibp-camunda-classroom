@@ -105,7 +105,7 @@ public class HTTPConnect {
                         }));
                     }
                     if(!result_variable_name.equals("None")){
-                        execution.setVariableLocal(result_variable_name, objectMapper.readValue(out.toString(), new TypeReference<>() {
+                        execution.setVariable(result_variable_name, objectMapper.readValue(out.toString(), new TypeReference<>() {
                         }));
                     }
                     if(!resultVariables.isEmpty()){
