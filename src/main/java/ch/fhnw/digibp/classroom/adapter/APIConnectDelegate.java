@@ -24,6 +24,8 @@ public class APIConnectDelegate implements JavaDelegate {
 
     private Expression URL;
 
+    private Expression authorization;
+
     private Expression result_variable;
 
     private final HTTPConnectService httpService;
@@ -36,17 +38,19 @@ public class APIConnectDelegate implements JavaDelegate {
 
     private void init() {
         this.URL = new FixedValue("");
+        this.authorization = new FixedValue("");
         this.result_variable = new FixedValue("");
     }
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         String urlText = URL.getExpressionText();
+        String authorizationText = authorization.getExpressionText();
         String result_variable_name = result_variable.getExpressionText();
 
 
         EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", urlText);
 
-        httpService.callAPI(execution, urlText, result_variable_name);
+        httpService.callAPI(execution, urlText, authorizationText, result_variable_name);
     }
 }

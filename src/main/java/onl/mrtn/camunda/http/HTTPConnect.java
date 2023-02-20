@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HTTPConnect {
@@ -41,10 +42,13 @@ public class HTTPConnect {
         send(execution, connection, execution.getVariables());
     }
 
-    public void callAPI(DelegateExecution execution, String urlText, String result_variable_name) throws IOException {
+    public void callAPI(DelegateExecution execution, String urlText, String authorizationText, String result_variable_name) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(urlText).openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Accept", "application/json");
+        if(!authorizationText.isEmpty()) {
+            connection.addRequestProperty("Authorization", authorizationText);
+        }
 
         Map<String, Object> data = new HashMap<>();
 
@@ -58,13 +62,26 @@ public class HTTPConnect {
                 }
             }
         } catch (Exception e){
-            logger.info("api_input must be a List!");
+            logger.info("If you want to make use of it, api_variables must be a List!");
         }
         if (data.isEmpty()) {
             data = execution.getVariables();
         }
 
         send(execution, connection, data);
+
+        List<String> resultVariables = new ArrayList<>();
+
+        try {
+            ObjectValue objectValue = execution.getVariableTyped("result_variables");
+            if (objectValue!=null){
+                for (Object variable : objectValue.getValue(ArrayList.class)) {
+                    resultVariables.add((String) variable);
+                }
+            }
+        } catch (Exception e){
+            logger.info("If you want to make use of it, result_variables must be a List!");
+        }
 
         switch (connection.getResponseCode()) {
             case 200, 201 -> {
@@ -77,12 +94,19 @@ public class HTTPConnect {
                 br.close();
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
-                    if(result_variable_name.isEmpty()) {
+                    if(result_variable_name.isEmpty() && resultVariables.isEmpty()) {
                         execution.setVariables(objectMapper.readValue(out.toString(), new TypeReference<>() {
                         }));
-                    } else {
+                    }
+                    if(!result_variable_name.isEmpty()){
                         execution.setVariableLocal(result_variable_name, objectMapper.readValue(out.toString(), new TypeReference<>() {
                         }));
+                    }
+                    if(!resultVariables.isEmpty()){
+                        Map<String, ?> dataMap = objectMapper.readValue(out.toString(), new TypeReference<>() {});
+                        for (String resultVariable:resultVariables){
+                            execution.setVariable(resultVariable, dataMap.get(resultVariable));
+                        }
                     }
                 } catch (JsonProcessingException e) {
                     logger.info("No valid JSON object!");
@@ -94,7 +118,7 @@ public class HTTPConnect {
 
     private void send(DelegateExecution execution, HttpURLConnection connection, Map<String, Object> data) throws IOException {
         connection.setDoOutput(true);
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.addRequestProperty("Content-Type", "application/json");
         String jsonInputString = "{" +
                 "\"processDefinitionId\": \"" + execution.getProcessDefinitionId() + "\"," +
                 "\"tenantId\": \"" + execution.getTenantId() + "\"," +
