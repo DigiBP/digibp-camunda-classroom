@@ -62,7 +62,7 @@
     },
     {
       "label": "Authorization Header",
-      "description": "Here it would be possible to define an authorisation header string if necessary, for example to specify a bearer token. Otherwise indicate “None”",
+      "description": "Here it would be possible to define an authorisation header string if necessary, for example to specify a bearer token. Otherwise indicate “None”.",
       "group": "authentication",
       "type": "String",
       "value": "None",
@@ -72,7 +72,8 @@
       },
       "constraints": {
         "notEmpty": true
-      }
+      },
+      "optional": true
     },
     {
       "label": "API Variables",

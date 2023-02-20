@@ -46,7 +46,7 @@ public class HTTPConnect {
         HttpURLConnection connection = (HttpURLConnection) new URL(urlText).openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Accept", "application/json");
-        if(!authorizationText.contains("None") && !authorizationText.isEmpty()) {
+        if(!authorizationText.contains("None")) {
             connection.addRequestProperty("Authorization", authorizationText);
         }
 
@@ -55,13 +55,10 @@ public class HTTPConnect {
         try {
             ObjectValue objectValue = execution.getVariableTyped("api_variables");
             if (objectValue!=null){
-                execution.removeVariableLocal("api_variables");
                 for (Object variable : objectValue.getValue(ArrayList.class)) {
                     String variableString = (String) variable;
-                    if(!variableString.equals("api_variables")&&!variableString.equals("result_variables")) {
-                        if (execution.hasVariable(variableString)) {
-                            data.put(variableString, execution.getVariable(variableString));
-                        }
+                    if (execution.hasVariable(variableString)) {
+                        data.put(variableString, execution.getVariable(variableString));
                     }
                 }
             }
@@ -71,6 +68,9 @@ public class HTTPConnect {
         if (data.isEmpty()) {
             data = execution.getVariables();
         }
+
+        data.remove("api_variables");
+        data.remove("result_variables");
 
         send(execution, connection, data);
 

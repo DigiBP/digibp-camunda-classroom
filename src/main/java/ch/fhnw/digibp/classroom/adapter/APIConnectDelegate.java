@@ -38,7 +38,7 @@ public class APIConnectDelegate implements JavaDelegate {
 
     private void init() {
         this.URL = new FixedValue("");
-        this.authorization = new FixedValue("");
+        this.authorization = new FixedValue("None");
         this.result_variable = new FixedValue("");
     }
 
@@ -47,7 +47,7 @@ public class APIConnectDelegate implements JavaDelegate {
         String urlText = URL.getExpressionText();
         String authorizationText = authorization.getExpressionText();
         String result_variable_name = result_variable.getExpressionText();
-
+        init();
 
         EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", urlText);
 
