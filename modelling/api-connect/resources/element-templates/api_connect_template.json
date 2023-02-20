@@ -62,14 +62,17 @@
     },
     {
       "label": "Authorization Header",
-      "description": "Here it would be possible to define an authorisation header string if necessary, for example to specify a bearer token.",
+      "description": "Here it would be possible to define an authorisation header string if necessary, for example to specify a bearer token. Otherwise indicate “None”",
       "group": "authentication",
       "type": "String",
+      "value": "None",
       "binding": {
         "type": "camunda:field",
         "name": "authorization"
       },
-      "optional": true
+      "constraints": {
+        "notEmpty": true
+      }
     },
     {
       "label": "API Variables",
