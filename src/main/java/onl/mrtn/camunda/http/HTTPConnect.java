@@ -57,8 +57,11 @@ public class HTTPConnect {
             if (objectValue!=null){
                 execution.removeVariableLocal("api_variables");
                 for (Object variable : objectValue.getValue(ArrayList.class)) {
-                    if(execution.hasVariable((String) variable)) {
-                        data.put((String) variable, execution.getVariable((String) variable));
+                    String variableString = (String) variable;
+                    if(!variableString.equals("api_variables")&&!variableString.equals("result_variables")) {
+                        if (execution.hasVariable(variableString)) {
+                            data.put(variableString, execution.getVariable(variableString));
+                        }
                     }
                 }
             }
@@ -76,7 +79,6 @@ public class HTTPConnect {
         try {
             ObjectValue objectValue = execution.getVariableTyped("result_variables");
             if (objectValue!=null){
-                execution.removeVariableLocal("result_variables");
                 for (Object variable : objectValue.getValue(ArrayList.class)) {
                     resultVariables.add((String) variable);
                 }
