@@ -70,6 +70,7 @@ public class HTTPConnect {
         }
 
         data.remove("api_variables");
+        data.remove("api_response");
         data.remove("result_variables");
 
         send(execution, connection, data);
