@@ -1,8 +1,9 @@
 {
   "$schema": "https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
   "name": "API Connect",
-  "id": "onl.mrtn.camunda.http",
+  "id": "onl.mrtn.camunda.http.api_connect",
   "description": "Connect to a REST API.",
+  "version": 1,
   "entriesVisible": false,
   "category": {
     "id": "connectors",
@@ -43,7 +44,7 @@
       "type": "String",
       "binding": {
         "type": "camunda:field",
-        "name": "URL"
+        "name": "api_connect_url"
       },
       "constraints": {
         "notEmpty": true,
@@ -61,7 +62,7 @@
       "value": "None",
       "binding": {
         "type": "camunda:field",
-        "name": "authorization"
+        "name": "api_connect_authorization"
       },
       "constraints": {
         "notEmpty": true
@@ -76,7 +77,7 @@
       "value": "true",
       "binding": {
         "type": "camunda:field",
-        "name": "automatic_api_variables"
+        "name": "api_connect_api_variables"
       },
       "choices": [
         { "name": "Yes", "value": "true" },
@@ -91,7 +92,7 @@
       "value": "true",
       "binding": {
         "type": "camunda:field",
-        "name": "automatic_result_variables"
+        "name": "api_connect_result_variables"
       },
       "choices": [
         { "name": "Yes", "value": "true" },
@@ -106,7 +107,7 @@
       "value": "None",
       "binding": {
         "type": "camunda:field",
-        "name": "result_variable"
+        "name": "api_connect_result_variable"
       },
       "constraints": {
         "notEmpty": true
@@ -118,7 +119,7 @@
       "description": "By default, all workflow variables are transferred to the endpoint. If only selected workflow variables are to be transferred, they must be listed using “Assignment type” as “List” with the variable name.",
       "binding": {
         "type": "camunda:inputParameter",
-        "name": "api_variables"
+        "name": "api_connect_api_variables"
       },
       "optional": true
     },
@@ -127,7 +128,7 @@
       "description": "By default, workflow variables are automatically created based on the response JSON object. If only selected workflow variables should be created, they must be listed using “Assignment type” as “List” with the variable name.",
       "binding": {
         "type": "camunda:inputParameter",
-        "name": "result_variables"
+        "name": "api_connect_result_variables"
       },
       "optional": true
     }

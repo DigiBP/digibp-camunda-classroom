@@ -22,14 +22,14 @@ public class APIConnectDelegate implements JavaDelegate {
 
     private final Logger logger = LoggerFactory.getLogger(NotifyDelegate.class);
 
-    private Expression URL;
+    private Expression api_connect_url;
 
-    private Expression authorization;
+    private Expression api_connect_authorization;
 
-    private Expression result_variable;
+    private Expression api_connect_result_variable;
 
-    private Expression automatic_api_variables;
-    private Expression automatic_result_variables;
+    private Expression api_connect_api_variables;
+    private Expression api_connect_result_variables;
 
     private final HTTPConnectService httpService;
 
@@ -40,24 +40,24 @@ public class APIConnectDelegate implements JavaDelegate {
     }
 
     private void init() {
-        this.URL = new FixedValue("");
-        this.authorization = new FixedValue("None");
-        this.result_variable = new FixedValue("None");
-        this.automatic_api_variables = new FixedValue("true");
-        this.automatic_result_variables = new FixedValue("true");
+        this.api_connect_url = new FixedValue("");
+        this.api_connect_authorization = new FixedValue("None");
+        this.api_connect_result_variable = new FixedValue("None");
+        this.api_connect_api_variables = new FixedValue("true");
+        this.api_connect_result_variables = new FixedValue("true");
     }
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        String urlText = URL.getExpressionText();
-        String authorizationText = authorization.getExpressionText();
-        String resultVariable = result_variable.getExpressionText();
-        Boolean automaticAPIVariables = Boolean.parseBoolean(automatic_api_variables.getExpressionText());
-        Boolean automaticResultVariables = Boolean.parseBoolean(automatic_result_variables.getExpressionText());
+        String urlText = api_connect_url.getExpressionText();
+        String authorizationText = api_connect_authorization.getExpressionText();
+        String resultVariable = api_connect_result_variable.getExpressionText();
+        Boolean automaticAPIVariables = Boolean.parseBoolean(api_connect_api_variables.getExpressionText());
+        Boolean automaticResultVariables = Boolean.parseBoolean(api_connect_result_variables.getExpressionText());
 
         init();
 
-        EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", urlText);
+        EnsureUtil.ensureNotEmpty("A \"api_connect_url\" field must be injected an URL.", urlText);
 
         httpService.callAPI(execution, urlText, authorizationText, resultVariable, automaticAPIVariables, automaticResultVariables);
     }

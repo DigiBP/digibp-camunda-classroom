@@ -22,9 +22,11 @@ public class NotifyDelegate implements JavaDelegate {
 
     private final Logger logger = LoggerFactory.getLogger(NotifyDelegate.class);
 
+    private Expression notify_url;
+    @Deprecated
     private Expression URL;
 
-    private Expression DATA;
+    private Expression notify_data;
 
     private final HTTPConnectService httpService;
 
@@ -36,15 +38,16 @@ public class NotifyDelegate implements JavaDelegate {
 
     private void init() {
         this.URL = new FixedValue("");
-        this.DATA = new FixedValue("false");
+        this.notify_url = new FixedValue("");
+        this.notify_data = new FixedValue("false");
     }
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        String urlText = URL.getExpressionText();
-        EnsureUtil.ensureNotEmpty("A \"URL\" field must be injected an URL.", urlText);
+        String urlText = URL.getExpressionText() + notify_url.getExpressionText();
+        EnsureUtil.ensureNotEmpty("A \"notify_url\" field must be injected an URL.", urlText);
 
-        if(Boolean.parseBoolean(DATA.getExpressionText())){
+        if(Boolean.parseBoolean(notify_data.getExpressionText())){
             httpService.notifyData(execution, urlText);
 
         } else {

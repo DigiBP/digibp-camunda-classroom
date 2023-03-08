@@ -53,7 +53,7 @@ public class HTTPConnect {
         Map<String, Object> data = new HashMap<>();
 
         try {
-            ObjectValue objectValue = execution.getVariableTyped("api_variables");
+            ObjectValue objectValue = execution.getVariableTyped("api_connect_api_variables");
             if (objectValue!=null){
                 for (Object variable : objectValue.getValue(ArrayList.class)) {
                     String variableString = (String) variable;
@@ -63,28 +63,28 @@ public class HTTPConnect {
                 }
             }
         } catch (Exception e){
-            logger.info("If you want to make use of it, api_variables must be a List!");
+            logger.info("If you want to make use of it, api_connect_api_variables must be a List!");
         }
         if (data.isEmpty() && automaticAPIVariables) {
             data = execution.getVariables();
         }
 
-        data.remove("api_variables");
-        data.remove("result_variables");
+        data.remove("api_connect_api_variables");
+        data.remove("api_connect_result_variables");
 
         send(execution, connection, data);
 
         List<String> resultVariables = new ArrayList<>();
 
         try {
-            ObjectValue objectValue = execution.getVariableTyped("result_variables");
+            ObjectValue objectValue = execution.getVariableTyped("api_connect_result_variables");
             if (objectValue!=null){
                 for (Object variable : objectValue.getValue(ArrayList.class)) {
                     resultVariables.add((String) variable);
                 }
             }
         } catch (Exception e){
-            logger.info("If you want to make use of it, result_variables must be a List!");
+            logger.info("If you want to make use of it, api_connect_result_variables must be a List!");
         }
 
         switch (connection.getResponseCode()) {
