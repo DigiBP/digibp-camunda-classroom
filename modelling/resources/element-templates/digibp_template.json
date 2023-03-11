@@ -1,265 +1,338 @@
 [
-  {
-     "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
-     "name":"API Connect",
-     "id":"onl.mrtn.camunda.http.api_connect",
-     "description":"Connect to a REST API.",
-     "version":1,
-     "entriesVisible":false,
-     "appliesTo":[
-        "bpmn:SendTask",
-        "bpmn:ServiceTask"
-     ],
-     "groups":[
-        {
-           "id":"endpoint",
-           "label":"Endpoint"
-        },
-        {
-           "id":"authentication",
-           "label":"Authentication"
-        },
-        {
-           "id":"mapping",
-           "label":"Mapping"
-        }
-     ],
-     "properties":[
-        {
-           "type":"Hidden",
-           "value":"${api_connect}",
-           "binding":{
-              "type":"property",
-              "name":"camunda:delegateExpression"
-           }
-        },
-        {
-           "label":"🔗 URL",
-           "group":"endpoint",
-           "type":"String",
-           "binding":{
-              "type":"camunda:field",
-              "name":"api_connect_url"
-           },
-           "constraints":{
-              "notEmpty":true,
-              "pattern":{
-                 "value":"^(=|http://|https://|secrets).*$",
-                 "message":"Must be a http(s) URL."
-              }
-           }
-        },
-        {
-           "label":"🔑 Authorization Header",
-           "description":"Here it would be possible to define an authorisation header string if necessary, for example to specify a bearer token. Otherwise, indicate “None”.",
-           "group":"authentication",
-           "type":"String",
-           "value":"None",
-           "binding":{
-              "type":"camunda:field",
-              "name":"api_connect_authorization"
-           },
-           "constraints":{
-              "notEmpty":true
-           },
-           "optional":true
-        },
-        {
-           "label":"🪄 Automatic ➡️ Outgoing Variables",
-           "description":"Shall workflow variables automatically be transferred to the endpoint?",
-           "group":"mapping",
-           "type":"Dropdown",
-           "value":"true",
-           "binding":{
-              "type":"camunda:field",
-              "name":"api_connect_api_variables"
-           },
-           "choices":[
-              {
-                 "name":"Yes",
-                 "value":"true"
-              },
-              {
-                 "name":"No",
-                 "value":"false"
-              }
-           ]
-        },
-        {
-           "label":"🪄 Automatic ⬅️ Incoming Variables",
-           "description":"Shall workflow variables automatically be created based on the response JSON object?",
-           "group":"mapping",
-           "type":"Dropdown",
-           "value":"true",
-           "binding":{
-              "type":"camunda:field",
-              "name":"api_connect_result_variables"
-           },
-           "choices":[
-              {
-                 "name":"Yes",
-                 "value":"true"
-              },
-              {
-                 "name":"No",
-                 "value":"false"
-              }
-           ]
-        },
-        {
-           "label":"🟰 Result Variable",
-           "description":"A global variable can be defined here to extract data from the JSON object later. Otherwise, indicate “None”.",
-           "group":"mapping",
-           "type":"String",
-           "value":"None",
-           "binding":{
-              "type":"camunda:field",
-              "name":"api_connect_result_variable"
-           },
-           "constraints":{
-              "notEmpty":true
-           },
-           "optional":true
-        },
-        {
-           "label":"➡️ Outgoing Variables",
-           "description":"By default, all workflow variables are transferred to the endpoint. If only selected workflow variables are to be transferred, they must be listed using “Assignment type” as “List” with the variable name.",
-           "binding":{
-              "type":"camunda:inputParameter",
-              "name":"api_connect_api_variables"
-           },
-           "optional":true
-        },
-        {
-           "label":"⬅️ Incoming Variables",
-           "description":"By default, workflow variables are automatically created based on the response JSON object. If only selected workflow variables should be created, they must be listed using “Assignment type” as “List” with the variable name.",
-           "binding":{
-              "type":"camunda:inputParameter",
-              "name":"api_connect_result_variables"
-           },
-           "optional":true
-        }
-     ]
-  },
-  {
-     "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
-     "name":"Notify Task",
-     "id":"onl.mrtn.camunda.http.notify.task",
-     "description":"Notify a REST API.",
-     "version":1,
-     "entriesVisible":false,
-     "appliesTo":[
-        "bpmn:SendTask",
-        "bpmn:ServiceTask"
-     ],
-     "groups":[
-        {
-           "id":"endpoint",
-           "label":"Endpoint"
-        }
-     ],
-     "properties":[
-        {
-           "type":"Hidden",
-           "value":"${notify}",
-           "binding":{
-              "type":"property",
-              "name":"camunda:delegateExpression"
-           }
-        },
-        {
-           "label":"🔗 URL",
-           "group":"endpoint",
-           "type":"String",
-           "binding":{
-              "type":"camunda:field",
-              "name":"notify_url"
-           },
-           "constraints":{
-              "notEmpty":true,
-              "pattern":{
-                 "value":"^(=|http://|https://|secrets).*$",
-                 "message":"Must be a http(s) URL."
-              }
-           }
-        }
-     ]
-  },
-  {
-     "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
-     "name":"Notify Extension External Task",
-     "id":"onl.mrtn.camunda.http.notify.external",
-     "description":"Notify a REST API prior external task client.",
-     "version":1,
-     "entriesVisible":true,
-     "appliesTo": [
+   {
+      "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+      "name":"API Connect",
+      "id":"onl.mrtn.camunda.http.api_connect",
+      "description":"Connect to a REST API.",
+      "version":1,
+      "entriesVisible":false,
+      "appliesTo":[
          "bpmn:Task"
       ],
-      "elementType": {
-         "value": "bpmn:ServiceTask"
+      "elementType":{
+         "value":"bpmn:ServiceTask"
       },
-     "groups":[
-        {
-           "id":"endpoint",
-           "label":"Endpoint"
-        }
-     ],
-     "properties":[
-        {
-           "label":"🔗 URL",
-           "group":"endpoint",
-           "type":"String",
-           "binding":{
-              "type":"camunda:property",
-              "name":"notify_url"
-           },
-           "constraints":{
-              "notEmpty":true,
-              "pattern":{
-                 "value":"^(=|http://|https://|secrets).*$",
-                 "message":"Must be a http(s) URL."
-              }
-           }
-        }
-     ]
-  },
-  {
-     "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
-     "name":"Inter Process Message Extension",
-     "id":"onl.mrtn.camunda.interprocess",
-     "description":"Message another process.",
-     "version":1,
-     "entriesVisible":false,
-     "appliesTo":[
-        "bpmn:SendTask"
-     ],
-     "groups":[
-        {
-           "id":"message",
-           "label":"Message"
-        }
-     ],
-     "properties":[
-        {
-           "type":"Hidden",
-           "value":"${inter_process}",
-           "binding":{
-              "type":"property",
-              "name":"camunda:delegateExpression"
-           }
-        },
-        {
-           "label":"📮 Message Name",
-           "group":"message",
-           "type":"String",
-           "binding":{
-              "type":"camunda:field",
-              "name":"message_name"
-           },
-           "constraints":{
-              "notEmpty":true
-           }
-        }
-     ]
-  }
+      "groups":[
+         {
+            "id":"endpoint",
+            "label":"Endpoint"
+         },
+         {
+            "id":"authentication",
+            "label":"Authentication"
+         },
+         {
+            "id":"mapping",
+            "label":"Mapping"
+         }
+      ],
+      "properties":[
+         {
+            "type":"Hidden",
+            "value":"${api_connect}",
+            "binding":{
+               "type":"property",
+               "name":"camunda:delegateExpression"
+            }
+         },
+         {
+            "label":"🔗 URL",
+            "group":"endpoint",
+            "type":"String",
+            "binding":{
+               "type":"camunda:field",
+               "name":"api_connect_url"
+            },
+            "constraints":{
+               "notEmpty":true,
+               "pattern":{
+                  "value":"^(=|http://|https://|secrets).*$",
+                  "message":"Must be a http(s) URL."
+               }
+            }
+         },
+         {
+            "label":"🔑 Authorization Header",
+            "description":"Here it would be possible to define an authorisation header string if necessary, for example to specify a bearer token. Otherwise, indicate “None”.",
+            "group":"authentication",
+            "type":"String",
+            "value":"None",
+            "binding":{
+               "type":"camunda:field",
+               "name":"api_connect_authorization"
+            },
+            "constraints":{
+               "notEmpty":true
+            },
+            "optional":true
+         },
+         {
+            "label":"🪄 Automatic ➡️ Outgoing Variables",
+            "description":"Shall workflow variables automatically be transferred to the endpoint?",
+            "group":"mapping",
+            "type":"Dropdown",
+            "value":"true",
+            "binding":{
+               "type":"camunda:field",
+               "name":"api_connect_api_variables"
+            },
+            "choices":[
+               {
+                  "name":"Yes",
+                  "value":"true"
+               },
+               {
+                  "name":"No",
+                  "value":"false"
+               }
+            ]
+         },
+         {
+            "label":"🪄 Automatic ⬅️ Incoming Variables",
+            "description":"Shall workflow variables automatically be created based on the response JSON object?",
+            "group":"mapping",
+            "type":"Dropdown",
+            "value":"true",
+            "binding":{
+               "type":"camunda:field",
+               "name":"api_connect_result_variables"
+            },
+            "choices":[
+               {
+                  "name":"Yes",
+                  "value":"true"
+               },
+               {
+                  "name":"No",
+                  "value":"false"
+               }
+            ]
+         },
+         {
+            "label":"🟰 Result Variable",
+            "description":"A global variable can be defined here to extract data from the JSON object later. Otherwise, indicate “None”.",
+            "group":"mapping",
+            "type":"String",
+            "value":"None",
+            "binding":{
+               "type":"camunda:field",
+               "name":"api_connect_result_variable"
+            },
+            "constraints":{
+               "notEmpty":true
+            },
+            "optional":true
+         },
+         {
+            "label":"➡️ Outgoing Variables",
+            "description":"By default, all workflow variables are transferred to the endpoint. If only selected workflow variables are to be transferred, they must be listed using “Assignment type” as “List” with the variable name.",
+            "binding":{
+               "type":"camunda:inputParameter",
+               "name":"api_connect_api_variables"
+            },
+            "optional":true
+         },
+         {
+            "label":"⬅️ Incoming Variables",
+            "description":"By default, workflow variables are automatically created based on the response JSON object. If only selected workflow variables should be created, they must be listed using “Assignment type” as “List” with the variable name.",
+            "binding":{
+               "type":"camunda:inputParameter",
+               "name":"api_connect_result_variables"
+            },
+            "optional":true
+         }
+      ]
+   },
+   {
+      "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+      "name":"Notify Task",
+      "id":"onl.mrtn.camunda.http.notify.task",
+      "description":"Notify a REST API.",
+      "version":1,
+      "entriesVisible":false,
+      "appliesTo":[
+         "bpmn:Task"
+      ],
+      "elementType":{
+         "value":"bpmn:SendTask"
+      },
+      "groups":[
+         {
+            "id":"endpoint",
+            "label":"Endpoint"
+         }
+      ],
+      "properties":[
+         {
+            "type":"Hidden",
+            "value":"${notify}",
+            "binding":{
+               "type":"property",
+               "name":"camunda:delegateExpression"
+            }
+         },
+         {
+            "label":"🔗 URL",
+            "group":"endpoint",
+            "type":"String",
+            "binding":{
+               "type":"camunda:field",
+               "name":"notify_url"
+            },
+            "constraints":{
+               "notEmpty":true,
+               "pattern":{
+                  "value":"^(=|http://|https://|secrets).*$",
+                  "message":"Must be a http(s) URL."
+               }
+            }
+         }
+      ]
+   },
+   {
+      "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+      "name":"Notify Extension External Task",
+      "id":"onl.mrtn.camunda.http.notify.external",
+      "description":"Notify a REST API prior external task client.",
+      "version":1,
+      "entriesVisible":false,
+      "appliesTo":[
+         "bpmn:Task"
+      ],
+      "elementType":{
+         "value":"bpmn:ServiceTask"
+      },
+      "groups":[
+         {
+            "id":"endpoint",
+            "label":"Endpoint"
+         },
+         {
+            "id":"external",
+            "label":"External Task"
+         }
+      ],
+      "properties":[
+         {
+            "binding":{
+               "name":"camunda:type",
+               "type":"property"
+            },
+            "type":"Hidden",
+            "value":"external"
+         },
+         {
+            "binding":{
+               "name":"camunda:topic",
+               "type":"property"
+            },
+            "label":"External Task Topic",
+            "group":"external",
+            "type":"String",
+            "constraints":{
+               "notEmpty":true
+            }
+         },
+         {
+            "label":"🔗 URL",
+            "group":"endpoint",
+            "type":"String",
+            "binding":{
+               "type":"camunda:property",
+               "name":"notify_url"
+            },
+            "constraints":{
+               "notEmpty":true,
+               "pattern":{
+                  "value":"^(=|http://|https://|secrets).*$",
+                  "message":"Must be a http(s) URL."
+               }
+            }
+         }
+      ]
+   },
+   {
+      "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+      "name":"External Task",
+      "id":"onl.mrtn.camunda.external",
+      "description":"External task client.",
+      "version":1,
+      "entriesVisible":false,
+      "appliesTo":[
+         "bpmn:Task"
+      ],
+      "elementType":{
+         "value":"bpmn:ServiceTask"
+      },
+      "groups":[
+         {
+            "id":"external",
+            "label":"External Task"
+         }
+      ],
+      "properties":[
+         {
+            "binding":{
+               "name":"camunda:type",
+               "type":"property"
+            },
+            "type":"Hidden",
+            "value":"external"
+         },
+         {
+            "binding":{
+               "name":"camunda:topic",
+               "type":"property"
+            },
+            "label":"External Task Topic",
+            "group":"external",
+            "type":"String",
+            "constraints":{
+               "notEmpty":true
+            }
+         }
+      ]
+   },
+   {
+      "$schema":"https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+      "name":"Inter Process Message Extension",
+      "id":"onl.mrtn.camunda.interprocess",
+      "description":"Message another process.",
+      "version":1,
+      "entriesVisible":false,
+      "appliesTo":[
+         "bpmn:Task"
+      ],
+      "elementType":{
+         "value":"bpmn:SendTask"
+      },
+      "groups":[
+         {
+            "id":"message",
+            "label":"Message"
+         }
+      ],
+      "properties":[
+         {
+            "type":"Hidden",
+            "value":"${inter_process}",
+            "binding":{
+               "type":"property",
+               "name":"camunda:delegateExpression"
+            }
+         },
+         {
+            "label":"📮 Message Name",
+            "group":"message",
+            "type":"String",
+            "binding":{
+               "type":"camunda:field",
+               "name":"message_name"
+            },
+            "constraints":{
+               "notEmpty":true
+            }
+         }
+      ]
+   }
 ]
