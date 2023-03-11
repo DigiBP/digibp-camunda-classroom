@@ -32,7 +32,7 @@ public class NotifyParseListener extends AbstractBpmnParseListener implements Bp
 
                     String name = property.attribute("name");
 
-                    if(name.equals("notify-url")){
+                    if(name.equals("notify_url")){
                         String type = serviceTaskElement.attributeNS(new Namespace(BpmnParser.CAMUNDA_BPMN_EXTENSIONS_NS, BpmnParser.ACTIVITI_BPMN_EXTENSIONS_NS), "type");
 
                         if (type.equalsIgnoreCase("external")) {
