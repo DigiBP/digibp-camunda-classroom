@@ -46,12 +46,12 @@ public class MessageBrokerService {
         sendMessage(messageName, businessKey, variables, delegateExecution.getTenantId());
     }
 
-    protected void sendMessage(String messageName, String businessKey, Map<String, Object> variables, String tenantId) {
+    public void sendMessage(String messageName, String businessKey, Map<String, Object> variables, String tenantId) {
         runtimeService.createMessageCorrelation(messageName)
                 .processInstanceBusinessKey(businessKey)
                 .setVariables(variables)
                 .tenantId(tenantId)
-                .correlate();
+                .correlateExclusively();
     }
 
     public void broadcast(DelegateExecution delegateExecution, String messageName){
