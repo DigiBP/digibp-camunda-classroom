@@ -4,7 +4,7 @@
       "name":"API Connect",
       "id":"onl.mrtn.camunda.http.api_connect",
       "description":"Connect to a REST API.",
-      "version":1,
+      "version":2,
       "entriesVisible":false,
       "appliesTo":[
          "bpmn:Task"
@@ -122,6 +122,31 @@
                "notEmpty":true
             },
             "optional":true
+         },
+         {
+            "label":"🗣️ Verbosity",
+            "description":"Verbosity of the data object?",
+            "group":"mapping",
+            "type":"Dropdown",
+            "value":"plain",
+            "binding":{
+               "type":"camunda:field",
+               "name":"api_connect_verbosity_outgoing"
+            },
+            "choices":[
+               {
+                  "name":"Plain JSON object",
+                  "value":"plain"
+               },
+               {
+                  "name":"JSON object with business key",
+                  "value":"businessKey"
+               },
+               {
+                  "name":"Extended JSON object",
+                  "value":"extended"
+               }
+            ]
          },
          {
             "label":"➡️ Outgoing Variables",

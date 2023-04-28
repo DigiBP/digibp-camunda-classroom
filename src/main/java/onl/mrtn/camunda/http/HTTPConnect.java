@@ -8,6 +8,7 @@ package onl.mrtn.camunda.http;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.variable.value.ObjectValue;
 import org.camunda.spin.Spin;
@@ -42,7 +43,7 @@ public class HTTPConnect {
         send(execution, connection, execution.getVariables());
     }
 
-    public void callAPI(DelegateExecution execution, String urlText, String authorizationText, String result_variable_name, Boolean automaticAPIVariables, Boolean automaticResultVariables) throws IOException {
+    public void callAPI(DelegateExecution execution, String urlText, String authorizationText, String result_variable_name, Boolean automaticAPIVariables, Boolean automaticResultVariables, String verbosityOutgoing) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(urlText).openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Accept", "application/json");
@@ -72,7 +73,19 @@ public class HTTPConnect {
         data.remove("api_connect_api_variables");
         data.remove("api_connect_result_variables");
 
-        send(execution, connection, data);
+        switch (verbosityOutgoing) {
+            case "plain" -> sendPlain(execution, connection, data);
+            case "businessKey" -> {
+                String businessKey = execution.getBusinessKey();
+                if (businessKey == null || businessKey.isEmpty() || businessKey.equals("default")) {
+                    businessKey = "Transaction_" + RandomStringUtils.randomAlphanumeric(7);
+                    execution.setProcessBusinessKey(businessKey);
+                }
+                data.put("businessKey", businessKey);
+                sendPlain(execution, connection, data);
+            }
+            default -> send(execution, connection, data);
+        }
 
         List<String> resultVariables = new ArrayList<>();
 
@@ -120,6 +133,29 @@ public class HTTPConnect {
             }
         }
 
+    }
+
+    private void sendPlain(DelegateExecution execution, HttpURLConnection connection, Map<String, Object> data) throws IOException {
+        connection.setDoOutput(true);
+        connection.addRequestProperty("Content-Type", "application/json");
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = Spin.JSON(data).toString().getBytes();
+            os.write(input, 0, input.length);
+        } catch (UnknownHostException e) {
+            logger.info("A valid \"URL\" field must be injected an URL.");
+        }
+
+        logger.info("\n\n  ... HTTPConnect invoked by "
+                + "processDefinitionId=" + execution.getProcessDefinitionId()
+                + ", tenantId=" + execution.getTenantId()
+                + ", activityId=" + execution.getCurrentActivityId()
+                + ", activityName='" + execution.getCurrentActivityName() + "'"
+                + ", processInstanceId=" + execution.getProcessInstanceId()
+                + ", businessKey=" + execution.getProcessBusinessKey()
+                + ", executionId=" + execution.getId()
+                + ", with response code=" + connection.getResponseCode()
+                + " \n\n");
     }
 
     private void send(DelegateExecution execution, HttpURLConnection connection, Map<String, Object> data) throws IOException {

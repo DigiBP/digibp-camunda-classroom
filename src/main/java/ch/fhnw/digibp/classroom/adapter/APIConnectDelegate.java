@@ -23,13 +23,11 @@ public class APIConnectDelegate implements JavaDelegate {
     private final Logger logger = LoggerFactory.getLogger(NotifyDelegate.class);
 
     private Expression api_connect_url;
-
     private Expression api_connect_authorization;
-
     private Expression api_connect_result_variable;
-
     private Expression api_connect_api_variables;
     private Expression api_connect_result_variables;
+    private Expression api_connect_verbosity_outgoing;
 
     private final HTTPConnectService httpService;
 
@@ -45,6 +43,7 @@ public class APIConnectDelegate implements JavaDelegate {
         this.api_connect_result_variable = new FixedValue("None");
         this.api_connect_api_variables = new FixedValue("true");
         this.api_connect_result_variables = new FixedValue("true");
+        this.api_connect_verbosity_outgoing = new FixedValue("extended");
     }
 
     @Override
@@ -54,11 +53,12 @@ public class APIConnectDelegate implements JavaDelegate {
         String resultVariable = api_connect_result_variable.getExpressionText();
         Boolean automaticAPIVariables = Boolean.parseBoolean(api_connect_api_variables.getExpressionText());
         Boolean automaticResultVariables = Boolean.parseBoolean(api_connect_result_variables.getExpressionText());
+        String verbosityOutgoing = api_connect_verbosity_outgoing.getExpressionText();
 
         init();
 
         EnsureUtil.ensureNotEmpty("A \"api_connect_url\" field must be injected an URL.", urlText);
 
-        httpService.callAPI(execution, urlText, authorizationText, resultVariable, automaticAPIVariables, automaticResultVariables);
+        httpService.callAPI(execution, urlText, authorizationText, resultVariable, automaticAPIVariables, automaticResultVariables, verbosityOutgoing);
     }
 }
