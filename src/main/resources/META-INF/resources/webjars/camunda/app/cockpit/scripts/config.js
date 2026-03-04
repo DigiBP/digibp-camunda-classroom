@@ -2,6 +2,7 @@ export default {
     customScripts: [
         '../custom-modules/redirect-module.js',
         'scripts/definition-historic-activities.js',
+        'scripts/instance-auto-refresh.js',
         'scripts/instance-historic-activities.js',
         'scripts/instance-route-history.js'
     ],

@@ -15,7 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>15</java.version>
+        <java.version>17</java.version>
         <spring.boot.version>2.7.9</spring.boot.version>
         <camunda.version>7.19.0</camunda.version>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
@@ -98,6 +98,11 @@
             <artifactId>jakarta.activation-api</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
 
         <!-- JDK 15 adding GraalVM JavaScript support -->
         <dependency>
@@ -124,6 +129,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>42.7.4</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -140,21 +146,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-
-        <!-- jPMML -->
-        <dependency>
-            <groupId>org.jpmml</groupId>
-            <artifactId>pmml-evaluator</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-
-        <!-- stardog -->
-        <dependency>
-            <groupId>com.complexible.stardog</groupId>
-            <artifactId>client-http</artifactId>
-            <version>8.1.1</version>
-        </dependency>
-
     </dependencies>
 
     <repositories>
@@ -162,11 +153,6 @@
             <id>camunda-bpm-nexus</id>
             <name>Camunda Maven Repository</name>
             <url>https://app.camunda.com/nexus/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>stardog-public</id>
-            <name>Stardog Maven Repository</name>
-            <url>https://maven.stardog.com</url>
         </repository>
     </repositories>
 
