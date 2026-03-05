@@ -15,9 +15,15 @@ camunda:
 spring:
   profiles:
     active: local
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /config
+    disable-swagger-default-url: true
+    urls-primary-name: Classroom API
+    urls:
+      - name: Camunda REST API
+        url: /camunda-rest/openapi.json
 #  jersey:
 #    application-path: /rest
 #  datasource:
