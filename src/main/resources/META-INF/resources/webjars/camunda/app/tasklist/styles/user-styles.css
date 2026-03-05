@@ -1,2 +1,6 @@
 @import "switch.css";
 @import "cmmn-embedded.css";
+
+.ce-eol-banner {
+    display: none !important;
+}
