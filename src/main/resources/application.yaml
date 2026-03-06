@@ -7,6 +7,9 @@ camunda:
       create: All Tasks
     authorization:
       enabled: true
+    generic-properties:
+      properties:
+        historyTimeToLive: "P180D"
     webapp:
       header-security:
         content-security-policy-value: font-src 'self' data:;
@@ -15,6 +18,13 @@ camunda:
 spring:
   profiles:
     active: local
+
+## Server configuration for reverse proxy (HTTPS)
+server:
+  forward-headers-strategy: native
+  compression:
+    enabled: true
+
 springdoc:
   swagger-ui:
     enabled: true

@@ -4,11 +4,16 @@ spring:
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
 
+server:
+  forward-headers-strategy: native
+  compression:
+    enabled: true
+
 camunda:
   bpm:
     admin-user:
       password: ${CAMUNDA_ADMIN_PASSWORD:demo}
 
 cors:
-  enabled: ${CORS_ENABLED:false}
+  enabled: ${CORS_ENABLED:true}
   allowed-origin: ${CORS_ORIGIN:*}
