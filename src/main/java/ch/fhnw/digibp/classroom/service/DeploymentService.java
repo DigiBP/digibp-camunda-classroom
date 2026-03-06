@@ -27,7 +27,20 @@ public class DeploymentService {
     public String createTenantDeployment(String tenantId, String deploymentName, String creator, List<MultipartFile> files) throws IOException {
         DeploymentBuilder deploymentBuilder = repositoryService.createDeployment().tenantId(tenantId).source(creator).name(deploymentName);
         for(MultipartFile file : files){
-            if(Objects.equals(file.getContentType(), "application/x-zip-compressed")){
+            String contentType = file.getContentType();
+            boolean isZipFile = contentType != null && (
+                contentType.equals("application/x-zip-compressed") ||
+                contentType.equals("application/zip") ||
+                contentType.equals("application/x-zip") ||
+                contentType.equals("application/octet-stream")
+            );
+            
+            String filename = file.getOriginalFilename();
+            if (!isZipFile && filename != null && filename.toLowerCase().endsWith(".zip")) {
+                isZipFile = true;
+            }
+            
+            if(isZipFile){
                 ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream());
                 ZipEntry zipEntry = zipInputStream.getNextEntry();
                 while (zipEntry != null) {
