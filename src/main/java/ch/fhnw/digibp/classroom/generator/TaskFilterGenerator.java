@@ -67,7 +67,7 @@ public class TaskFilterGenerator {
         filterProperties.put("priority", 2);
         filterProperties.put("refresh", true);
         query = taskService.createTaskQuery().taskCandidateGroupInExpression("${currentUserGroups()}");
-        tasksFilter = filterService.newTaskFilter().setName("Group Tasks").setProperties(filterProperties).setQuery(query);
+        tasksFilter = filterService.newTaskFilter().setName("Role/Groupe Tasks").setProperties(filterProperties).setQuery(query);
         filterService.saveFilter(tasksFilter);
         taskFilterAuthService.createFilterAuthorization(tasksFilter);
 
